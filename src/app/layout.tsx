@@ -5,16 +5,19 @@ import "./globals.css";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "SmartTraveler",
-  description: "Optimisateur d'itinéraire multi-destinations.",
+  title: "SmartTraveler — Concorde",
+  description:
+    "Optimisateur d'itinéraire multi-destinations. Cinematic glass.",
 };
 
 export default function RootLayout({
