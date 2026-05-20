@@ -74,6 +74,10 @@ const MARSEILLE: City = { name: "Marseille", country: "FR", coordinates: { lat: 
 const AMSTERDAM: City = { name: "Amsterdam", country: "NL", coordinates: { lat: 52.3676, lng: 4.9041 } };
 const COPENHAGEN: City = { name: "Copenhague", country: "DK", coordinates: { lat: 55.6761, lng: 12.5683 } };
 
+const ATHENS: City = { name: "Athènes", country: "GR", coordinates: { lat: 37.9838, lng: 23.7275 } };
+const ISTANBUL: City = { name: "Istanbul", country: "TR", coordinates: { lat: 41.0082, lng: 28.9784 } };
+const VIENNA: City = { name: "Vienne", country: "AT", coordinates: { lat: 48.2082, lng: 16.3738 } };
+
 export const MOCK_TRIPS: Trip[] = [
   {
     id: "trip-mediterranee",
@@ -245,6 +249,94 @@ export const MOCK_TRIPS: Trip[] = [
           { from: MARSEILLE, to: AMSTERDAM, mode: "train", durationMinutes: 825, costEUR: 148, co2Kg: 36, carrier: "TGV + Thalys" },
           { from: AMSTERDAM, to: COPENHAGEN, mode: "train", durationMinutes: 680, costEUR: 134, co2Kg: 28, carrier: "ICE + EuroCity" },
           { from: COPENHAGEN, to: MARSEILLE, mode: "train", durationMinutes: 645, costEUR: 130, co2Kg: 28, carrier: "EC + ICE + TGV" },
+        ],
+      },
+    ],
+  },
+  {
+    id: "trip-grand-tour-europe",
+    name: "Grand Tour d'Europe",
+    status: "computed",
+    startCity: PARIS,
+    startDate: "2026-09-05",
+    endDate: "2026-09-25",
+    destinations: [
+      { id: "dest-gte-rome", city: ROME, nights: 3 },
+      { id: "dest-gte-athens", city: ATHENS, nights: 4 },
+      { id: "dest-gte-istanbul", city: ISTANBUL, nights: 4 },
+      { id: "dest-gte-vienna", city: VIENNA, nights: 3 },
+      { id: "dest-gte-berlin", city: BERLIN, nights: 3 },
+    ],
+    createdAt: "2026-05-19T11:24:00Z",
+    updatedAt: "2026-05-20T09:30:00Z",
+    alternatives: [
+      {
+        id: "alt-gte-cheap",
+        kind: "cheapest",
+        label: "Le plus économique",
+        totalCostEUR: 440,
+        totalDurationMinutes: 1255,
+        totalCo2Kg: 940,
+        orderedDestinationIds: [
+          "dest-gte-rome",
+          "dest-gte-athens",
+          "dest-gte-istanbul",
+          "dest-gte-vienna",
+          "dest-gte-berlin",
+        ],
+        legs: [
+          { from: PARIS, to: ROME, mode: "plane", durationMinutes: 130, costEUR: 79, co2Kg: 220, carrier: "Ryanair" },
+          { from: ROME, to: ATHENS, mode: "plane", durationMinutes: 105, costEUR: 92, co2Kg: 160, carrier: "Aegean" },
+          { from: ATHENS, to: ISTANBUL, mode: "plane", durationMinutes: 80, costEUR: 68, co2Kg: 95, carrier: "Pegasus" },
+          { from: ISTANBUL, to: VIENNA, mode: "plane", durationMinutes: 140, costEUR: 105, co2Kg: 230, carrier: "Pegasus" },
+          { from: VIENNA, to: BERLIN, mode: "bus", durationMinutes: 690, costEUR: 32, co2Kg: 70, carrier: "FlixBus" },
+          { from: BERLIN, to: PARIS, mode: "plane", durationMinutes: 110, costEUR: 64, co2Kg: 165, carrier: "Ryanair" },
+        ],
+      },
+      {
+        id: "alt-gte-fast",
+        kind: "fastest",
+        label: "Le plus rapide",
+        totalCostEUR: 899,
+        totalDurationMinutes: 695,
+        totalCo2Kg: 1000,
+        orderedDestinationIds: [
+          "dest-gte-rome",
+          "dest-gte-athens",
+          "dest-gte-istanbul",
+          "dest-gte-vienna",
+          "dest-gte-berlin",
+        ],
+        legs: [
+          { from: PARIS, to: ROME, mode: "plane", durationMinutes: 130, costEUR: 158, co2Kg: 220, carrier: "Air France" },
+          { from: ROME, to: ATHENS, mode: "plane", durationMinutes: 120, costEUR: 165, co2Kg: 160, carrier: "Aegean" },
+          { from: ATHENS, to: ISTANBUL, mode: "plane", durationMinutes: 95, costEUR: 122, co2Kg: 95, carrier: "Turkish Airlines" },
+          { from: ISTANBUL, to: VIENNA, mode: "plane", durationMinutes: 145, costEUR: 178, co2Kg: 230, carrier: "Austrian Airlines" },
+          { from: VIENNA, to: BERLIN, mode: "plane", durationMinutes: 95, costEUR: 134, co2Kg: 130, carrier: "Lufthansa" },
+          { from: BERLIN, to: PARIS, mode: "plane", durationMinutes: 110, costEUR: 142, co2Kg: 165, carrier: "Air France" },
+        ],
+      },
+      {
+        id: "alt-gte-eco",
+        kind: "eco",
+        label: "Empreinte carbone réduite",
+        totalCostEUR: 873,
+        totalDurationMinutes: 4475,
+        totalCo2Kg: 312,
+        orderedDestinationIds: [
+          "dest-gte-rome",
+          "dest-gte-athens",
+          "dest-gte-istanbul",
+          "dest-gte-vienna",
+          "dest-gte-berlin",
+        ],
+        legs: [
+          { from: PARIS, to: ROME, mode: "train", durationMinutes: 620, costEUR: 175, co2Kg: 32, carrier: "TGV + Frecciarossa" },
+          { from: ROME, to: ATHENS, mode: "plane", durationMinutes: 120, costEUR: 145, co2Kg: 160, carrier: "Aegean" },
+          { from: ATHENS, to: ISTANBUL, mode: "train", durationMinutes: 1080, costEUR: 92, co2Kg: 28, carrier: "Via Thessalonique" },
+          { from: ISTANBUL, to: VIENNA, mode: "train", durationMinutes: 1620, costEUR: 188, co2Kg: 42, carrier: "Balkans EuroNight" },
+          { from: VIENNA, to: BERLIN, mode: "train", durationMinutes: 525, costEUR: 95, co2Kg: 22, carrier: "RailJet + ICE" },
+          { from: BERLIN, to: PARIS, mode: "train", durationMinutes: 510, costEUR: 178, co2Kg: 28, carrier: "ICE + Thalys" },
         ],
       },
     ],

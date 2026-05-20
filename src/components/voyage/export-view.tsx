@@ -3,15 +3,16 @@
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Trip } from "@/mocks/trips";
-import { TripPdfDocument } from "@/components/voyage/trip-pdf-document";
 
 /**
- * @react-pdf/renderer accède à window via canvas (rendu PDF côté browser).
- * On force ssr: false sur le viewer ET le lien de téléchargement.
- * Le fallback est un cadre neutre qui ne casse pas la mise en page côté server.
+ * @react-pdf/renderer accède à window/canvas. On isole TOUT l'import (PDFViewer,
+ * PDFDownloadLink, ET le document TripPdfDocument) dans 2 sub-components client
+ * chargés en dynamic({ ssr: false }) — sinon le bundler SSR tire react-pdf via
+ * l'import statique de TripPdfDocument et la route bail-out en client rendering
+ * (le viewer reste alors bloqué sur le placeholder).
  */
-const PDFViewer = dynamic(
-  () => import("@react-pdf/renderer").then((m) => m.PDFViewer),
+const PdfPreviewBlock = dynamic(
+  () => import("./pdf-preview-block"),
   {
     ssr: false,
     loading: () => (
@@ -22,10 +23,9 @@ const PDFViewer = dynamic(
   }
 );
 
-const PDFDownloadLink = dynamic(
-  () => import("@react-pdf/renderer").then((m) => m.PDFDownloadLink),
-  { ssr: false }
-);
+const PdfDownloadButton = dynamic(() => import("./pdf-download-button"), {
+  ssr: false,
+});
 
 export function ExportView({ trip }: { trip: Trip }) {
   const fileName = `smarttraveler-${trip.id}.pdf`;
@@ -88,14 +88,7 @@ export function ExportView({ trip }: { trip: Trip }) {
                 "0 1px 0 0 oklch(1 0 0), 0 18px 36px -22px oklch(0.215 0.028 38 / 0.18)",
             }}
           >
-            <PDFViewer
-              width="100%"
-              height={800}
-              showToolbar={false}
-              style={{ border: "none", borderRadius: 8 }}
-            >
-              <TripPdfDocument trip={trip} />
-            </PDFViewer>
+            <PdfPreviewBlock trip={trip} />
           </div>
           <p className="export-chrome mt-3 text-[11.5px] text-ink-mute">
             Aperçu généré localement. Aucun envoi serveur — votre voyage reste sur votre
@@ -125,11 +118,7 @@ export function ExportView({ trip }: { trip: Trip }) {
 
               <div className="mt-6 flex flex-col gap-3">
                 {/* Télécharger */}
-                <PDFDownloadLink
-                  document={<TripPdfDocument trip={trip} />}
-                  fileName={fileName}
-                  className="dl-link"
-                >
+                <PdfDownloadButton trip={trip} fileName={fileName}>
                   {({ loading }) => (
                     <span
                       className="group inline-flex w-full items-center justify-between gap-2 rounded-full bg-[var(--terracotta)] px-5 py-3 text-[13.5px] font-medium text-[oklch(0.99_0.005_80)] transition-transform duration-200 ease-out hover:scale-[1.01] active:scale-[0.98]"
@@ -150,7 +139,7 @@ export function ExportView({ trip }: { trip: Trip }) {
                       </span>
                     </span>
                   )}
-                </PDFDownloadLink>
+                </PdfDownloadButton>
 
                 {/* Imprimer */}
                 <button
