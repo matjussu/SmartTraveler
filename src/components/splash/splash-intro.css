@@ -15,10 +15,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  /* Background transparent : la home main porte déjà le radial-gradient noir.
-     Sinon le splash recouvre le main et le subtitle/CTA ne sont jamais visibles. */
-  background: transparent;
-  will-change: transform;
+  /* background-color piloté en inline par <SplashIntro> selon le scroll progress
+     (rgba opaque #050505 → transparent). Voir splash-intro.tsx. */
+  will-change: transform, background-color;
 }
 
 .splash-intro-stage {

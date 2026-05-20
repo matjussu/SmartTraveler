@@ -4,26 +4,25 @@ import { TopNav } from "@/components/voyage/top-nav";
 import { SplashIntro } from "@/components/splash/splash-intro";
 
 /**
- * Home `/` — Phase 1 du grand redesign SmartTraveler (itération bug-fix #1530).
+ * Home `/` — Phase 1 du grand redesign SmartTraveler (itération #1546).
  *
- * Bascule de la direction voyage-pivot (cream éditorial italique) vers une
- * identité tableau Solari authentique noire. Architecture :
+ * Architecture finalisée :
  *
- *  - **UN SEUL SplitFlap** géré par `<SplashIntro>` (overlay fixed z-50).
- *    Au scroll, il shrinke (scale + translateY vers haut) MAIS reste opacity 1
- *    — il devient le "H1" visuel final, pas un overlay qui disparaît.
- *  - Le main contient subtitle + CTA positionnés via `pt-[42vh]` pour qu'ils
- *    soient visibles SOUS le splash shrinké dès que la transition est complète.
- *  - `min-h-[130vh]` sur la zone scroll garantit que la page est suffisamment
- *    longue pour que user puisse scroller les 280px nécessaires à la transition.
- *  - Labels colonnes "Flight Number" / "Destination" portés par le SplitFlap
- *    (port direct du mock Claude Design `claude_design/Split Flap Board.html`).
- *  - data-route="home-redesign" sur le main → globals.css force bg matte black
- *    UNIQUEMENT pour cette route. Autres routes (/trip/*, /shared/*) intactes.
+ *  - **UN SEUL SplitFlap** géré par `<SplashIntro>` (fixed z-50). Shrinke au scroll
+ *    jusqu'à scale 0.5 + translateY -26vh + background fade-out à transparent.
+ *  - **Placeholder in-page** `<div className="splash-placeholder">` réserve l'espace
+ *    que le SplitFlap mini occupe visuellement au final state. Sans ça, subtitle + CTA
+ *    se positionneraient sous le top-nav et seraient superposés visuellement avec
+ *    le splash overlay (qui est position:fixed et hors du flow document).
+ *  - **Subtitle + CTA** suivent le placeholder dans le flow naturel — donc toujours
+ *    SOUS le splash shrinké, jamais superposés ni cachés.
+ *  - `min-h-[120vh]` garantit page scrollable pour déclencher la transition.
+ *  - data-route="home-redesign" → globals.css scope bg matte black sur cette route
+ *    UNIQUEMENT. Autres routes (/trip/*, /shared/*) conservent leur fond cream.
  */
 export default function Home() {
   return (
-    <main data-route="home-redesign" className="home-redesign relative">
+    <main data-route="home-redesign" className="home-redesign relative min-h-[120vh]">
       <SplashIntro
         text="SMART TRAVELER"
         columnLabels={["Flight Number", "Destination"]}
@@ -34,9 +33,21 @@ export default function Home() {
       {/* H1 sémantique pour SEO + landmark a11y (le SplitFlap a role="img"). */}
       <h1 className="sr-only">SMART TRAVELER</h1>
 
-      {/* Hero : subtitle + CTA positionnés SOUS la position finale du splash.
-          pt-[42vh] = laisse de la place au splash shrinké en haut du viewport. */}
-      <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-8 px-6 pb-24 pt-[42vh] text-center min-h-[130vh]">
+      <div className="mx-auto flex w-full max-w-3xl flex-col items-center gap-10 px-6 pb-24 pt-32 text-center">
+        {/*
+          Placeholder réservant l'espace du SplitFlap mini final dans le flow.
+          Dimensions calées sur la zone visuelle qu'occupe le board scale 0.5 :
+          - SplitFlap XL flap-h ≈ 80px * 1.42 + label (16px) + gap (18px) ≈ 148px
+          - À scale 0.5 ≈ 74px d'effective height
+          - On réserve clamp(96px, 14vh, 160px) pour respiration + label visibility
+          Aria-hidden : invisible aux screen readers (le H1 sr-only joue ce rôle).
+        */}
+        <div
+          aria-hidden
+          className="splash-placeholder"
+          style={{ height: "clamp(96px, 14vh, 160px)", width: "100%" }}
+        />
+
         <p
           className="max-w-xl text-[15.5px] leading-[1.6] text-white/65"
           style={{ fontFamily: "var(--font-jakarta)" }}

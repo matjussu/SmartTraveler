@@ -1,25 +1,22 @@
 "use client";
 
 /**
- * SplashIntro — Split-Flap overlay qui shrinke au scroll et **reste visible** au final.
+ * SplashIntro — Split-Flap overlay qui shrinke au scroll et reste visible au final.
  *
- * Décision architecturale (vs précédente itération où l'overlay disparaissait à
- * progress=1 et un second SplitFlap "mini" prenait sa place dans le hero) :
+ * Itération #1546 (fixes Matteo) :
+ *  - **Background interpolé** : `#050505` opaque jusqu'à progress 0.6, fade-out
+ *    linéaire vers transparent jusqu'à progress 1. Au mount, l'overlay masque
+ *    COMPLÈTEMENT le main en dessous (subtitle + CTA invisibles). Quand user
+ *    scroll au-delà de progress 0.6, le main commence à transparaître.
+ *  - **Scale final 0.5** (au lieu de 0.34) : SplitFlap mini reste lisible.
+ *  - **translateY final -26vh** (au lieu de -32vh) : cohérent avec scale plus grand,
+ *    atterrit au-dessus du placeholder réservé dans le flow document de la home.
  *
- *  - **1 seul SplitFlap** géré par l'overlay. Au scroll, le board shrinke
- *    (scale + translateY) vers une position fixed haut de viewport, mais
- *    **opacity reste 1** — le splash devient le "H1" final, pas un overlay
- *    qui disparaît. Ça évite le bug "subtitle + CTA invisibles" qu'on avait
- *    avec le hero centré qui finissait caché sous le top-nav.
- *  - La page `/` positionne ensuite le subtitle + CTA SOUS la position finale
- *    du splash (via `pt-[40vh]` sur la section hero), de sorte que ces éléments
- *    sont visibles dès que le splash a fini de shrinker.
- *  - Labels colonnes "Flight Number" / "Destination" (port direct du mock
- *    Claude Design) — visibles XL au mount ET mini après shrink (c'est le même
- *    DOM, la transform `scale` les réduit proportionnellement).
+ * Le placeholder in-page (page.tsx) réserve l'espace que le splash overlay occupe
+ * visuellement au final state — sans ça, subtitle + CTA remontent et se superposent
+ * avec la position finale du splash.
  *
- * À CHAQUE arrivée sur `/`, le splash rejoue (mount du composant suffit pour
- * que `<SplitFlap>` redémarre son séquençage L→R). Pas de localStorage flag.
+ * À CHAQUE arrivée sur `/`, le splash rejoue (mount du composant suffit).
  */
 
 import { SplitFlap } from "./split-flap";
@@ -27,13 +24,12 @@ import { useScrollProgress } from "@/hooks/use-scroll-progress";
 import "./splash-intro.css";
 
 type Props = {
-  /** Texte du Split-Flap splash. Default "SMART TRAVELER". */
   text?: string;
-  /** Seuil de scroll en pixels où la transition se complète. */
   scrollThreshold?: number;
-  /** Labels colonnes (un par mot). Default ["Flight Number", "Destination"]. */
   columnLabels?: string[];
 };
+
+const FADE_START = 0.6;
 
 export function SplashIntro({
   text = "SMART TRAVELER",
@@ -42,20 +38,25 @@ export function SplashIntro({
 }: Props) {
   const progress = useScrollProgress(scrollThreshold);
 
-  // Curve transformation :
-  //   scale: 1 → 0.34
-  //   translateY: 0 → -32vh (remonte vers le haut du viewport)
-  // Pas de fade-out — l'overlay reste opacity 1 et devient le "H1" final.
-  const scale = 1 - progress * 0.66;
-  const translateY = `${-32 * progress}vh`;
+  // Transform curve : scale 1 → 0.5, translateY 0 → -26vh
+  const scale = 1 - progress * 0.5;
+  const translateY = `${-26 * progress}vh`;
+
+  // Background interpolation : opaque jusqu'à FADE_START, puis fade-out linéaire
+  const bgAlpha =
+    progress < FADE_START
+      ? 1
+      : Math.max(0, 1 - (progress - FADE_START) / (1 - FADE_START));
 
   return (
     <div
       className="splash-intro"
       style={{
-        // pointer-events: none pour ne jamais bloquer les clicks sur subtitle/CTA
-        // (le splash est purement décoratif une fois shrinké)
-        pointerEvents: progress >= 0.5 ? "none" : "auto",
+        backgroundColor: `rgba(5, 5, 6, ${bgAlpha})`,
+        // Pointer-events: none dès que le bg commence à fade-out — le splash
+        // devient visuellement purement décoratif, ne doit pas bloquer un clic
+        // sur le subtitle/CTA qui transparaît
+        pointerEvents: progress >= FADE_START ? "none" : "auto",
       }}
     >
       <div
