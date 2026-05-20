@@ -15,9 +15,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(120% 80% at 50% 0%, #1a1a1c 0%, #0a0a0b 55%, #050506 100%);
-  transition: opacity 280ms ease-out;
-  will-change: opacity;
+  /* Background transparent : la home main porte déjà le radial-gradient noir.
+     Sinon le splash recouvre le main et le subtitle/CTA ne sont jamais visibles. */
+  background: transparent;
+  will-change: transform;
 }
 
 .splash-intro-stage {

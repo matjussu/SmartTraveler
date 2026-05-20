@@ -1,23 +1,25 @@
 "use client";
 
 /**
- * SplashIntro — overlay fullscreen sur la home `/` qui shrink + fade au scroll.
+ * SplashIntro — Split-Flap overlay qui shrinke au scroll et **reste visible** au final.
  *
- * Phase 1 du grand redesign SmartTraveler : remplacer le hero éditorial cream
- * par une arrivée tableau Solari. Décisions :
+ * Décision architecturale (vs précédente itération où l'overlay disparaissait à
+ * progress=1 et un second SplitFlap "mini" prenait sa place dans le hero) :
  *
- *  - À CHAQUE arrivée sur `/`, le splash rejoue (pas de localStorage flag —
- *    c'est une démo, pas une persistance). Le mount du composant suffit pour
- *    que `<SplitFlap>` redémarre son séquençage L→R.
- *  - Pas de bouton "Skip", pas d'auto-transition après 2s : uniquement scroll
- *    driven. `useScrollProgress(320)` produit un float 0→1.
- *  - Transform-only (scale + translateY) pour éviter le reflow. L'overlay reste
- *    `position: fixed inset-0`, ce sont les transforms internes qui shrinkent.
- *  - À progress = 1, opacity passe à 0 + pointer-events none : l'overlay devient
- *    transparent pour révéler la home (qui contient déjà un `<SplitFlap mini>`
- *    rendu en arrière-plan dans le hero).
- *  - Accent point amber pulsing (réplique de la `.label` du mock Claude Design)
- *    placé en sub-caption "EMBARQUEMENT IMMÉDIAT".
+ *  - **1 seul SplitFlap** géré par l'overlay. Au scroll, le board shrinke
+ *    (scale + translateY) vers une position fixed haut de viewport, mais
+ *    **opacity reste 1** — le splash devient le "H1" final, pas un overlay
+ *    qui disparaît. Ça évite le bug "subtitle + CTA invisibles" qu'on avait
+ *    avec le hero centré qui finissait caché sous le top-nav.
+ *  - La page `/` positionne ensuite le subtitle + CTA SOUS la position finale
+ *    du splash (via `pt-[40vh]` sur la section hero), de sorte que ces éléments
+ *    sont visibles dès que le splash a fini de shrinker.
+ *  - Labels colonnes "Flight Number" / "Destination" (port direct du mock
+ *    Claude Design) — visibles XL au mount ET mini après shrink (c'est le même
+ *    DOM, la transform `scale` les réduit proportionnellement).
+ *
+ * À CHAQUE arrivée sur `/`, le splash rejoue (mount du composant suffit pour
+ * que `<SplitFlap>` redémarre son séquençage L→R). Pas de localStorage flag.
  */
 
 import { SplitFlap } from "./split-flap";
@@ -29,28 +31,32 @@ type Props = {
   text?: string;
   /** Seuil de scroll en pixels où la transition se complète. */
   scrollThreshold?: number;
+  /** Labels colonnes (un par mot). Default ["Flight Number", "Destination"]. */
+  columnLabels?: string[];
 };
 
 export function SplashIntro({
   text = "SMART TRAVELER",
-  scrollThreshold = 320,
+  scrollThreshold = 280,
+  columnLabels = ["Flight Number", "Destination"],
 }: Props) {
   const progress = useScrollProgress(scrollThreshold);
 
-  // Curve : scale 1 → 0.32, translateY 0 → -28vh, opacity 1 → 0 à partir de 0.85
-  // (la home en dessous contient un Split-Flap mini "in place" qui prend le relais)
-  const scale = 1 - progress * 0.68;
-  const translateY = `${-28 * progress}vh`;
-  const opacity = progress < 0.85 ? 1 : Math.max(0, 1 - (progress - 0.85) / 0.15);
+  // Curve transformation :
+  //   scale: 1 → 0.34
+  //   translateY: 0 → -32vh (remonte vers le haut du viewport)
+  // Pas de fade-out — l'overlay reste opacity 1 et devient le "H1" final.
+  const scale = 1 - progress * 0.66;
+  const translateY = `${-32 * progress}vh`;
 
   return (
     <div
       className="splash-intro"
       style={{
-        opacity,
-        pointerEvents: progress >= 0.999 ? "none" : "auto",
+        // pointer-events: none pour ne jamais bloquer les clicks sur subtitle/CTA
+        // (le splash est purement décoratif une fois shrinké)
+        pointerEvents: progress >= 0.5 ? "none" : "auto",
       }}
-      aria-hidden={progress >= 0.85}
     >
       <div
         className="splash-intro-stage"
@@ -58,11 +64,7 @@ export function SplashIntro({
           transform: `translate3d(0, ${translateY}, 0) scale(${scale})`,
         }}
       >
-        <div className="splash-intro-caption">
-          <span aria-hidden className="splash-intro-dot" />
-          <span>Embarquement immédiat</span>
-        </div>
-        <SplitFlap text={text} size="xl" />
+        <SplitFlap text={text} size="xl" columnLabels={columnLabels} />
       </div>
     </div>
   );

@@ -108,6 +108,12 @@ type SplitFlapProps = {
   className?: string;
   /** Override du `--split-flap-w` (sinon dérivé du size). */
   flapWidth?: string;
+  /**
+   * Labels colonnes affichés au-dessus de chaque mot (réplique du mock Claude
+   * Design). Doit avoir la même longueur que `text.split(" ")`. Exemple :
+   * `["Flight Number", "Destination"]` pour "SMART TRAVELER".
+   */
+  columnLabels?: string[];
   onComplete?: () => void;
 };
 
@@ -122,6 +128,7 @@ export function SplitFlap({
   runKey = 0,
   className = "",
   flapWidth,
+  columnLabels,
   onComplete,
 }: SplitFlapProps) {
   const id = useId();
@@ -138,7 +145,9 @@ export function SplitFlap({
 
   const wordEls = words.map((word, wordIdx) => {
     const startIdx = wordStartIndices[wordIdx];
-    return (
+    const label = columnLabels?.[wordIdx];
+
+    const flapsRow = (
       <div className="split-flap-word" key={`${id}-w-${wordIdx}`}>
         {[...word].map((ch, i) => {
           const isLast =
@@ -154,6 +163,15 @@ export function SplitFlap({
             />
           );
         })}
+      </div>
+    );
+
+    if (!label) return flapsRow;
+
+    return (
+      <div className="split-flap-column" key={`${id}-col-${wordIdx}`}>
+        <div className="split-flap-label">{label}</div>
+        {flapsRow}
       </div>
     );
   });
