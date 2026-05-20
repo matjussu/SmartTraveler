@@ -15,6 +15,10 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  /* CRITICAL : pointer-events: none toujours. Sinon l'overlay capture les
+     événements wheel/touch et bloque le scroll user → bug bloquant #1602.
+     Le splash est purement décoratif, jamais interactif. */
+  pointer-events: none;
   /* background-color piloté en inline par <SplashIntro> selon le scroll progress
      (rgba opaque #050505 → transparent). Voir splash-intro.tsx. */
   will-change: transform, background-color;

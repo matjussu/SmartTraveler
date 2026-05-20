@@ -53,10 +53,6 @@ export function SplashIntro({
       className="splash-intro"
       style={{
         backgroundColor: `rgba(5, 5, 6, ${bgAlpha})`,
-        // Pointer-events: none dès que le bg commence à fade-out — le splash
-        // devient visuellement purement décoratif, ne doit pas bloquer un clic
-        // sur le subtitle/CTA qui transparaît
-        pointerEvents: progress >= FADE_START ? "none" : "auto",
       }}
     >
       <div
