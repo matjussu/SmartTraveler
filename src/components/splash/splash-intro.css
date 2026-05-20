@@ -1,0 +1,71 @@
+/**
+ * SplashIntro overlay — composition over the home page.
+ *
+ * - `position: fixed inset-0` pour rester aligné quoi qu'il se passe au scroll
+ * - background matte black radial (réplique du mock Claude Design)
+ * - z-50 (au-dessus du top-nav, qui est z-30) : le splash couvre TOUT au démarrage
+ * - transition : opacity 280ms ease-out (seule prop animée explicitement —
+ *   le transform est piloté par le hook scroll, pas par CSS)
+ */
+
+.splash-intro {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(120% 80% at 50% 0%, #1a1a1c 0%, #0a0a0b 55%, #050506 100%);
+  transition: opacity 280ms ease-out;
+  will-change: opacity;
+}
+
+.splash-intro-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(24px, 4vh, 48px);
+  transform-origin: 50% 35%;
+  will-change: transform;
+}
+
+.splash-intro-caption {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-flap), ui-monospace, monospace;
+  font-weight: 700;
+  font-size: clamp(10px, 0.9vw, 12px);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #8a8a8a;
+}
+
+.splash-intro-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff8a3d;
+  box-shadow: 0 0 8px #ff8a3d, 0 0 14px rgba(255, 138, 61, 0.5);
+  animation: splash-intro-pulse 2s ease-in-out infinite;
+}
+
+@keyframes splash-intro-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash-intro-dot {
+    animation: none;
+  }
+  .splash-intro {
+    transition: none;
+  }
+}

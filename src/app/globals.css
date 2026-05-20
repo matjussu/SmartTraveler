@@ -336,3 +336,24 @@
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Grand redesign Phase 1 — Home `/` matte black avec Split-Flap.
+   Scope strict via [data-route="home-redesign"] : ne touche QUE la home.
+   Les autres routes (/trip/*, /shared/*) conservent leur fond cream voyage-pivot.
+--------------------------------------------------------------------------- */
+
+main[data-route="home-redesign"] {
+  background: radial-gradient(120% 80% at 50% 0%, #1a1a1c 0%, #0a0a0b 55%, #050506 100%);
+  color: #f6f6f4;
+  min-height: 100vh;
+}
+
+/* Body bg matched via :has() pour éviter le flash cream pendant le scroll-bounce
+   (overscroll iOS / Chrome). Si :has() pas supporté, fallback gracieux : le main
+   couvre tout, le body reste cream — acceptable car invisible. */
+@supports selector(:has(*)) {
+  body:has(main[data-route="home-redesign"]) {
+    background: #050506;
+  }
+}

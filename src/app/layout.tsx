@@ -1,5 +1,10 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Plus_Jakarta_Sans, JetBrains_Mono } from "next/font/google";
+import {
+  IBM_Plex_Mono,
+  Instrument_Serif,
+  Plus_Jakarta_Sans,
+  JetBrains_Mono,
+} from "next/font/google";
 import "./globals.css";
 
 const jakarta = Plus_Jakarta_Sans({
@@ -24,6 +29,13 @@ const jetbrains = JetBrains_Mono({
   weight: ["400", "500"],
 });
 
+const ibmPlexMono = IBM_Plex_Mono({
+  variable: "--font-flap",
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["700"],
+});
+
 export const metadata: Metadata = {
   title: "SmartTraveler — Composez vos prochaines vacances",
   description:
@@ -38,7 +50,7 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${jakarta.variable} ${instrumentSerif.variable} ${jetbrains.variable} h-full antialiased`}
+      className={`${jakarta.variable} ${instrumentSerif.variable} ${jetbrains.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>
