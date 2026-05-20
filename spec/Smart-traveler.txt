@@ -1,0 +1,257 @@
+Lien GitHub : https://github.com/matjussu/SmartTraveler.git
+
+User stories (MVP + évolutions)
+Épic 1 — Création d’un voyage
+1.	En tant qu’utilisateur, je veux créer un nouveau voyage afin de préparer une optimisation d’itinéraire.
+Conditions de satisfaction
+●	Tester que l’utilisateur peut créer un nouveau voyage
+
+●	Tester qu’un voyage créé possède un nom et un statut brouillon
+
+●	Tester que le voyage apparaît dans la liste des voyages
+
+●	Tester qu’aucun calcul n’est lancé automatiquement
+
+2.	En tant qu’utilisateur, je veux renseigner une ville de départ (ex. Paris) afin de calculer les trajets depuis mon point de départ.
+Conditions de satisfaction
+●	Tester que l’utilisateur peut saisir une ville de départ
+
+●	Tester que la ville saisie est reconnue comme valide
+
+●	Tester qu’un message d’erreur s’affiche si la ville est invalide
+
+●	Tester que la ville de départ est utilisée comme point initial du calcul
+
+3.	En tant qu’utilisateur, je veux renseigner une date de départ et une date de retour afin que l’application tienne compte de la période de voyage.
+Conditions de satisfaction
+●	Tester que l’utilisateur peut saisir une date de départ
+
+●	Tester que l’utilisateur peut saisir une date de retour
+
+●	Tester que la date de retour est postérieure à la date de départ
+
+●	Tester qu’un message d’erreur s’affiche si les dates sont incohérentes
+
+4.	En tant qu’utilisateur, je veux ajouter plusieurs destinations (pays/villes) afin que l’application puisse proposer un ordre de visite.
+Conditions de satisfaction
+●	Tester que l’utilisateur peut ajouter plusieurs destinations
+
+●	Tester qu’une destination contient au minimum une ville ou un pays
+
+●	Tester que les destinations ajoutées sont visibles dans une liste
+
+●	Tester que l’ordre de saisie n’impose pas l’ordre de visite final
+
+Épic 2 — Gestion des destinations
+5.	En tant qu’utilisateur, je veux modifier ou supprimer une destination afin d’ajuster mon voyage facilement.
+Conditions de satisfaction
+●	Tester que l’utilisateur peut modifier une destination existante
+
+●	Tester que l’utilisateur peut supprimer une destination
+
+●	Tester que la liste des destinations se met à jour après modification
+
+●	Tester qu’une confirmation est demandée avant suppression
+
+6.	En tant qu’utilisateur, je veux voir la liste de mes destinations avant calcul afin de vérifier ma saisie.
+Conditions de satisfaction
+●	Tester que toutes les destinations ajoutées sont affichées
+
+●	Tester que chaque destination est clairement identifiable
+
+●	Tester que la liste est accessible avant le lancement du calcul
+
+●	Tester qu’aucune destination vide n’est affichée
+
+
+Épic 3 — Contraintes de voyage (MVP “léger”)
+7.	En tant qu’utilisateur, je veux indiquer des dates fixes pour une destination (ex. “Rome entre le 12 et le 14”) afin de respecter mes contraintes.
+Conditions de satisfaction
+●	Tester que l’utilisateur peut définir une plage de dates pour une destination
+
+●	Tester que les dates sont incluses dans la période globale du voyage
+
+●	Tester qu’un message d’erreur s’affiche si la contrainte est impossible
+
+●	Tester que la contrainte est prise en compte dans le calcul
+
+8.	En tant qu’utilisateur, je veux fixer une destination obligatoire en premier ou en dernier afin d’imposer un ordre partiel.
+Conditions de satisfaction
+●	Tester que l’utilisateur peut définir une destination comme première
+
+●	Tester que l’utilisateur peut définir une destination comme dernière
+
+●	Tester qu’une seule destination peut être première ou dernière
+
+●	Tester que l’ordre imposé est respecté dans le résultat
+
+Épic 4 — Calcul d’itinéraire optimal
+9.	En tant qu’utilisateur, je veux lancer le calcul d’optimisation afin d’obtenir l’ordre de visite le moins cher.
+Conditions de satisfaction
+●	Tester que le calcul est bloqué si les données sont incomplètes
+
+●	Tester qu’un indicateur de chargement est affiché pendant le calcul
+
+●	Tester que les contraintes sont prises en compte
+
+●	Tester qu’un message d’erreur s’affiche en cas d’échec
+
+10.	En tant qu’utilisateur, je veux visualiser l’itinéraire proposé (ordre des destinations) afin de comprendre la solution.
+Conditions de satisfaction
+●	Tester que l’ordre de visite est affiché clairement
+
+●	Tester que la ville de départ apparaît dans l’itinéraire
+
+●	Tester que l’ordre affiché correspond au résultat du calcul
+
+11.	En tant qu’utilisateur, je veux voir le coût total estimé afin de comparer avec mon budget.
+Conditions de satisfaction
+●	Tester que le coût total est affiché
+
+●	Tester que le coût est exprimé dans une devise définie
+
+●	Tester que le coût correspond à la somme des trajets
+
+●	Tester que le caractère estimatif est précisé
+
+12.	En tant qu’utilisateur, je veux voir le détail des coûts par trajet (A→B) afin d’identifier ce qui coûte le plus.
+Conditions de satisfaction
+●	Tester que chaque trajet A → B affiche un coût
+
+●	Tester que les trajets sont affichés dans l’ordre de l’itinéraire
+
+●	Tester que le total correspond à la somme des trajets
+
+●	Tester que les trajets les plus coûteux sont identifiables
+
+Épic 5 — Comparaison et alternatives
+13.	En tant qu’utilisateur, je veux obtenir 2 ou 3 alternatives (ex. “moins cher”, “moins de trajets”, “moins de vols”) afin de choisir selon mes priorités.
+Conditions de satisfaction
+●	Tester qu’au moins deux alternatives sont proposées si possible
+
+●	Tester que chaque alternative a un critère clair
+
+●	Tester que les alternatives sont comparables entre elles
+
+●	Tester qu’une alternative peut être sélectionnée
+
+14.	En tant qu’utilisateur, je veux réordonner manuellement une destination et relancer le calcul afin de tester d’autres scénarios.
+Conditions de satisfaction
+●	Tester que l’utilisateur peut modifier l’ordre des destinations
+
+●	Tester que le recalcul prend en compte le nouvel ordre
+
+●	Tester que les contraintes fixes restent respectées
+
+●	Tester que le nouveau résultat remplace l’ancien
+
+Épic 6 — Sauvegarde et historique
+15.	En tant qu’utilisateur, je veux enregistrer mon voyage afin de le retrouver plus tard.
+Conditions de satisfaction
+●	Tester que l’utilisateur peut sauvegarder un voyage
+
+●	Tester que le voyage est conservé après rechargement
+
+●	Tester qu’un message de confirmation est affiché
+
+●	Tester que le voyage est accessible dans l’historique
+
+16.	En tant qu’utilisateur, je veux dupliquer un voyage afin de créer rapidement une variante.
+Conditions de satisfaction
+●	Tester que l’utilisateur peut dupliquer un voyage existant
+
+●	Tester que le voyage dupliqué est indépendant de l’original
+
+●	Tester que toutes les données sont copiées
+
+●	Tester que le nom indique qu’il s’agit d’une copie
+
+
+Épic 7 — Partage / export (bonus)
+17.	En tant qu’utilisateur, je veux exporter l’itinéraire en PDF afin de le partager ou l’imprimer.
+Conditions de satisfaction
+●	Tester que l’utilisateur peut générer un export PDF de l’itinéraire
+
+●	Tester que le PDF contient l’ordre des destinations
+
+●	Tester que le PDF contient le coût total et le détail des trajets
+
+●	Tester que le fichier PDF est téléchargeable
+
+●	Tester que le PDF est lisible et imprimable
+
+18.	En tant qu’utilisateur, je veux partager un lien vers mon itinéraire afin d’en discuter avec d’autres personnes.
+Conditions de satisfaction
+●	Tester qu’un lien de partage peut être généré
+
+●	Tester que le lien permet de consulter l’itinéraire
+
+●	Tester que le voyage n’est pas modifiable via le lien
+
+●	Tester que le lien est copiable facilement
+
+●	Tester que le lien reste valide dans le temps
+
+
+Épic 8 — Gestion des erreurs (qualité)
+19.	En tant qu’utilisateur, je veux être averti si des prix sont indisponibles afin de savoir si le résultat est partiel.
+Conditions de satisfaction
+●	Tester qu’un message informe l’utilisateur des prix indisponibles
+
+●	Tester que les trajets concernés sont identifiés
+
+●	Tester que le coût total est indiqué comme partiel
+
+●	Tester que le résultat reste exploitable si possible
+
+20.	En tant qu’utilisateur, je veux recevoir une proposition alternative si l’optimisation n’est pas possible (ex. contraintes incompatibles) afin d’avoir une solution de secours.
+Conditions de satisfaction
+●	Tester qu’un message explique la raison du blocage
+
+●	Tester qu’au moins une alternative est proposée
+
+●	Tester que l’utilisateur peut appliquer une alternative
+
+●	Tester que l’application ne reste pas bloquée
+
+
+
+
+
+"Titre : US 1 - Création du projet  
+Description : En tant qu'utilisateur, je veux créer un voyage nommé pour sauvegarder mes recherches de parcours. 
+Assigné à : vide"
+"Titre : US 2 - Point d'ancrage 
+Description : En tant qu'utilisateur, je veux saisir ma ville de départ et mes dates globales pour borner la recherche API. 
+Assigné à : vide"
+"Titre : US 3 - Ajout de destinations 
+Description : En tant qu'utilisateur, je veux ajouter une liste de villes à visiter sans me soucier de l'ordre, pour que l'app les organise pour moi.
+ Assigné à : vide"
+"Titre : US 4 - Appel API Temps Réel 
+Description : En tant qu'utilisateur, je veux lancer le calcul pour que l'app récupère les prix réels et me propose le trajet le moins cher (Best Value). 
+Assigné à : vide"
+"Titre : US 5 - Visualisation Itinéraire 
+Description : En tant qu'utilisateur, je veux voir mon trajet étape par étape avec le coût total et le détail par transport. 
+Assigné à : vide"
+"Titre : US 6 - Dates Fixes (Pivots) 
+Description : En tant qu'utilisateur, je veux bloquer une ville à une date précise (ex: concert, rendez-vous) pour que l'optimisation s'articule autour de cet impératif.
+ Assigné à : vide"
+
+"Titre : US 7 - Préférences de Transport 
+Description : En tant qu'utilisateur, je veux filtrer les résultats (ex: ""Pas de vols de nuit"", ""Priorité au train"") pour adapter le trajet à mon confort. 
+Assigné à : vide"
+"Titre : US 8 - Ordre Partiel 
+Description : En tant qu'utilisateur, je veux imposer une ville en première ou dernière position de mon périple. 
+Assigné à : vide"
+"Titre : US 9 - Gestion des Alternatives 
+Description : En tant qu'utilisateur, je veux comparer 3 scénarios : ""Le moins cher"", ""Le plus rapide"" et ""Le plus écologique (CO2)"". 
+Assigné à : vide"
+"Titre : US 10 - Sauvegarde & Historique 
+Description : En tant qu'utilisateur, je veux retrouver mes simulations passées pour suivre l'évolution des prix. 
+Assigné à : vide"
+"Titre : US 11 - Export PDF / Calendrier 
+Description : En tant qu'utilisateur, je veux exporter mon itinéraire final en PDF ou vers mon calendrier (Google/Apple) pour l'avoir hors-ligne. 
+Assigné à : vide"
+"Titre : US 12 - Partage Collaboratif 
+Description : En tant qu'utilisateur, je veux générer un lien de consultation pour valider l'itinéraire avec mes compagnons de voyage. 
+Assigné à : vide"
