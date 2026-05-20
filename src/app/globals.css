@@ -1,120 +1,137 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "leaflet/dist/leaflet.css";
 
 @custom-variant dark (&:is(.dark *));
 
+/* ============================================================
+   COMPASS EDITORIAL — direction A
+   Inspirations : Apple Maps + Monocle magazine + Frame.io
+   Palette : ivoire crème + ink marine + cuivre + sauge
+   Typo : Fraunces (display) + Inter (body) + JetBrains Mono (mono)
+   ============================================================ */
+
 @theme inline {
+  /* Couleurs sémantiques shadcn */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Compass — tokens projet */
+  --color-paper: var(--paper);
+  --color-paper-soft: var(--paper-soft);
+  --color-paper-deep: var(--paper-deep);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-copper: var(--copper);
+  --color-copper-soft: var(--copper-soft);
+  --color-sage: var(--sage);
+  --color-sage-soft: var(--sage-soft);
+  --color-amber: var(--amber);
+  --color-rule: var(--rule);
+
+  /* Typographies */
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-mono-jb);
+  --font-heading: var(--font-fraunces);
+  --font-display: var(--font-fraunces);
+
+  /* Radius scale resserrée (papier = peu de radius) */
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-xl: calc(var(--radius) * 1.5);
+  --radius-2xl: calc(var(--radius) * 2);
+
+  /* Shadows — papier mat, jamais brillant */
+  --shadow-paper: 0 1px 0 0 rgb(28 33 41 / 0.04), 0 1px 2px 0 rgb(28 33 41 / 0.06);
+  --shadow-paper-lift: 0 2px 0 0 rgb(28 33 41 / 0.04), 0 8px 24px -8px rgb(28 33 41 / 0.12);
+  --shadow-ink-soft: 0 0 0 1px rgb(28 33 41 / 0.06);
+
+  /* Sidebar slots (peu utilisés mais shadcn les requiert) */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
+  /* Paper / ink */
+  --paper: oklch(0.985 0.012 85);          /* ivoire crème */
+  --paper-soft: oklch(0.96 0.014 82);      /* crème ombré */
+  --paper-deep: oklch(0.92 0.018 78);      /* sable */
+  --ink: oklch(0.215 0.025 254);           /* ink marine deep */
+  --ink-soft: oklch(0.38 0.02 254);        /* ink dilué */
+  --rule: oklch(0.78 0.018 80);            /* filet rule */
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Accents */
+  --copper: oklch(0.62 0.135 48);          /* terracotta-cuivre */
+  --copper-soft: oklch(0.88 0.06 55);      /* terracotta wash */
+  --sage: oklch(0.55 0.075 145);           /* vert sauge */
+  --sage-soft: oklch(0.92 0.04 145);
+  --amber: oklch(0.7 0.13 75);             /* ambre cheapest */
+
+  /* Mappings shadcn */
+  --background: var(--paper);
+  --foreground: var(--ink);
+  --card: oklch(0.998 0.005 85);           /* blanc papier sur fond crème */
+  --card-foreground: var(--ink);
+  --popover: oklch(0.998 0.005 85);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
+  --primary-foreground: var(--paper);
+  --secondary: var(--paper-soft);
+  --secondary-foreground: var(--ink);
+  --muted: var(--paper-soft);
+  --muted-foreground: var(--ink-soft);
+  --accent: var(--copper-soft);
+  --accent-foreground: var(--copper);
+  --destructive: oklch(0.5 0.18 28);
+  --border: var(--rule);
+  --input: var(--rule);
+  --ring: var(--copper);
+
+  --chart-1: var(--copper);
+  --chart-2: var(--sage);
+  --chart-3: var(--amber);
+  --chart-4: var(--ink-soft);
+  --chart-5: var(--paper-deep);
+
+  --radius: 0.5rem;
+
+  --sidebar: var(--paper);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--ink);
+  --sidebar-primary-foreground: var(--paper);
+  --sidebar-accent: var(--paper-soft);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: var(--rule);
+  --sidebar-ring: var(--copper);
 }
 
 @layer base {
@@ -123,8 +140,87 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "cv11";
+    background-image:
+      radial-gradient(circle at 18% 12%, oklch(0.92 0.025 60 / 0.4), transparent 50%),
+      radial-gradient(circle at 84% 88%, oklch(0.9 0.035 145 / 0.35), transparent 55%);
+    background-attachment: fixed;
   }
   html {
-    @apply font-sans;
+    @apply font-sans antialiased;
+  }
+  /* Petites caps soignées par défaut pour micro-typo */
+  ::selection {
+    background: var(--copper-soft);
+    color: var(--ink);
+  }
+}
+
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+    font-feature-settings: "ss01", "ss02";
+    letter-spacing: -0.018em;
+  }
+  .font-mono {
+    font-family: var(--font-mono);
+    font-feature-settings: "tnum", "zero", "ss01";
+  }
+  .text-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .rule {
+    background-image: linear-gradient(to right, var(--rule) 50%, transparent 0);
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+    background-position: 0 bottom;
+  }
+  .compass-grain {
+    background-image:
+      radial-gradient(circle at 1px 1px, oklch(0.4 0.02 60 / 0.05) 1px, transparent 0);
+    background-size: 8px 8px;
+  }
+  /* Leaflet override compass */
+  .leaflet-container {
+    background: var(--paper-soft) !important;
+    font-family: var(--font-sans);
+    border-radius: var(--radius-lg);
+  }
+  .leaflet-control-attribution {
+    background: oklch(1 0 0 / 0.7) !important;
+    color: var(--ink-soft) !important;
+    font-size: 10px !important;
+    backdrop-filter: blur(8px);
+  }
+  .leaflet-control-attribution a {
+    color: var(--copper) !important;
+  }
+  .compass-marker {
+    background: var(--paper);
+    color: var(--ink);
+    border: 1.5px solid var(--ink);
+    border-radius: 999px;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 14px;
+    font-feature-settings: "ss01";
+    box-shadow: 0 2px 6px -1px rgb(28 33 41 / 0.15);
+    transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .compass-marker--start {
+    background: var(--ink);
+    color: var(--paper);
+  }
+  .compass-marker--accent {
+    border-color: var(--copper);
+    color: var(--copper);
+  }
+  .compass-marker:hover {
+    transform: scale(1.12);
   }
 }
