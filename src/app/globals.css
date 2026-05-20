@@ -1,120 +1,146 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
+@import "leaflet/dist/leaflet.css";
 
 @custom-variant dark (&:is(.dark *));
 
+/* ============================================================
+   ATLAS CONSOLE — direction B
+   Inspirations : Linear + Vercel docs + Stripe shell + Frame.io
+   Palette : near-black + ice-cyan + lime-acid + coral + amber
+   Typo : Geist Sans (display+body) + Geist Mono (KPIs)
+   ============================================================ */
+
 @theme inline {
+  /* Shadcn mappings */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
-  --radius-sm: calc(var(--radius) * 0.6);
-  --radius-md: calc(var(--radius) * 0.8);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Atlas tokens */
+  --color-bg-base: var(--bg-base);
+  --color-bg-elev1: var(--bg-elev1);
+  --color-bg-elev2: var(--bg-elev2);
+  --color-bg-elev3: var(--bg-elev3);
+  --color-stroke: var(--stroke);
+  --color-stroke-soft: var(--stroke-soft);
+  --color-text-1: var(--text-1);
+  --color-text-2: var(--text-2);
+  --color-text-3: var(--text-3);
+  --color-ice: var(--ice);
+  --color-ice-soft: var(--ice-soft);
+  --color-lime: var(--lime);
+  --color-lime-soft: var(--lime-soft);
+  --color-coral: var(--coral);
+  --color-coral-soft: var(--coral-soft);
+  --color-amber: var(--amber);
+  --color-amber-soft: var(--amber-soft);
+
+  /* Typo */
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --font-heading: var(--font-geist-sans);
+  --font-display: var(--font-geist-sans);
+
+  /* Radius — un peu plus crisp que default */
+  --radius-sm: calc(var(--radius) * 0.5);
+  --radius-md: calc(var(--radius) * 0.75);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) * 1.4);
   --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+
+  /* Sidebar */
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
+  /* Atlas surfaces — near-black layered */
+  --bg-base: oklch(0.155 0.005 250);       /* base near-black bleuté */
+  --bg-elev1: oklch(0.185 0.008 250);      /* card */
+  --bg-elev2: oklch(0.215 0.01 250);       /* nested card */
+  --bg-elev3: oklch(0.26 0.012 250);       /* highlight surface */
+  --stroke: oklch(0.32 0.012 250);
+  --stroke-soft: oklch(0.25 0.008 250);
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Text */
+  --text-1: oklch(0.97 0.005 250);         /* primary */
+  --text-2: oklch(0.78 0.008 250);         /* secondary */
+  --text-3: oklch(0.58 0.012 250);         /* tertiary */
+
+  /* Accents */
+  --ice: oklch(0.85 0.105 215);            /* ice-cyan */
+  --ice-soft: oklch(0.3 0.05 215);
+  --lime: oklch(0.85 0.16 130);            /* lime-acid */
+  --lime-soft: oklch(0.32 0.06 130);
+  --coral: oklch(0.74 0.16 25);            /* coral-fastest */
+  --coral-soft: oklch(0.34 0.08 25);
+  --amber: oklch(0.85 0.13 80);            /* amber-cheapest */
+  --amber-soft: oklch(0.34 0.06 80);
+
+  /* Shadcn mappings */
+  --background: var(--bg-base);
+  --foreground: var(--text-1);
+  --card: var(--bg-elev1);
+  --card-foreground: var(--text-1);
+  --popover: var(--bg-elev2);
+  --popover-foreground: var(--text-1);
+  --primary: var(--ice);
+  --primary-foreground: oklch(0.15 0.005 250);
+  --secondary: var(--bg-elev2);
+  --secondary-foreground: var(--text-1);
+  --muted: var(--bg-elev2);
+  --muted-foreground: var(--text-3);
+  --accent: var(--bg-elev3);
+  --accent-foreground: var(--text-1);
+  --destructive: oklch(0.7 0.2 22);
+  --border: var(--stroke);
+  --input: var(--stroke);
+  --ring: var(--ice);
+
+  --chart-1: var(--ice);
+  --chart-2: var(--lime);
+  --chart-3: var(--coral);
+  --chart-4: var(--amber);
+  --chart-5: var(--text-3);
+
+  --radius: 0.5rem;
+
+  --sidebar: var(--bg-elev1);
+  --sidebar-foreground: var(--text-1);
+  --sidebar-primary: var(--ice);
+  --sidebar-primary-foreground: oklch(0.15 0.005 250);
+  --sidebar-accent: var(--bg-elev2);
+  --sidebar-accent-foreground: var(--text-1);
+  --sidebar-border: var(--stroke);
+  --sidebar-ring: var(--ice);
 }
 
 @layer base {
@@ -123,8 +149,111 @@
   }
   body {
     @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(circle at 80% -10%, oklch(0.27 0.06 215 / 0.35), transparent 45%),
+      radial-gradient(circle at -10% 110%, oklch(0.25 0.05 130 / 0.25), transparent 50%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    font-feature-settings: "cv11", "ss01", "ss03";
   }
   html {
-    @apply font-sans;
+    @apply font-sans antialiased;
+  }
+  ::selection {
+    background: var(--ice);
+    color: var(--bg-base);
+  }
+}
+
+@layer utilities {
+  .font-mono {
+    font-family: var(--font-mono);
+    font-feature-settings: "tnum", "zero", "ss01";
+  }
+  .text-tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, oklch(1 0 0 / 0.025) 1px, transparent 1px),
+      linear-gradient(to bottom, oklch(1 0 0 / 0.025) 1px, transparent 1px);
+    background-size: 32px 32px;
+  }
+  .scanline {
+    position: relative;
+    overflow: hidden;
+  }
+  .scanline::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 3px,
+      oklch(1 0 0 / 0.012) 3px,
+      oklch(1 0 0 / 0.012) 4px
+    );
+    pointer-events: none;
+  }
+  .glow-ice {
+    box-shadow: 0 0 0 1px oklch(0.85 0.105 215 / 0.3), 0 8px 24px -8px oklch(0.85 0.105 215 / 0.4);
+  }
+  .glow-lime {
+    box-shadow: 0 0 0 1px oklch(0.85 0.16 130 / 0.3), 0 8px 24px -8px oklch(0.85 0.16 130 / 0.4);
+  }
+  .glow-coral {
+    box-shadow: 0 0 0 1px oklch(0.74 0.16 25 / 0.3), 0 8px 24px -8px oklch(0.74 0.16 25 / 0.4);
+  }
+  .glow-amber {
+    box-shadow: 0 0 0 1px oklch(0.85 0.13 80 / 0.3), 0 8px 24px -8px oklch(0.85 0.13 80 / 0.4);
+  }
+  /* Leaflet dark override */
+  .leaflet-container {
+    background: var(--bg-elev1) !important;
+    font-family: var(--font-sans);
+    border-radius: var(--radius-md);
+  }
+  .leaflet-control-attribution {
+    background: oklch(0.15 0.005 250 / 0.85) !important;
+    color: var(--text-3) !important;
+    font-size: 10px !important;
+    backdrop-filter: blur(8px);
+  }
+  .leaflet-control-attribution a {
+    color: var(--ice) !important;
+  }
+  .leaflet-control-zoom a {
+    background: var(--bg-elev2) !important;
+    color: var(--text-1) !important;
+    border-color: var(--stroke) !important;
+  }
+  .leaflet-control-zoom a:hover {
+    background: var(--bg-elev3) !important;
+  }
+  .atlas-marker {
+    background: var(--bg-elev2);
+    color: var(--text-1);
+    border: 1px solid var(--ice);
+    border-radius: 6px;
+    min-width: 28px;
+    height: 22px;
+    padding: 0 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 11px;
+    box-shadow: 0 0 0 1px oklch(0.85 0.105 215 / 0.25), 0 4px 12px -4px oklch(0 0 0 / 0.6);
+    transition: transform 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+  .atlas-marker--start {
+    background: var(--ice);
+    color: var(--bg-base);
+    border-color: var(--ice);
+  }
+  .atlas-marker:hover {
+    transform: scale(1.15);
   }
 }
