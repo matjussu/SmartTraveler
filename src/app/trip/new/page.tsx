@@ -6,7 +6,7 @@ import Link from "next/link";
 
 import { TopNav } from "@/components/voyage/top-nav";
 import { FormField, inputClass } from "@/components/voyage/form-field";
-import { DraftPreview } from "@/components/voyage/draft-preview";
+import { BoardingPassDraft } from "@/components/voyage/boarding-pass-draft";
 import { useTripStore } from "@/store/trip-store";
 import type { City, Trip } from "@/mocks/trips";
 
@@ -144,59 +144,58 @@ export default function TripNewPage() {
   };
 
   return (
-    <>
-      <TopNav />
-      <main className="mx-auto w-full max-w-6xl px-6 pb-24 pt-10">
+    <main data-route="trip-new" className="relative flex min-h-screen flex-col">
+      <TopNav variant="dark" />
+
+      <div className="mx-auto w-full max-w-6xl px-6 pb-24 pt-10">
         {/* Fil d'ariane / progression */}
         <nav
           aria-label="Étapes de composition"
-          className="mb-8 flex items-center gap-3 text-[11px] uppercase tracking-[0.14em] text-ink-mute"
+          className="mb-8 flex flex-wrap items-center gap-3 text-[11px] uppercase tracking-[0.14em] text-white/45"
         >
-          <Link href="/" className="transition-colors hover:text-ink-soft">
+          <Link href="/" className="transition-colors hover:text-white/75">
             Vos itinéraires
           </Link>
           <span aria-hidden>·</span>
-          <span className="text-ink">Nouveau voyage</span>
+          <span className="text-[#f6f6f4]">Nouveau voyage</span>
           <span aria-hidden>·</span>
-          <span className="text-ink-mute/70">Destinations</span>
+          <span className="text-white/30">Destinations</span>
           <span aria-hidden>·</span>
-          <span className="text-ink-mute/70">Contraintes</span>
+          <span className="text-white/30">Contraintes</span>
         </nav>
 
         {/* Hero éditorial */}
         <section className="mb-12">
-          <div className="mb-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-ink-mute">
-            <span
-              aria-hidden
-              className="inline-block h-1 w-6 bg-[oklch(0.62_0.155_38)]"
-            />
+          <div className="mb-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-white/45">
+            <span aria-hidden className="inline-block h-1 w-6 bg-[#ff7a1a]" />
             <span>Étape 1 sur 3</span>
           </div>
           <h1
-            className="text-[clamp(40px,6vw,68px)] leading-[0.98] tracking-[-0.015em] text-ink"
+            className="text-[clamp(40px,6vw,68px)] leading-[0.98] tracking-[-0.015em] text-[#f6f6f4]"
             style={{ fontFamily: "var(--font-display)" }}
           >
             Composez un{" "}
-            <span style={{ fontStyle: "italic" }} className="text-[oklch(0.42_0.13_35)]">
+            <span style={{ fontStyle: "italic" }} className="text-[#ff8a3d]">
               nouveau voyage.
             </span>
           </h1>
           <p
-            className="mt-5 max-w-xl text-[16px] leading-[1.55] text-ink-soft"
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            className="mt-5 max-w-xl text-[16px] leading-[1.55] text-white/70"
+            style={{ fontFamily: "var(--font-jakarta)" }}
           >
             Quelques mots pour commencer. Vous pourrez tout affiner après.
           </p>
         </section>
 
-        {/* Layout 12-col : form 8 / preview 4 */}
-        <form onSubmit={handleSubmit} noValidate className="grid grid-cols-12 gap-8">
-          <div className="col-span-12 lg:col-span-8">
+        {/* Layout 12-col : form 7 / preview 5 */}
+        <form onSubmit={handleSubmit} noValidate className="grid grid-cols-12 gap-10">
+          <div className="col-span-12 lg:col-span-7">
             <fieldset className="space-y-6">
               <legend className="sr-only">Premiers détails du voyage</legend>
 
               <FormField
                 id="trip-name"
+                variant="dark"
                 label="Nom du voyage"
                 helper="Vous pourrez le modifier plus tard."
                 error={errorOf("name")}
@@ -213,12 +212,13 @@ export default function TripNewPage() {
                   aria-describedby={
                     errorOf("name") ? "trip-name-error" : "trip-name-helper"
                   }
-                  className={inputClass(Boolean(errorOf("name")))}
+                  className={inputClass(Boolean(errorOf("name")), "dark")}
                 />
               </FormField>
 
               <FormField
                 id="trip-start-city"
+                variant="dark"
                 label="Ville de départ"
                 helper="Sera utilisée comme point initial du calcul."
                 error={errorOf("startCity")}
@@ -238,7 +238,7 @@ export default function TripNewPage() {
                       ? "trip-start-city-error"
                       : "trip-start-city-helper"
                   }
-                  className={inputClass(Boolean(errorOf("startCity")))}
+                  className={inputClass(Boolean(errorOf("startCity")), "dark")}
                 />
                 {/* Mock léger d'autocomplete via datalist natif (a11y + zéro JS). */}
                 <datalist id="trip-start-city-suggestions">
@@ -254,6 +254,7 @@ export default function TripNewPage() {
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                 <FormField
                   id="trip-start-date"
+                  variant="dark"
                   label="Date de départ"
                   helper="Le jour où le voyage commence."
                   error={errorOf("startDate")}
@@ -270,12 +271,13 @@ export default function TripNewPage() {
                         ? "trip-start-date-error"
                         : "trip-start-date-helper"
                     }
-                    className={inputClass(Boolean(errorOf("startDate")))}
+                    className={inputClass(Boolean(errorOf("startDate")), "dark")}
                   />
                 </FormField>
 
                 <FormField
                   id="trip-end-date"
+                  variant="dark"
                   label="Date de retour"
                   helper="Doit être postérieure au départ."
                   error={errorOf("endDate")}
@@ -293,17 +295,17 @@ export default function TripNewPage() {
                         ? "trip-end-date-error"
                         : "trip-end-date-helper"
                     }
-                    className={inputClass(Boolean(errorOf("endDate")))}
+                    className={inputClass(Boolean(errorOf("endDate")), "dark")}
                   />
                 </FormField>
               </div>
             </fieldset>
 
             {/* Actions */}
-            <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
+            <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-white/[0.08] pt-6">
               <Link
                 href="/"
-                className="text-[14px] text-ink-soft underline decoration-[oklch(0.78_0.13_75)] decoration-2 underline-offset-4 transition-colors hover:text-ink"
+                className="text-[14px] text-white/60 underline decoration-[#ff7a1a]/70 decoration-2 underline-offset-4 transition-colors hover:text-[#f6f6f4]"
               >
                 Revenir aux itinéraires
               </Link>
@@ -312,37 +314,34 @@ export default function TripNewPage() {
                 type="submit"
                 disabled={!isValid || submitting}
                 className={[
-                  "inline-flex h-12 items-center gap-2 rounded-full px-6 text-[14px] font-medium",
-                  "bg-[oklch(0.62_0.155_38)] text-[oklch(0.99_0.005_80)]",
-                  "shadow-[0_10px_22px_-12px_oklch(0.42_0.13_35_/_0.5)]",
-                  "transition-transform duration-200 ease-out",
-                  "hover:not(:disabled):scale-[1.02] active:not(:disabled):scale-[0.98]",
-                  "disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none",
+                  "inline-flex h-12 items-center gap-2 rounded-full px-6 text-[14px] font-semibold text-white",
+                  "bg-[#ff7a1a]",
+                  "shadow-[0_0_38px_-4px_rgba(255,122,26,0.55),0_14px_30px_-14px_rgba(255,122,26,0.7)]",
+                  "transition-[transform,background-color,box-shadow] duration-200 ease-out",
+                  "hover:not(:disabled):scale-[1.02] hover:not(:disabled):bg-[#ff8a30] active:not(:disabled):scale-[0.98]",
+                  "disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none",
                 ].join(" ")}
+                style={{ fontFamily: "var(--font-jakarta)" }}
               >
                 <span>Continuer vers les destinations</span>
-                <span
-                  aria-hidden
-                  className="text-base leading-none"
-                  style={{ fontFamily: "var(--font-mono)" }}
-                >
+                <span aria-hidden className="text-base leading-none">
                   →
                 </span>
               </button>
             </div>
           </div>
 
-          {/* Preview sticky col-span-4 */}
-          <div className="col-span-12 lg:col-span-4">
+          {/* Preview sticky col-span-5 */}
+          <div className="col-span-12 lg:col-span-5">
             <div className="lg:sticky lg:top-24">
-              <DraftPreview
+              <BoardingPassDraft
                 name={name}
                 startCity={startCity}
                 startDate={startDate}
                 endDate={endDate}
               />
               <p
-                className="mt-4 px-2 text-[12px] text-ink-mute"
+                className="mt-4 px-2 text-[12px] text-white/45"
                 style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
               >
                 Cet aperçu se précise à chaque champ rempli.
@@ -351,11 +350,11 @@ export default function TripNewPage() {
           </div>
         </form>
 
-        <footer className="mt-20 flex flex-wrap items-center justify-between gap-3 text-[12px] text-ink-mute">
+        <footer className="mt-20 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.06] pt-6 text-[12px] text-white/40">
           <div className="flex items-center gap-2">
             <span
               style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
-              className="text-[15px] text-ink-soft"
+              className="text-[15px] text-white/65"
             >
               SmartTraveler
             </span>
@@ -364,7 +363,7 @@ export default function TripNewPage() {
           </div>
           <div>© 2026 — voyages composés avec soin.</div>
         </footer>
-      </main>
-    </>
+      </div>
+    </main>
   );
 }

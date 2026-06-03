@@ -363,3 +363,21 @@ main[data-route="home-redesign"] {
     background: #050506;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Redesign noir — `/trip/new` (propagation du style home).
+   Même fond matte black que la home, mais sans splash scroll → min-height: 100vh.
+   Scope strict : les 4 autres formulaires cascade restent cream voyage-pivot.
+--------------------------------------------------------------------------- */
+
+main[data-route="trip-new"] {
+  background: radial-gradient(120% 80% at 50% 0%, #1a1a1c 0%, #0a0a0b 55%, #050506 100%);
+  color: #f6f6f4;
+  min-height: 100vh;
+}
+
+@supports selector(:has(*)) {
+  body:has(main[data-route="trip-new"]) {
+    background: #050506;
+  }
+}
