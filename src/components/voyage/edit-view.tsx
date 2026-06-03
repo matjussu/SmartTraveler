@@ -160,7 +160,7 @@ export function EditView({ tripId }: { tripId: string }) {
   // États de chargement / introuvables.
   if (!hydrated) {
     return (
-      <main className="mx-auto w-full max-w-6xl px-6 pb-24 pt-16">
+      <main data-route="voyage-dark" className="mx-auto w-full max-w-6xl px-6 pb-24 pt-16">
         <p
           className="text-[15px] text-ink-mute"
           style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
@@ -173,7 +173,7 @@ export function EditView({ tripId }: { tripId: string }) {
 
   if (!trip) {
     return (
-      <main className="mx-auto w-full max-w-3xl px-6 pb-24 pt-20">
+      <main data-route="voyage-dark" className="mx-auto w-full max-w-3xl px-6 pb-24 pt-20">
         <div className="mb-3 text-[11px] uppercase tracking-[0.14em] text-ink-mute">
           Voyage introuvable
         </div>
@@ -281,7 +281,7 @@ export function EditView({ tripId }: { tripId: string }) {
   const previewDestinations = destinations.map((d) => ({ name: d.name }));
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-6 pb-32 pt-10">
+    <main data-route="voyage-dark" className="mx-auto w-full max-w-6xl px-6 pb-32 pt-10">
       {/* Breadcrumb */}
       <nav
         aria-label="Fil d'ariane"
@@ -308,15 +308,15 @@ export function EditView({ tripId }: { tripId: string }) {
             aria-hidden
             className={
               statusBadgeIsGold
-                ? "inline-block h-1 w-6 bg-[oklch(0.78_0.13_75)]"
-                : "inline-block h-1 w-6 bg-[oklch(0.62_0.155_38)]"
+                ? "inline-block h-1 w-6 bg-[var(--gold)]"
+                : "inline-block h-1 w-6 bg-[var(--terracotta)]"
             }
           />
           <span
             className={[
               "text-[13px]",
               statusBadgeIsGold
-                ? "text-[oklch(0.55_0.115_70)]"
+                ? "text-[var(--gold)]"
                 : "text-ink-mute",
             ].join(" ")}
             style={{
@@ -332,7 +332,7 @@ export function EditView({ tripId }: { tripId: string }) {
           style={{ fontFamily: "var(--font-display)" }}
         >
           Affinez votre{" "}
-          <span style={{ fontStyle: "italic" }} className="text-[oklch(0.42_0.13_35)]">
+          <span style={{ fontStyle: "italic" }} className="text-[var(--terracotta-ink)]">
             voyage.
           </span>
         </h1>
@@ -485,7 +485,7 @@ export function EditView({ tripId }: { tripId: string }) {
                     >
                       <div className="col-span-12 flex items-center gap-3 md:col-span-5">
                         <span
-                          className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[oklch(0.93_0.045_50)] text-[10px] tabular-nums text-[oklch(0.42_0.13_35)]"
+                          className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[var(--terracotta-soft)] text-[10px] tabular-nums text-[var(--terracotta-ink)]"
                           style={{ fontFamily: "var(--font-mono)" }}
                           aria-hidden
                         >
@@ -534,7 +534,7 @@ export function EditView({ tripId }: { tripId: string }) {
                               Number.parseInt(e.target.value, 10) || 1
                             )
                           }
-                          className="h-9 w-16 rounded-md border border-line bg-card px-2 text-[13px] tabular-nums text-ink transition-[border-color,box-shadow] duration-180 ease-out hover:border-line-strong focus:border-[oklch(0.62_0.155_38)] focus:shadow-[0_0_0_2px_oklch(0.62_0.155_38_/_0.16)] focus:outline-none"
+                          className="h-9 w-16 rounded-md border border-line bg-card px-2 text-[13px] tabular-nums text-ink transition-[border-color,box-shadow] duration-180 ease-out hover:border-line-strong focus:border-[var(--terracotta)] focus:shadow-[0_0_0_2px_oklch(0.62_0.155_38_/_0.16)] focus:outline-none"
                           style={{ fontFamily: "var(--font-mono)" }}
                         />
                       </div>
@@ -543,7 +543,7 @@ export function EditView({ tripId }: { tripId: string }) {
                         <button
                           type="button"
                           onClick={() => handleRemoveDest(dest.id)}
-                          className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-[12px] text-ink-mute transition-colors duration-180 ease-out hover:bg-[oklch(0.93_0.045_50)] hover:text-[oklch(0.42_0.13_35)] active:scale-[0.97]"
+                          className="inline-flex h-9 items-center gap-1.5 rounded-full px-3 text-[12px] text-ink-mute transition-colors duration-180 ease-out hover:bg-[var(--terracotta-soft)] hover:text-[var(--terracotta-ink)] active:scale-[0.97]"
                           aria-label={`Retirer ${dest.name} du voyage`}
                         >
                           <span aria-hidden>−</span>
@@ -611,7 +611,7 @@ export function EditView({ tripId }: { tripId: string }) {
                 </span>
                 <button
                   type="button"
-                  className="text-ink-soft underline decoration-[oklch(0.78_0.13_75)] decoration-2 underline-offset-4 transition-colors duration-180 ease-out hover:text-ink"
+                  className="text-ink-soft underline decoration-[var(--gold)] decoration-2 underline-offset-4 transition-colors duration-180 ease-out hover:text-ink"
                   aria-disabled
                   title="Bientôt — édition manuelle de l'ordre"
                 >
@@ -636,7 +636,7 @@ export function EditView({ tripId }: { tripId: string }) {
               </h2>
               <Link
                 href={`/trip/${trip.id}/constraints`}
-                className="text-[12.5px] text-ink-soft underline decoration-[oklch(0.78_0.13_75)] decoration-2 underline-offset-4 transition-colors duration-180 ease-out hover:text-ink"
+                className="text-[12.5px] text-ink-soft underline decoration-[var(--gold)] decoration-2 underline-offset-4 transition-colors duration-180 ease-out hover:text-ink"
               >
                 Tout détailler
               </Link>
@@ -670,8 +670,8 @@ export function EditView({ tripId }: { tripId: string }) {
                 className={[
                   "relative inline-flex h-7 w-12 shrink-0 items-center rounded-full transition-colors duration-200 ease-out",
                   followInputOrder
-                    ? "bg-[oklch(0.62_0.155_38)]"
-                    : "bg-[oklch(0.82_0.024_70)]",
+                    ? "bg-[var(--terracotta)]"
+                    : "bg-[var(--line-strong)]",
                 ].join(" ")}
               >
                 <span
@@ -709,7 +709,7 @@ export function EditView({ tripId }: { tripId: string }) {
                       <div className="flex min-w-0 items-center gap-2.5">
                         <span
                           aria-hidden
-                          className="inline-block h-1.5 w-1.5 rounded-full bg-[oklch(0.82_0.024_70)]"
+                          className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--line-strong)]"
                         />
                         <span
                           className="text-ink"
@@ -732,7 +732,7 @@ export function EditView({ tripId }: { tripId: string }) {
                       </div>
                       <Link
                         href={`/trip/${trip.id}/constraints`}
-                        className="text-[12px] text-ink-soft underline decoration-[oklch(0.85_0.07_45)] decoration-1 underline-offset-4 transition-colors duration-180 ease-out hover:text-ink hover:decoration-[oklch(0.78_0.13_75)]"
+                        className="text-[12px] text-ink-soft underline decoration-[var(--terracotta-soft)] decoration-1 underline-offset-4 transition-colors duration-180 ease-out hover:text-ink hover:decoration-[var(--gold)]"
                       >
                         Modifier
                       </Link>
@@ -748,14 +748,14 @@ export function EditView({ tripId }: { tripId: string }) {
             {isDirty && (
               <div
                 role="status"
-                className="flex items-start gap-2.5 rounded-[12px] border border-[oklch(0.85_0.07_45)] bg-[oklch(0.96_0.022_60)] px-4 py-3"
+                className="flex items-start gap-2.5 rounded-[12px] border border-[var(--terracotta-soft)] bg-[var(--surface)] px-4 py-3"
               >
                 <span
                   aria-hidden
-                  className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[oklch(0.62_0.155_38)]"
+                  className="mt-1 inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--terracotta)]"
                 />
                 <p
-                  className="text-[13.5px] text-[oklch(0.42_0.13_35)]"
+                  className="text-[13.5px] text-[var(--terracotta-ink)]"
                   style={{
                     fontFamily: "var(--font-display)",
                     fontStyle: "italic",
@@ -774,7 +774,7 @@ export function EditView({ tripId }: { tripId: string }) {
                   disabled={!isValid || !isDirty}
                   className={[
                     "inline-flex h-12 items-center gap-2.5 rounded-full px-6 text-[14px] font-medium",
-                    "bg-[oklch(0.62_0.155_38)] text-[oklch(0.99_0.005_80)]",
+                    "bg-[var(--terracotta)] text-[oklch(0.99_0.005_80)]",
                     "shadow-[0_10px_22px_-12px_oklch(0.42_0.13_35_/_0.5)]",
                     "transition-transform duration-200 ease-out",
                     "hover:not(:disabled):scale-[1.02] active:not(:disabled):scale-[0.98]",
@@ -794,7 +794,7 @@ export function EditView({ tripId }: { tripId: string }) {
                 {trip.alternatives.length > 0 && (
                   <Link
                     href={`/trip/${trip.id}/result`}
-                    className="text-[14px] text-ink-soft underline decoration-[oklch(0.78_0.13_75)] decoration-2 underline-offset-4 transition-colors duration-180 ease-out hover:text-ink"
+                    className="text-[14px] text-ink-soft underline decoration-[var(--gold)] decoration-2 underline-offset-4 transition-colors duration-180 ease-out hover:text-ink"
                   >
                     Voir l&apos;itinéraire actuel
                   </Link>
@@ -807,7 +807,7 @@ export function EditView({ tripId }: { tripId: string }) {
                 className={[
                   "text-[12.5px] transition-colors duration-180 ease-out",
                   confirmDelete
-                    ? "text-[oklch(0.42_0.13_35)] underline decoration-[oklch(0.62_0.155_38)] decoration-1 underline-offset-4"
+                    ? "text-[var(--terracotta-ink)] underline decoration-[var(--terracotta)] decoration-1 underline-offset-4"
                     : "text-ink-mute hover:text-ink-soft",
                 ].join(" ")}
                 style={{

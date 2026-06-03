@@ -45,8 +45,8 @@ export function ConstraintsEditor({ tripId }: Props) {
   if (!hydrated) {
     return (
       <>
-        <TopNav />
-        <main
+        <TopNav variant="dark" />
+        <main data-route="voyage-dark"
           className="mx-auto w-full max-w-6xl px-6 pt-10 pb-24"
           aria-busy="true"
         >
@@ -65,8 +65,8 @@ export function ConstraintsEditor({ tripId }: Props) {
   if (!trip) {
     return (
       <>
-        <TopNav />
-        <main className="mx-auto w-full max-w-3xl px-6 pt-20 pb-24 text-center">
+        <TopNav variant="dark" />
+        <main data-route="voyage-dark" className="mx-auto w-full max-w-3xl px-6 pt-20 pb-24 text-center">
           <h1
             className="text-[36px] leading-[1.05] text-ink"
             style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
@@ -81,7 +81,7 @@ export function ConstraintsEditor({ tripId }: Props) {
           </p>
           <Link
             href="/trip/new"
-            className="mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-[oklch(0.62_0.155_38)] px-6 text-[14px] font-medium text-[oklch(0.99_0.005_80)]"
+            className="mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-[var(--terracotta)] px-6 text-[14px] font-medium text-[oklch(0.99_0.005_80)]"
           >
             <span>Composer un voyage</span>
             <span aria-hidden>→</span>
@@ -94,8 +94,8 @@ export function ConstraintsEditor({ tripId }: Props) {
   if (trip.destinations.length === 0) {
     return (
       <>
-        <TopNav />
-        <main className="mx-auto w-full max-w-3xl px-6 pt-20 pb-24 text-center">
+        <TopNav variant="dark" />
+        <main data-route="voyage-dark" className="mx-auto w-full max-w-3xl px-6 pt-20 pb-24 text-center">
           <h1
             className="text-[36px] leading-[1.05] text-ink"
             style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
@@ -111,7 +111,7 @@ export function ConstraintsEditor({ tripId }: Props) {
           </p>
           <Link
             href={`/trip/${tripId}/destinations`}
-            className="mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-[oklch(0.62_0.155_38)] px-6 text-[14px] font-medium text-[oklch(0.99_0.005_80)] transition-transform duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
+            className="mt-8 inline-flex h-12 items-center gap-2 rounded-full bg-[var(--terracotta)] px-6 text-[14px] font-medium text-[oklch(0.99_0.005_80)] transition-transform duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
           >
             <span>Revenir aux destinations</span>
             <span aria-hidden className="text-base leading-none">
@@ -203,8 +203,8 @@ function ConstraintsEditorBody({
 
   return (
     <>
-      <TopNav />
-      <main className="mx-auto w-full max-w-6xl px-6 pt-10 pb-24">
+      <TopNav variant="dark" />
+      <main data-route="voyage-dark" className="mx-auto w-full max-w-6xl px-6 pt-10 pb-24">
         {/* Fil d'ariane / progression */}
         <nav
           aria-label="Étapes de composition"
@@ -236,7 +236,7 @@ function ConstraintsEditorBody({
           <div className="mb-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-ink-mute">
             <span
               aria-hidden
-              className="inline-block h-1 w-6 bg-[oklch(0.62_0.155_38)]"
+              className="inline-block h-1 w-6 bg-[var(--terracotta)]"
             />
             <span>Étape 3 sur 3</span>
           </div>
@@ -247,7 +247,7 @@ function ConstraintsEditorBody({
             Vos{" "}
             <span
               style={{ fontStyle: "italic" }}
-              className="text-[oklch(0.42_0.13_35)]"
+              className="text-[var(--terracotta-ink)]"
             >
               contraintes
             </span>
@@ -291,7 +291,7 @@ function ConstraintsEditorBody({
             <div className="flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
               <Link
                 href={`/trip/${trip.id}/destinations`}
-                className="text-[14px] text-ink-soft underline decoration-[oklch(0.78_0.13_75)] decoration-2 underline-offset-4 transition-colors hover:text-ink"
+                className="text-[14px] text-ink-soft underline decoration-[var(--gold)] decoration-2 underline-offset-4 transition-colors hover:text-ink"
               >
                 ← Retour aux destinations
               </Link>
@@ -300,7 +300,7 @@ function ConstraintsEditorBody({
                 href={`/trip/${trip.id}/recap`}
                 className={[
                   "inline-flex h-12 items-center gap-2 rounded-full px-6 text-[14px] font-medium",
-                  "bg-[oklch(0.62_0.155_38)] text-[oklch(0.99_0.005_80)]",
+                  "bg-[var(--terracotta)] text-[oklch(0.99_0.005_80)]",
                   "shadow-[0_10px_22px_-12px_oklch(0.42_0.13_35_/_0.5)]",
                   "transition-transform duration-200 ease-out",
                   "hover:scale-[1.02] active:scale-[0.98]",
@@ -438,7 +438,7 @@ function OrderCard({
         "transition-[border-color,background-color,box-shadow,transform] duration-180 ease-out",
         "active:scale-[0.99]",
         checked
-          ? "border-[oklch(0.62_0.155_38)] bg-[oklch(0.93_0.045_50_/_0.55)] shadow-[0_0_0_3px_oklch(0.62_0.155_38_/_0.14)]"
+          ? "border-[var(--terracotta)] bg-[var(--terracotta-soft)] shadow-[0_0_0_3px_oklch(0.62_0.155_38_/_0.14)]"
           : "border-line bg-surface hover:border-line-strong",
       ].join(" ")}
     >
@@ -455,7 +455,7 @@ function OrderCard({
             "inline-flex h-5 w-5 shrink-0 items-center justify-center rounded-full border",
             "transition-[background-color,border-color] duration-180 ease-out",
             checked
-              ? "border-[oklch(0.62_0.155_38)] bg-[oklch(0.62_0.155_38)]"
+              ? "border-[var(--terracotta)] bg-[var(--terracotta)]"
               : "border-line-strong bg-surface group-hover:border-ink-mute",
           ].join(" ")}
         >
@@ -709,7 +709,7 @@ function PinChip({
         "transition-[background-color,border-color,color,transform] duration-180 ease-out",
         "active:scale-[0.97]",
         checked
-          ? "border-[oklch(0.62_0.155_38)] bg-[oklch(0.93_0.045_50)] text-[oklch(0.42_0.13_35)]"
+          ? "border-[var(--terracotta)] bg-[var(--terracotta-soft)] text-[var(--terracotta-ink)]"
           : "border-line bg-surface text-ink-soft hover:border-line-strong hover:text-ink",
       ].join(" ")}
       style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
@@ -718,7 +718,7 @@ function PinChip({
         aria-hidden
         className={[
           "inline-block h-1.5 w-1.5 rounded-full",
-          checked ? "bg-[oklch(0.62_0.155_38)]" : "bg-ink-mute/50",
+          checked ? "bg-[var(--terracotta)]" : "bg-ink-mute/50",
         ].join(" ")}
       />
       <span>{label}</span>
@@ -734,12 +734,12 @@ function NoConstraintCard() {
   return (
     <aside
       aria-label="État sans contrainte"
-      className="rounded-2xl border border-dashed border-[oklch(0.82_0.07_60)] bg-[oklch(0.97_0.018_75)] p-6"
+      className="rounded-2xl border border-dashed border-[var(--line-strong)] bg-[var(--surface)] p-6"
     >
       <div className="flex items-baseline gap-3">
         <span
           aria-hidden
-          className="inline-block h-1.5 w-1.5 rounded-full bg-[oklch(0.78_0.13_75)]"
+          className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--gold)]"
         />
         <h3
           className="text-[18px] text-ink"

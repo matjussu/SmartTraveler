@@ -105,7 +105,7 @@ export function DraftPreview({
         <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.14em] text-ink-mute">
           <span
             aria-hidden
-            className="inline-block h-1.5 w-1.5 rounded-full bg-[oklch(0.78_0.13_75)]"
+            className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--gold)]"
           />
           <span>{badge}</span>
         </div>

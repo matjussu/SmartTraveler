@@ -15,7 +15,7 @@ export default async function TripEditPage(
   const { id } = await props.params;
   return (
     <>
-      <TopNav />
+      <TopNav variant="dark" />
       <EditView tripId={id} />
     </>
   );

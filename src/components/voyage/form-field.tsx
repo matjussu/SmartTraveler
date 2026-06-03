@@ -46,8 +46,9 @@ export function FormField({
   const optionalColor = isDark ? "text-white/40" : "text-ink-mute";
   const helperColor = isDark ? "text-white/45" : "text-ink-mute";
   // Erreur : terracotta-ink sur cream, ambre clair (lisible sur noir) en dark.
-  const errorColor = isDark ? "text-[#ff9a5c]" : "text-[oklch(0.42_0.13_35)]";
-  const errorDot = isDark ? "bg-[#ff7a1a]" : "bg-[oklch(0.62_0.155_38)]";
+  // Littéraux light → var() pour qu'ils thement sous un scope dark (data-route).
+  const errorColor = isDark ? "text-[#ff9a5c]" : "text-[var(--terracotta-ink)]";
+  const errorDot = isDark ? "bg-[#ff7a1a]" : "bg-[var(--terracotta)]";
 
   return (
     <div className="flex flex-col">
@@ -107,15 +108,16 @@ export const fieldInputClasses = [
   "h-12 w-full rounded-lg border bg-card px-4",
   "text-[15px] text-ink placeholder:text-ink-mute/70",
   "transition-[border-color,box-shadow,background-color] duration-180 ease-out",
-  "focus:outline-none focus:border-[oklch(0.62_0.155_38)]",
+  // var() → se theme sous un scope dark (data-route="voyage-dark").
+  "focus:outline-none focus:border-[var(--terracotta)]",
   "focus:shadow-[0_0_0_3px_oklch(0.62_0.155_38_/_0.16)]",
   "hover:border-line-strong",
 ].join(" ");
 
 export const fieldInputErrorClasses = [
-  // border-color = terracotta-ink (chaleureux, pas rouge acide)
-  "border-[oklch(0.42_0.13_35)]",
-  "focus:border-[oklch(0.42_0.13_35)]",
+  // border-color = terracotta-ink (chaleureux, pas rouge acide) — var() pour theming.
+  "border-[var(--terracotta-ink)]",
+  "focus:border-[var(--terracotta-ink)]",
   "focus:shadow-[0_0_0_3px_oklch(0.42_0.13_35_/_0.16)]",
 ].join(" ");
 

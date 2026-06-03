@@ -121,8 +121,8 @@ export function DestinationsEditor({ tripId }: Props) {
   if (!hydrated) {
     return (
       <>
-        <TopNav />
-        <main className="mx-auto w-full max-w-6xl px-6 pb-24 pt-10">
+        <TopNav variant="dark" />
+        <main data-route="voyage-dark" className="mx-auto w-full max-w-6xl px-6 pb-24 pt-10">
           <p
             className="text-[15px] text-ink-mute"
             style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
@@ -137,13 +137,13 @@ export function DestinationsEditor({ tripId }: Props) {
   if (!trip) {
     return (
       <>
-        <TopNav />
-        <main className="mx-auto w-full max-w-6xl px-6 pb-24 pt-10">
+        <TopNav variant="dark" />
+        <main data-route="voyage-dark" className="mx-auto w-full max-w-6xl px-6 pb-24 pt-10">
           <div className="mx-auto max-w-xl text-center">
             <div className="mb-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-ink-mute">
               <span
                 aria-hidden
-                className="inline-block h-1 w-6 bg-[oklch(0.62_0.155_38)]"
+                className="inline-block h-1 w-6 bg-[var(--terracotta)]"
               />
               <span>Voyage introuvable</span>
             </div>
@@ -152,7 +152,7 @@ export function DestinationsEditor({ tripId }: Props) {
               style={{ fontFamily: "var(--font-display)" }}
             >
               Ce brouillon n&apos;existe{" "}
-              <span style={{ fontStyle: "italic" }} className="text-[oklch(0.42_0.13_35)]">
+              <span style={{ fontStyle: "italic" }} className="text-[var(--terracotta-ink)]">
                 plus.
               </span>
             </h1>
@@ -164,7 +164,7 @@ export function DestinationsEditor({ tripId }: Props) {
             </p>
             <Link
               href="/"
-              className="mt-8 inline-flex items-center gap-2 rounded-full bg-[oklch(0.62_0.155_38)] px-5 py-3 text-[14px] font-medium text-[oklch(0.99_0.005_80)] transition-transform duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
+              className="mt-8 inline-flex items-center gap-2 rounded-full bg-[var(--terracotta)] px-5 py-3 text-[14px] font-medium text-[oklch(0.99_0.005_80)] transition-transform duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
             >
               <span>Revenir à vos itinéraires</span>
               <span aria-hidden>→</span>
@@ -178,8 +178,8 @@ export function DestinationsEditor({ tripId }: Props) {
   // ─── Render principal ─────────────────────────────────────────────────
   return (
     <>
-      <TopNav />
-      <main className="mx-auto w-full max-w-6xl px-6 pb-24 pt-10">
+      <TopNav variant="dark" />
+      <main data-route="voyage-dark" className="mx-auto w-full max-w-6xl px-6 pb-24 pt-10">
         {/* Breadcrumb */}
         <nav
           aria-label="Étapes de composition"
@@ -208,7 +208,7 @@ export function DestinationsEditor({ tripId }: Props) {
           <div className="mb-4 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.14em] text-ink-mute">
             <span
               aria-hidden
-              className="inline-block h-1 w-6 bg-[oklch(0.62_0.155_38)]"
+              className="inline-block h-1 w-6 bg-[var(--terracotta)]"
             />
             <span>Étape 2 sur 3</span>
           </div>
@@ -217,7 +217,7 @@ export function DestinationsEditor({ tripId }: Props) {
             style={{ fontFamily: "var(--font-display)" }}
           >
             Composez votre{" "}
-            <span style={{ fontStyle: "italic" }} className="text-[oklch(0.42_0.13_35)]">
+            <span style={{ fontStyle: "italic" }} className="text-[var(--terracotta-ink)]">
               itinéraire.
             </span>
           </h1>
@@ -265,7 +265,7 @@ export function DestinationsEditor({ tripId }: Props) {
                     type="submit"
                     className={[
                       "inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full px-6 text-[14px] font-medium",
-                      "bg-[oklch(0.62_0.155_38)] text-[oklch(0.99_0.005_80)]",
+                      "bg-[var(--terracotta)] text-[oklch(0.99_0.005_80)]",
                       "shadow-[0_10px_22px_-12px_oklch(0.42_0.13_35_/_0.5)]",
                       "transition-transform duration-200 ease-out",
                       "hover:scale-[1.02] active:scale-[0.98]",
@@ -320,7 +320,7 @@ export function DestinationsEditor({ tripId }: Props) {
             <div className="mt-10 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-6">
               <Link
                 href="/trip/new"
-                className="text-[14px] text-ink-soft underline decoration-[oklch(0.78_0.13_75)] decoration-2 underline-offset-4 transition-colors hover:text-ink"
+                className="text-[14px] text-ink-soft underline decoration-[var(--gold)] decoration-2 underline-offset-4 transition-colors hover:text-ink"
               >
                 ← Retour aux infos
               </Link>
@@ -332,7 +332,7 @@ export function DestinationsEditor({ tripId }: Props) {
                   disabled={!canContinue}
                   className={[
                     "inline-flex h-12 items-center gap-2 rounded-full px-6 text-[14px] font-medium",
-                    "bg-[oklch(0.62_0.155_38)] text-[oklch(0.99_0.005_80)]",
+                    "bg-[var(--terracotta)] text-[oklch(0.99_0.005_80)]",
                     "shadow-[0_10px_22px_-12px_oklch(0.42_0.13_35_/_0.5)]",
                     "transition-transform duration-200 ease-out",
                     "hover:not(:disabled):scale-[1.02] active:not(:disabled):scale-[0.98]",
@@ -352,7 +352,7 @@ export function DestinationsEditor({ tripId }: Props) {
                 {!canContinue && (
                   <p
                     id="continue-helper"
-                    className="text-[12px] text-[oklch(0.42_0.13_35)]"
+                    className="text-[12px] text-[var(--terracotta-ink)]"
                     style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
                   >
                     Minimum deux destinations pour optimiser.
@@ -488,7 +488,7 @@ function DestinationCard({
         className={[
           "flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-line text-ink-mute",
           "transition-[color,border-color,background-color,transform] duration-180 ease-out",
-          "hover:border-[oklch(0.42_0.13_35_/_0.5)] hover:bg-[oklch(0.93_0.045_50_/_0.4)] hover:text-[oklch(0.42_0.13_35)]",
+          "hover:border-[oklch(0.42_0.13_35_/_0.5)] hover:bg-[var(--terracotta-soft)] hover:text-[var(--terracotta-ink)]",
           "active:scale-[0.94]",
         ].join(" ")}
       >
@@ -522,7 +522,7 @@ function NightsStepper({ id, value, onChange }: StepperProps) {
           className={[
             "flex h-8 w-8 items-center justify-center rounded-full border border-line text-ink",
             "transition-[color,border-color,background-color,transform] duration-180 ease-out",
-            "hover:not(:disabled):border-line-strong hover:not(:disabled):bg-[oklch(0.96_0.018_70)]",
+            "hover:not(:disabled):border-line-strong hover:not(:disabled):bg-[var(--surface)]",
             "active:not(:disabled):scale-[0.94]",
             "disabled:cursor-not-allowed disabled:opacity-40",
           ].join(" ")}
@@ -549,7 +549,7 @@ function NightsStepper({ id, value, onChange }: StepperProps) {
           className={[
             "h-8 w-12 rounded-md border border-line bg-card text-center text-[15px] text-ink tabular-nums",
             "transition-[border-color,box-shadow] duration-180 ease-out",
-            "focus:outline-none focus:border-[oklch(0.62_0.155_38)]",
+            "focus:outline-none focus:border-[var(--terracotta)]",
             "focus:shadow-[0_0_0_3px_oklch(0.62_0.155_38_/_0.16)]",
             // Cache les spinners natifs (on a notre propre stepper)
             "[appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
@@ -564,7 +564,7 @@ function NightsStepper({ id, value, onChange }: StepperProps) {
           className={[
             "flex h-8 w-8 items-center justify-center rounded-full border border-line text-ink",
             "transition-[color,border-color,background-color,transform] duration-180 ease-out",
-            "hover:not(:disabled):border-line-strong hover:not(:disabled):bg-[oklch(0.96_0.018_70)]",
+            "hover:not(:disabled):border-line-strong hover:not(:disabled):bg-[var(--surface)]",
             "active:not(:disabled):scale-[0.94]",
             "disabled:cursor-not-allowed disabled:opacity-40",
           ].join(" ")}
@@ -586,13 +586,13 @@ function EmptyState() {
   return (
     <div
       className={[
-        "rounded-[18px] border border-dashed border-line-strong bg-[oklch(0.96_0.018_70_/_0.5)]",
+        "rounded-[18px] border border-dashed border-line-strong bg-[var(--surface)]",
         "px-6 py-12 text-center",
       ].join(" ")}
     >
       <div
         aria-hidden
-        className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-[oklch(0.93_0.045_50)] text-[oklch(0.42_0.13_35)]"
+        className="mx-auto mb-4 flex h-10 w-10 items-center justify-center rounded-full bg-[var(--terracotta-soft)] text-[var(--terracotta-ink)]"
       >
         <span
           className="text-[18px] leading-none"
