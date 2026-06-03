@@ -60,8 +60,8 @@ export default async function TripRecapPage(
 
   return (
     <>
-      <TopNav />
-      <main className="mx-auto w-full max-w-6xl px-6 pt-10 pb-24 lg:px-8 lg:pt-12">
+      <TopNav variant="dark" />
+      <main data-route="voyage-dark" className="mx-auto w-full max-w-6xl px-6 pt-10 pb-24 lg:px-8 lg:pt-12">
         {/* Breadcrumb */}
         <nav
           aria-label="Fil d'ariane"
@@ -84,7 +84,7 @@ export default async function TripRecapPage(
               className={`inline-block h-1.5 w-1.5 rounded-full ${
                 alreadyComputed
                   ? "bg-[oklch(0.55_0.078_145)]"
-                  : "bg-[oklch(0.78_0.13_75)]"
+                  : "bg-[var(--gold)]"
               }`}
             />
             <span>
@@ -98,7 +98,7 @@ export default async function TripRecapPage(
             Un dernier{" "}
             <span
               style={{ fontStyle: "italic" }}
-              className="text-[oklch(0.42_0.13_35)]"
+              className="text-[var(--terracotta-ink)]"
             >
               coup d&apos;œil.
             </span>
@@ -268,7 +268,7 @@ export default async function TripRecapPage(
               </p>
 
               <div
-                className="mt-5 relative overflow-hidden rounded-[14px] border border-dashed border-line-strong bg-[oklch(0.95_0.012_80)]"
+                className="mt-5 relative overflow-hidden rounded-[14px] border border-dashed border-line-strong bg-[var(--surface)]"
                 style={{ minHeight: 220 }}
                 role="img"
                 aria-label="Aperçu schématique de l'itinéraire à venir"
@@ -317,14 +317,14 @@ export default async function TripRecapPage(
             {/* Section "Ce que SmartTraveler va optimiser" ----------- */}
             <section
               aria-labelledby="recap-optim"
-              className="rounded-[18px] border border-[oklch(0.85_0.07_45)] bg-[oklch(0.96_0.025_55)] px-7 py-6"
+              className="rounded-[18px] border border-[var(--terracotta-soft)] bg-[var(--surface)] px-7 py-6"
             >
               <div className="flex items-center gap-2">
                 <span
                   aria-hidden
-                  className="inline-block h-1 w-6 bg-[oklch(0.62_0.155_38)]"
+                  className="inline-block h-1 w-6 bg-[var(--terracotta)]"
                 />
-                <span className="text-[11px] uppercase tracking-[0.14em] text-[oklch(0.42_0.13_35)]">
+                <span className="text-[11px] uppercase tracking-[0.14em] text-[var(--terracotta-ink)]">
                   À calculer
                 </span>
               </div>
@@ -347,7 +347,7 @@ export default async function TripRecapPage(
                   >
                     <span
                       aria-hidden
-                      className="mt-[8px] inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[oklch(0.62_0.155_38)]"
+                      className="mt-[8px] inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--terracotta)]"
                     />
                     <span>{promise}</span>
                   </li>
@@ -363,7 +363,7 @@ export default async function TripRecapPage(
             <div className="lg:sticky lg:top-24">
               <aside
                 aria-label="Lancer le calcul du voyage"
-                className="overflow-hidden rounded-[20px] border border-[oklch(0.85_0.07_45)] bg-[oklch(0.94_0.04_52)]"
+                className="overflow-hidden rounded-[20px] border border-[var(--terracotta-soft)] bg-[var(--surface)]"
                 style={{
                   boxShadow:
                     "0 1px 0 0 oklch(1 0 0 / 0.6), 0 12px 28px -18px oklch(0.42 0.13 35 / 0.25)",
@@ -371,7 +371,7 @@ export default async function TripRecapPage(
               >
                 {/* Mini-stat hero */}
                 <div className="px-6 pt-6 pb-4">
-                  <div className="text-[10px] uppercase tracking-[0.14em] text-[oklch(0.42_0.13_35)]">
+                  <div className="text-[10px] uppercase tracking-[0.14em] text-[var(--terracotta-ink)]">
                     Votre voyage
                   </div>
                   <div className="mt-2 flex items-baseline gap-3">
@@ -433,7 +433,7 @@ export default async function TripRecapPage(
                 {/* CTA principal */}
                 <div className="px-6 pt-5 pb-6">
                   {!isComplete && (
-                    <div className="mb-4 rounded-[12px] border border-[oklch(0.82_0.08_55)] bg-[oklch(0.97_0.02_60)] px-4 py-3">
+                    <div className="mb-4 rounded-[12px] border border-[var(--line-strong)] bg-[var(--surface)] px-4 py-3">
                       <div
                         className="text-[13.5px] text-ink"
                         style={{
@@ -451,7 +451,7 @@ export default async function TripRecapPage(
                           >
                             <span
                               aria-hidden
-                              className="mt-[7px] inline-block h-1 w-1 shrink-0 rounded-full bg-[oklch(0.62_0.155_38)]"
+                              className="mt-[7px] inline-block h-1 w-1 shrink-0 rounded-full bg-[var(--terracotta)]"
                             />
                             <span>{m}</span>
                           </li>
@@ -466,10 +466,10 @@ export default async function TripRecapPage(
                       className={[
                         "group inline-flex w-full items-center justify-center gap-2 rounded-full",
                         "h-14 px-6 text-[16px]",
-                        "bg-[oklch(0.62_0.155_38)] text-[oklch(0.99_0.005_80)]",
-                        "shadow-[0_14px_28px_-14px_oklch(0.42_0.13_35_/_0.55)]",
+                        "bg-[var(--terracotta)] text-[oklch(0.99_0.005_80)]",
+                        "shadow-[0_14px_28px_-14px_var(--terracotta-ink)]",
                         "transition-[transform,box-shadow] duration-200 ease-out",
-                        "hover:scale-[1.015] hover:shadow-[0_18px_36px_-14px_oklch(0.42_0.13_35_/_0.6)]",
+                        "hover:scale-[1.015] hover:shadow-[0_18px_36px_-14px_var(--terracotta-ink)]",
                         "active:scale-[0.985]",
                       ].join(" ")}
                     >
@@ -497,7 +497,7 @@ export default async function TripRecapPage(
                       className={[
                         "inline-flex w-full items-center justify-center gap-2 rounded-full",
                         "h-14 px-6 text-[16px]",
-                        "bg-[oklch(0.62_0.155_38)] text-[oklch(0.99_0.005_80)]",
+                        "bg-[var(--terracotta)] text-[oklch(0.99_0.005_80)]",
                         "cursor-not-allowed opacity-50 shadow-none",
                       ].join(" ")}
                     >
@@ -529,10 +529,10 @@ export default async function TripRecapPage(
                     Cela prend quelques secondes. Vous pourrez ajuster après.
                   </p>
 
-                  <div className="mt-5 flex flex-col items-center gap-2 border-t border-[oklch(0.85_0.07_45)] pt-4">
+                  <div className="mt-5 flex flex-col items-center gap-2 border-t border-[var(--terracotta-soft)] pt-4">
                     <Link
                       href={`/trip/${trip.id}/edit`}
-                      className="text-[13px] text-ink-soft underline decoration-[oklch(0.78_0.13_75)] decoration-2 underline-offset-4 transition-colors hover:text-ink"
+                      className="text-[13px] text-ink-soft underline decoration-[var(--gold)] decoration-2 underline-offset-4 transition-colors hover:text-ink"
                     >
                       Modifier d&apos;abord
                     </Link>

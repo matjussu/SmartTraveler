@@ -16,7 +16,7 @@ const PdfPreviewBlock = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-[800px] w-full items-center justify-center rounded-[12px] bg-[oklch(0.96_0.012_75)] text-[12px] text-ink-mute">
+      <div className="flex h-[800px] w-full items-center justify-center rounded-[12px] bg-[var(--surface)] text-[12px] text-ink-mute">
         Préparation du récapitulatif…
       </div>
     ),
@@ -38,7 +38,7 @@ export function ExportView({ trip }: { trip: Trip }) {
   };
 
   return (
-    <main className="export-page mx-auto w-full max-w-6xl px-6 pt-10 pb-24">
+    <main data-route="voyage-dark" className="export-page mx-auto w-full max-w-6xl px-6 pt-10 pb-24">
       {/* Breadcrumb */}
       <div className="export-chrome mb-6 flex items-center gap-3 text-[12px] text-ink-mute">
         <Link

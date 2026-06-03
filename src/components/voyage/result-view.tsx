@@ -18,7 +18,7 @@ const TripMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-full min-h-[360px] items-center justify-center rounded-[18px] border border-line bg-[oklch(0.95_0.012_80)] text-[12px] text-ink-mute">
+      <div className="flex h-full min-h-[360px] items-center justify-center rounded-[18px] border border-line bg-[var(--surface)] text-[12px] text-ink-mute">
         Préparation de la carte…
       </div>
     ),
@@ -80,7 +80,7 @@ export function ResultView({ trip }: { trip: Trip }) {
   ];
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-6 pb-24 pt-8">
+    <main data-route="voyage-dark" className="mx-auto w-full max-w-6xl px-6 pb-24 pt-8">
       {/* Breadcrumb + retour */}
       <div className="mb-6 flex items-center gap-3 text-[12px] text-ink-mute">
         <Link

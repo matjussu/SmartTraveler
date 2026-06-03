@@ -32,7 +32,7 @@ const TripMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-full min-h-[360px] items-center justify-center rounded-[18px] border border-line bg-[oklch(0.95_0.012_80)] text-[12px] text-ink-mute">
+      <div className="flex h-full min-h-[360px] items-center justify-center rounded-[18px] border border-line bg-[var(--surface)] text-[12px] text-ink-mute">
         Préparation de la carte…
       </div>
     ),
@@ -104,7 +104,7 @@ export function SharedView({ trip }: { trip: Trip }) {
   ];
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-8 pb-24 pt-12">
+    <main data-route="voyage-dark" className="mx-auto w-full max-w-6xl px-8 pb-24 pt-12">
       {/* Hero du voyage — pas de breadcrumb, juste mini-label "partagé" */}
       <section className="mb-10">
         <div className="grid grid-cols-12 items-end gap-6">
@@ -508,7 +508,7 @@ export function SharedView({ trip }: { trip: Trip }) {
 
       {/* Bloc acquisition douce — pas d'agression, juste une invitation */}
       <section className="mb-10">
-        <div className="rounded-[24px] border border-line bg-[oklch(0.96_0.022_72)] px-8 py-10 text-center">
+        <div className="rounded-[24px] border border-line bg-[var(--surface)] px-8 py-10 text-center">
           <div className="text-[10px] uppercase tracking-[0.16em] text-ink-mute">
             Composez le vôtre
           </div>

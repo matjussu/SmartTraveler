@@ -12,7 +12,7 @@ export default async function TripResultPage(
 
   return (
     <>
-      <TopNav />
+      <TopNav variant="dark" />
       <ResultView trip={trip} />
     </>
   );

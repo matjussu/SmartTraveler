@@ -17,7 +17,7 @@ const TripMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-full items-center justify-center rounded-[16px] border border-line bg-[oklch(0.95_0.012_80)] text-[11px] text-ink-mute">
+      <div className="flex h-full items-center justify-center rounded-[16px] border border-line bg-[var(--surface)] text-[11px] text-ink-mute">
         Préparation de la carte…
       </div>
     ),
@@ -95,7 +95,7 @@ export function CompareView({ trip }: { trip: Trip }) {
   ).filter((a): a is Alternative => Boolean(a));
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-6 pb-24 pt-10">
+    <main data-route="voyage-dark" className="mx-auto w-full max-w-7xl px-6 pb-24 pt-10">
       {/* Breadcrumb */}
       <div className="mb-6 flex flex-wrap items-center gap-2 text-[12px] text-ink-mute">
         <Link
@@ -537,7 +537,7 @@ function ComparisonRow({
   return (
     <>
       <div
-        className={`flex items-center px-5 py-4 text-[12px] uppercase tracking-[0.12em] text-ink-mute ${borderClass} md:bg-[oklch(0.97_0.014_78)]`}
+        className={`flex items-center px-5 py-4 text-[12px] uppercase tracking-[0.12em] text-ink-mute ${borderClass} md:bg-[var(--surface)]`}
       >
         <span
           className="md:not-italic"

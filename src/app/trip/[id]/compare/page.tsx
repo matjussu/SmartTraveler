@@ -12,7 +12,7 @@ export default async function TripComparePage(
 
   return (
     <>
-      <TopNav />
+      <TopNav variant="dark" />
       <CompareView trip={trip} />
     </>
   );
