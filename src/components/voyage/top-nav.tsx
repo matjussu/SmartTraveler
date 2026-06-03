@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Globe } from "lucide-react";
 
 export type TopNavVariant = "light" | "dark";
 
@@ -33,7 +34,7 @@ export function TopNav({ variant = "light" }: Props = {}) {
     : "text-ink-soft transition-colors duration-150 hover:text-ink";
 
   const ctaClass = isDark
-    ? "inline-flex items-center gap-2 rounded-full bg-[var(--terracotta)] px-4 py-2 text-[13px] font-medium text-[oklch(0.99_0.005_80)] transition-transform duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
+    ? "inline-flex items-center gap-2 rounded-full bg-[#ff7a1a] px-4 py-2 text-[13px] font-semibold text-white shadow-[0_0_26px_-6px_rgba(255,122,26,0.55)] transition-[transform,background-color,box-shadow] duration-200 ease-out hover:scale-[1.02] hover:bg-[#ff8a30] hover:shadow-[0_0_34px_-4px_rgba(255,138,48,0.7)] active:scale-[0.98]"
     : "inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-[13px] font-medium text-[oklch(0.99_0.005_80)] transition-transform duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]";
 
   return (
@@ -44,22 +45,34 @@ export function TopNav({ variant = "light" }: Props = {}) {
           className="group flex items-center gap-2.5"
           aria-label="SmartTraveler — retour à l'accueil"
         >
-          <span className="relative inline-flex h-7 w-7 items-center justify-center rounded-full bg-[oklch(0.62_0.155_38)] text-[13px] font-medium text-[oklch(0.99_0.005_80)]">
-            <span aria-hidden style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>
-              S
+          {isDark ? (
+            // Home noire : rond avec icône Terre ambre (écho du globe pointillé),
+            // sans wordmark texte (le nom accessible reste porté par l'aria-label).
+            // Plus gros (h-9) + ring/fill ambre + glow + stroke épais = présence marquée.
+            <span className="relative inline-flex h-9 w-9 items-center justify-center rounded-full bg-[#ff7a1a]/10 ring-[1.5px] ring-[#ff7a1a]/60 shadow-[0_0_18px_-4px_rgba(255,122,26,0.55)]">
+              <Globe aria-hidden className="h-5 w-5 text-[#ff7a1a]" strokeWidth={2.25} />
             </span>
-          </span>
-          <span className="flex flex-col leading-none">
-            <span
-              className={`text-[15px] tracking-tight ${wordmarkColor}`}
-              style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
-            >
-              SmartTraveler
-            </span>
-            <span className={`mt-0.5 text-[10px] tracking-[0.08em] ${captionColor}`}>
-              voyages composés
-            </span>
-          </span>
+          ) : (
+            // Routes cream voyage-pivot : logo terracotta « S » + wordmark inchangés.
+            <>
+              <span className="relative inline-flex h-7 w-7 items-center justify-center rounded-full bg-[oklch(0.62_0.155_38)] text-[13px] font-medium text-[oklch(0.99_0.005_80)]">
+                <span aria-hidden style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>
+                  S
+                </span>
+              </span>
+              <span className="flex flex-col leading-none">
+                <span
+                  className={`text-[15px] tracking-tight ${wordmarkColor}`}
+                  style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+                >
+                  SmartTraveler
+                </span>
+                <span className={`mt-0.5 text-[10px] tracking-[0.08em] ${captionColor}`}>
+                  voyages composés
+                </span>
+              </span>
+            </>
+          )}
         </Link>
 
         <nav aria-label="Navigation principale" className="hidden items-center gap-7 text-sm md:flex">
