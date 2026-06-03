@@ -346,7 +346,13 @@
 main[data-route="home-redesign"] {
   background: radial-gradient(120% 80% at 50% 0%, #1a1a1c 0%, #0a0a0b 55%, #050506 100%);
   color: #f6f6f4;
-  min-height: 100vh;
+  /* min-height > viewport est REQUIS pour rendre la page scrollable et déclencher
+     la transition shrink du splash (cf scrollThreshold=280px dans SplashIntro).
+     calc(100vh + 400px) garantit ~400px de scroll utile sur tout viewport — bien
+     au-dessus du threshold, avec marge confort. Avant : min-height: 100vh écrasait
+     `min-h-[120vh]` Tailwind du JSX (specificity attribute+type > class) et
+     verrouillait la page à 100vh exact → scroll impossible (bug #1602 racine). */
+  min-height: calc(100vh + 400px);
 }
 
 /* Body bg matched via :has() pour éviter le flash cream pendant le scroll-bounce
