@@ -41,24 +41,24 @@ const ALT_META: Record<AlternativeKind, AltMeta> = {
     short: "À petit prix",
     baseline: "Pour voyager léger sans alléger son envie.",
     accent: "oklch(0.62 0.155 38)",
-    accentSoft: "oklch(0.93 0.045 50)",
-    accentInk: "oklch(0.42 0.13 35)",
+    accentSoft: "oklch(0.62 0.155 38 / 0.18)",
+    accentInk: "oklch(0.76 0.15 55)",
   },
   fastest: {
     label: "Le plus rapide",
     short: "Express",
     baseline: "Pour gagner une journée sur place.",
     accent: "oklch(0.55 0.115 235)",
-    accentSoft: "oklch(0.94 0.025 230)",
-    accentInk: "oklch(0.38 0.11 240)",
+    accentSoft: "oklch(0.6 0.12 235 / 0.2)",
+    accentInk: "oklch(0.72 0.13 235)",
   },
   eco: {
     label: "Empreinte carbone réduite",
     short: "Plus vert",
     baseline: "Pour que le voyage commence en gare.",
     accent: "oklch(0.55 0.078 145)",
-    accentSoft: "oklch(0.93 0.025 140)",
-    accentInk: "oklch(0.38 0.07 150)",
+    accentSoft: "oklch(0.6 0.1 150 / 0.2)",
+    accentInk: "oklch(0.72 0.11 150)",
   },
 };
 
@@ -119,7 +119,7 @@ export function ResultView({ trip }: { trip: Trip }) {
               style={{ fontFamily: "var(--font-display)" }}
             >
               {trip.name}
-              <span style={{ fontStyle: "italic", color: activeMeta.accentInk }}>.</span>
+              <span style={{ color: activeMeta.accentInk }}>.</span>
             </h1>
             <p className="mt-4 max-w-xl text-[15px] leading-[1.55] text-ink-soft">
               Du {formatDateLong(trip.startDate)} au {formatDateLong(trip.endDate)}, au
@@ -133,7 +133,7 @@ export function ResultView({ trip }: { trip: Trip }) {
             </div>
             <div
               className="mt-1 text-[20px] tracking-tight text-ink"
-              style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+              style={{ fontFamily: "var(--font-display)" }}
             >
               {activeMeta.label}
             </div>
@@ -182,7 +182,6 @@ export function ResultView({ trip }: { trip: Trip }) {
                       className="text-[14px] tracking-tight"
                       style={{
                         fontFamily: "var(--font-display)",
-                        fontStyle: "italic",
                         color: isActive ? meta.accentInk : "var(--ink)",
                       }}
                     >
@@ -269,7 +268,7 @@ export function ResultView({ trip }: { trip: Trip }) {
             >
               De {trip.startCity.name} à {trip.startCity.name},
               <br />
-              <span style={{ fontStyle: "italic" }}>en passant par</span>
+              <span style={{  }}>en passant par</span>
             </h2>
 
             <ol className="mt-5 space-y-4">
@@ -455,7 +454,7 @@ export function ResultView({ trip }: { trip: Trip }) {
                 color: activeMeta.accentInk,
               }}
             >
-              {trip.name} — <span style={{ fontStyle: "italic" }}>{activeMeta.label.toLowerCase()}</span>
+              {trip.name} — <span style={{  }}>{activeMeta.label.toLowerCase()}</span>
             </h2>
             <p className="mt-3 max-w-md text-[14px] text-ink-soft">
               {trip.destinations.length} étape

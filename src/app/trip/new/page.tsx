@@ -175,7 +175,7 @@ export default function TripNewPage() {
             style={{ fontFamily: "var(--font-display)" }}
           >
             Composez un{" "}
-            <span style={{ fontStyle: "italic" }} className="text-[#ff8a3d]">
+            <span style={{  }} className="text-[#ff8a3d]">
               nouveau voyage.
             </span>
           </h1>
@@ -342,7 +342,7 @@ export default function TripNewPage() {
               />
               <p
                 className="mt-4 px-2 text-[12px] text-white/45"
-                style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+                style={{ fontFamily: "var(--font-display)" }}
               >
                 Cet aperçu se précise à chaque champ rempli.
               </p>
@@ -353,7 +353,7 @@ export default function TripNewPage() {
         <footer className="mt-20 flex flex-wrap items-center justify-between gap-3 border-t border-white/[0.06] pt-6 text-[12px] text-white/40">
           <div className="flex items-center gap-2">
             <span
-              style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+              style={{ fontFamily: "var(--font-display)" }}
               className="text-[15px] text-white/65"
             >
               SmartTraveler

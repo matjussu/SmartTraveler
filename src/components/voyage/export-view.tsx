@@ -53,7 +53,7 @@ export function ExportView({ trip }: { trip: Trip }) {
         <span aria-hidden>·</span>
         <span
           className="text-ink"
-          style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+          style={{ fontFamily: "var(--font-display)" }}
         >
           Exporter
         </span>
@@ -65,12 +65,12 @@ export function ExportView({ trip }: { trip: Trip }) {
           className="text-[clamp(36px,5vw,56px)] leading-[1.02] tracking-[-0.012em] text-ink"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Votre <span style={{ fontStyle: "italic" }}>récapitulatif imprimable</span>
-          <span style={{ fontStyle: "italic", color: "var(--terracotta-ink)" }}>.</span>
+          Votre <span style={{  }}>récapitulatif imprimable</span>
+          <span style={{ color: "var(--terracotta-ink)" }}>.</span>
         </h1>
         <p
           className="mt-4 max-w-xl text-[15px] leading-[1.55] text-ink-soft"
-          style={{ fontStyle: "italic" }}
+          style={{  }}
         >
           Téléchargez ou imprimez votre itinéraire. À glisser dans une pochette de voyage,
           ou à envoyer à qui vous accompagne.
@@ -105,13 +105,13 @@ export function ExportView({ trip }: { trip: Trip }) {
               </div>
               <h2
                 className="mt-1 text-[24px] leading-[1.1] tracking-tight text-ink"
-                style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+                style={{ fontFamily: "var(--font-display)" }}
               >
                 Que souhaitez-vous ?
               </h2>
               <p
                 className="mt-2 text-[13px] text-ink-soft"
-                style={{ fontStyle: "italic" }}
+                style={{  }}
               >
                 Trois actions, à votre rythme.
               </p>
@@ -170,7 +170,7 @@ export function ExportView({ trip }: { trip: Trip }) {
               <div className="mt-6 border-t border-line pt-4">
                 <p
                   className="text-[12.5px] text-ink-mute"
-                  style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+                  style={{ fontFamily: "var(--font-display)" }}
                 >
                   Le voyage commence sur papier.
                 </p>

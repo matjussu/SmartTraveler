@@ -98,7 +98,7 @@ export default async function TripRecapPage(
           >
             Un dernier{" "}
             <span
-              style={{ fontStyle: "italic" }}
+              style={{  }}
               className="text-[var(--terracotta-ink)]"
             >
               coup d&apos;œil.
@@ -106,7 +106,7 @@ export default async function TripRecapPage(
           </h1>
           <p
             className="mt-5 max-w-xl text-[16px] leading-[1.55] text-ink-soft"
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             Vérifiez les éléments. SmartTraveler peut maintenant composer les
             meilleurs itinéraires.
@@ -137,7 +137,6 @@ export default async function TripRecapPage(
                 className="text-[22px] leading-tight text-ink"
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontStyle: "italic",
                 }}
               >
                 Le voyage
@@ -181,7 +180,6 @@ export default async function TripRecapPage(
                   className="text-[22px] leading-tight text-ink"
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontStyle: "italic",
                   }}
                 >
                   Les villes
@@ -196,7 +194,6 @@ export default async function TripRecapPage(
                   className="mt-5 text-[14px] text-ink-mute"
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontStyle: "italic",
                   }}
                 >
                   Aucune destination ajoutée pour l&apos;instant.
@@ -228,7 +225,6 @@ export default async function TripRecapPage(
                             className="text-[16px] leading-tight text-ink"
                             style={{
                               fontFamily: "var(--font-display)",
-                              fontStyle: "italic",
                             }}
                           >
                             {dest.city.name}
@@ -261,7 +257,6 @@ export default async function TripRecapPage(
                 className="text-[22px] leading-tight text-ink"
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontStyle: "italic",
                 }}
               >
                 La carte
@@ -270,7 +265,6 @@ export default async function TripRecapPage(
                 className="mt-2 text-[13px] text-ink-mute"
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontStyle: "italic",
                 }}
               >
                 La carte apparaîtra après le calcul.
@@ -307,7 +301,6 @@ export default async function TripRecapPage(
                       className="text-[14px] text-ink-mute"
                       style={{
                         fontFamily: "var(--font-display)",
-                        fontStyle: "italic",
                       }}
                     >
                       Ajoutez quelques villes pour voir l&apos;esquisse.
@@ -342,7 +335,6 @@ export default async function TripRecapPage(
                 className="mt-3 text-[24px] leading-[1.15] text-ink"
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontStyle: "italic",
                 }}
               >
                 Ce que SmartTraveler va optimiser
@@ -397,7 +389,6 @@ export default async function TripRecapPage(
                       className="text-[15px] text-ink-soft"
                       style={{
                         fontFamily: "var(--font-display)",
-                        fontStyle: "italic",
                       }}
                     >
                       ville{stops > 1 ? "s" : ""}
@@ -418,7 +409,6 @@ export default async function TripRecapPage(
                       className="text-[15px] text-ink-soft"
                       style={{
                         fontFamily: "var(--font-display)",
-                        fontStyle: "italic",
                       }}
                     >
                       jours
@@ -447,7 +437,6 @@ export default async function TripRecapPage(
                         className="text-[13.5px] text-ink"
                         style={{
                           fontFamily: "var(--font-display)",
-                          fontStyle: "italic",
                         }}
                       >
                         Quelques détails manquent encore.
@@ -485,7 +474,6 @@ export default async function TripRecapPage(
                       <span
                         style={{
                           fontFamily: "var(--font-display)",
-                          fontStyle: "italic",
                         }}
                       >
                         Calculer mon voyage
@@ -513,7 +501,6 @@ export default async function TripRecapPage(
                       <span
                         style={{
                           fontFamily: "var(--font-display)",
-                          fontStyle: "italic",
                         }}
                       >
                         Calculer mon voyage
@@ -532,7 +519,6 @@ export default async function TripRecapPage(
                     className="mt-3 text-center text-[12px] text-ink-mute"
                     style={{
                       fontFamily: "var(--font-display)",
-                      fontStyle: "italic",
                     }}
                   >
                     Cela prend quelques secondes. Vous pourrez ajuster après.
@@ -566,7 +552,6 @@ export default async function TripRecapPage(
             <span
               style={{
                 fontFamily: "var(--font-display)",
-                fontStyle: "italic",
               }}
               className="text-[15px] text-ink-soft"
             >

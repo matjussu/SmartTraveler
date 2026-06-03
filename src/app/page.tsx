@@ -109,7 +109,7 @@ export default function Home() {
       <footer className="mx-auto flex w-full max-w-3xl flex-wrap items-center justify-between gap-3 border-t border-white/[0.06] px-6 pb-10 pt-6 text-[12px] text-white/40">
         <div className="flex items-center gap-2">
           <span
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
             className="text-[15px] text-white/65"
           >
             SmartTraveler

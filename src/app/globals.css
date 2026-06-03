@@ -37,8 +37,8 @@
 
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono), ui-monospace, monospace;
-  --font-display: var(--font-display), Georgia, serif;
-  --font-heading: var(--font-display), Georgia, serif;
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-display), ui-sans-serif, system-ui, sans-serif;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -226,7 +226,7 @@
 /* Stamp/marque "voyage" en filigrane */
 .travel-stamp {
   font-family: var(--font-display);
-  font-style: italic;
+  
   letter-spacing: -0.01em;
 }
 
@@ -289,7 +289,7 @@
   flex-direction: column;
   align-items: center;
   font-family: var(--font-display);
-  font-style: italic;
+  
   font-size: 13px;
   font-weight: 500;
   color: var(--ink);

@@ -52,7 +52,7 @@ export function ConstraintsEditor({ tripId }: Props) {
         >
           <p
             className="text-[14px] text-ink-mute"
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             Chargement de votre voyage…
           </p>
@@ -69,13 +69,13 @@ export function ConstraintsEditor({ tripId }: Props) {
         <main data-route="voyage-dark" className="mx-auto w-full max-w-3xl px-6 pt-20 pb-24 text-center">
           <h1
             className="text-[36px] leading-[1.05] text-ink"
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             Voyage introuvable.
           </h1>
           <p
             className="mt-4 text-[15px] text-ink-soft"
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             Ce voyage n&apos;existe plus, ou n&apos;a jamais existé.
           </p>
@@ -98,13 +98,13 @@ export function ConstraintsEditor({ tripId }: Props) {
         <main data-route="voyage-dark" className="mx-auto w-full max-w-3xl px-6 pt-20 pb-24 text-center">
           <h1
             className="text-[36px] leading-[1.05] text-ink"
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             Définissez d&apos;abord vos destinations.
           </h1>
           <p
             className="mt-4 text-[15px] text-ink-soft"
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             Les contraintes se posent ville par ville — il faut donc des villes
             avant tout.
@@ -246,7 +246,7 @@ function ConstraintsEditorBody({
           >
             Vos{" "}
             <span
-              style={{ fontStyle: "italic" }}
+              style={{  }}
               className="text-[var(--terracotta-ink)]"
             >
               contraintes
@@ -257,7 +257,6 @@ function ConstraintsEditorBody({
             className="mt-5 max-w-xl text-[16px] leading-[1.55] text-ink-soft"
             style={{
               fontFamily: "var(--font-display)",
-              fontStyle: "italic",
             }}
           >
             Bloquez les dates qui comptent, libérez les autres. SmartTraveler
@@ -334,7 +333,6 @@ function ConstraintsEditorBody({
                 className="mt-4 px-2 text-[12px] text-ink-mute"
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontStyle: "italic",
                 }}
               >
                 {nbConstraints === 0
@@ -348,7 +346,7 @@ function ConstraintsEditorBody({
         <footer className="mt-20 flex flex-wrap items-center justify-between gap-3 text-[12px] text-ink-mute">
           <div className="flex items-center gap-2">
             <span
-              style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+              style={{ fontFamily: "var(--font-display)" }}
               className="text-[15px] text-ink-soft"
             >
               SmartTraveler
@@ -382,13 +380,13 @@ function OrderSection({
       <h2
         id="order-heading"
         className="text-[22px] leading-[1.15] text-ink"
-        style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+        style={{ fontFamily: "var(--font-display)" }}
       >
         Voulez-vous fixer l&apos;ordre&nbsp;?
       </h2>
       <p
         className="mt-2 text-[13px] text-ink-mute"
-        style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+        style={{ fontFamily: "var(--font-display)" }}
       >
         L&apos;optimisation peut réordonner les villes pour gagner en
         coût/temps.
@@ -445,7 +443,7 @@ function OrderCard({
       <span className="flex w-full items-center justify-between gap-3">
         <span
           className="text-[15px] text-ink"
-          style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+          style={{ fontFamily: "var(--font-display)" }}
         >
           {title}
         </span>
@@ -494,13 +492,13 @@ function PerCitySection({
         <h2
           id="cities-heading"
           className="text-[22px] leading-[1.15] text-ink"
-          style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+          style={{ fontFamily: "var(--font-display)" }}
         >
           Contraintes par ville
         </h2>
         <span
           className="text-[11px] uppercase tracking-[0.14em] text-ink-mute"
-          style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+          style={{ fontFamily: "var(--font-display)" }}
         >
           {trip.destinations.length} étape
           {trip.destinations.length > 1 ? "s" : ""}
@@ -591,7 +589,6 @@ function CityConstraintCard({
               className="text-[20px] leading-[1.1] text-ink"
               style={{
                 fontFamily: "var(--font-display)",
-                fontStyle: "italic",
               }}
             >
               {cityName}
@@ -678,7 +675,6 @@ function CityConstraintCard({
             className="mt-3 text-[12px] text-ink-mute"
             style={{
               fontFamily: "var(--font-display)",
-              fontStyle: "italic",
             }}
           >
             Laissez vide pour que SmartTraveler choisisse les dates idéales.
@@ -712,7 +708,7 @@ function PinChip({
           ? "border-[var(--terracotta)] bg-[var(--terracotta-soft)] text-[var(--terracotta-ink)]"
           : "border-line bg-surface text-ink-soft hover:border-line-strong hover:text-ink",
       ].join(" ")}
-      style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+      style={{ fontFamily: "var(--font-display)" }}
     >
       <span
         aria-hidden
@@ -743,14 +739,14 @@ function NoConstraintCard() {
         />
         <h3
           className="text-[18px] text-ink"
-          style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+          style={{ fontFamily: "var(--font-display)" }}
         >
           Aucune contrainte stricte
         </h3>
       </div>
       <p
         className="mt-2 text-[14px] leading-[1.55] text-ink-soft"
-        style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+        style={{ fontFamily: "var(--font-display)" }}
       >
         SmartTraveler aura les coudées franches pour optimiser.
       </p>

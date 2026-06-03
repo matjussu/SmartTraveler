@@ -56,14 +56,14 @@ export function TopNav({ variant = "light" }: Props = {}) {
             // Routes cream voyage-pivot : logo terracotta « S » + wordmark inchangés.
             <>
               <span className="relative inline-flex h-7 w-7 items-center justify-center rounded-full bg-[oklch(0.62_0.155_38)] text-[13px] font-medium text-[oklch(0.99_0.005_80)]">
-                <span aria-hidden style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}>
+                <span aria-hidden style={{ fontFamily: "var(--font-display)" }}>
                   S
                 </span>
               </span>
               <span className="flex flex-col leading-none">
                 <span
                   className={`text-[15px] tracking-tight ${wordmarkColor}`}
-                  style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+                  style={{ fontFamily: "var(--font-display)" }}
                 >
                   SmartTraveler
                 </span>

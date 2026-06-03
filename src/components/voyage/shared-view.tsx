@@ -52,22 +52,22 @@ const ALT_META: Record<AlternativeKind, AltMeta> = {
     label: "Le plus économique",
     baseline: "Pour voyager léger sans alléger son envie.",
     accent: "oklch(0.62 0.155 38)",
-    accentSoft: "oklch(0.93 0.045 50)",
-    accentInk: "oklch(0.42 0.13 35)",
+    accentSoft: "oklch(0.62 0.155 38 / 0.18)",
+    accentInk: "oklch(0.76 0.15 55)",
   },
   fastest: {
     label: "Le plus rapide",
     baseline: "Pour gagner une journée sur place.",
     accent: "oklch(0.55 0.115 235)",
-    accentSoft: "oklch(0.94 0.025 230)",
-    accentInk: "oklch(0.38 0.11 240)",
+    accentSoft: "oklch(0.6 0.12 235 / 0.2)",
+    accentInk: "oklch(0.72 0.13 235)",
   },
   eco: {
     label: "Empreinte carbone réduite",
     baseline: "Pour que le voyage commence en gare.",
     accent: "oklch(0.55 0.078 145)",
-    accentSoft: "oklch(0.93 0.025 140)",
-    accentInk: "oklch(0.38 0.07 150)",
+    accentSoft: "oklch(0.6 0.1 150 / 0.2)",
+    accentInk: "oklch(0.72 0.11 150)",
   },
 };
 
@@ -130,7 +130,7 @@ export function SharedView({ trip }: { trip: Trip }) {
             >
               {trip.name}
               <span
-                style={{ fontStyle: "italic", color: activeMeta.accentInk }}
+                style={{ color: activeMeta.accentInk }}
               >
                 .
               </span>
@@ -149,7 +149,6 @@ export function SharedView({ trip }: { trip: Trip }) {
               className="mt-1 text-[20px] tracking-tight text-ink"
               style={{
                 fontFamily: "var(--font-display)",
-                fontStyle: "italic",
               }}
             >
               {activeMeta.label}
@@ -196,7 +195,6 @@ export function SharedView({ trip }: { trip: Trip }) {
                       className="text-[14px] tracking-tight"
                       style={{
                         fontFamily: "var(--font-display)",
-                        fontStyle: "italic",
                         color: isActive ? meta.accentInk : "var(--ink)",
                       }}
                     >
@@ -283,7 +281,7 @@ export function SharedView({ trip }: { trip: Trip }) {
             >
               De {trip.startCity.name} à {trip.startCity.name},
               <br />
-              <span style={{ fontStyle: "italic" }}>en passant par</span>
+              <span style={{  }}>en passant par</span>
             </h2>
 
             <ol className="mt-5 space-y-4">
@@ -475,7 +473,7 @@ export function SharedView({ trip }: { trip: Trip }) {
               }}
             >
               {trip.name} —{" "}
-              <span style={{ fontStyle: "italic" }}>
+              <span style={{  }}>
                 {activeMeta.label.toLowerCase()}
               </span>
             </h2>
@@ -516,14 +514,13 @@ export function SharedView({ trip }: { trip: Trip }) {
             className="mx-auto mt-3 max-w-2xl text-[30px] leading-[1.1] tracking-tight text-ink"
             style={{
               fontFamily: "var(--font-display)",
-              fontStyle: "italic",
             }}
           >
             Vous aimeriez composer le vôtre&nbsp;?
           </h2>
           <p
             className="mx-auto mt-3 max-w-lg text-[15px] leading-[1.55] text-ink-soft"
-            style={{ fontStyle: "italic" }}
+            style={{  }}
           >
             SmartTraveler crée des itinéraires comme celui-ci, à partir de vos
             villes et vos contraintes.
@@ -562,7 +559,7 @@ export function SharedView({ trip }: { trip: Trip }) {
             <Link
               href="/"
               className="text-ink-mute underline-offset-4 transition-colors duration-150 hover:text-ink hover:underline"
-              style={{ fontStyle: "italic" }}
+              style={{  }}
             >
               Voyage composé sur SmartTraveler
             </Link>
@@ -578,7 +575,6 @@ export function SharedView({ trip }: { trip: Trip }) {
         className="pointer-events-none fixed bottom-4 right-4 hidden select-none text-[11px] tracking-tight md:block"
         style={{
           fontFamily: "var(--font-display)",
-          fontStyle: "italic",
           color: "var(--ink-mute)",
           opacity: 0.32,
         }}

@@ -125,7 +125,7 @@ export function DestinationsEditor({ tripId }: Props) {
         <main data-route="voyage-dark" className="mx-auto w-full max-w-6xl px-6 pb-24 pt-10">
           <p
             className="text-[15px] text-ink-mute"
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             Préparation de votre brouillon…
           </p>
@@ -152,13 +152,13 @@ export function DestinationsEditor({ tripId }: Props) {
               style={{ fontFamily: "var(--font-display)" }}
             >
               Ce brouillon n&apos;existe{" "}
-              <span style={{ fontStyle: "italic" }} className="text-[var(--terracotta-ink)]">
+              <span style={{  }} className="text-[var(--terracotta-ink)]">
                 plus.
               </span>
             </h1>
             <p
               className="mt-5 text-[15px] text-ink-soft"
-              style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+              style={{ fontFamily: "var(--font-display)" }}
             >
               Il a peut-être été supprimé, ou jamais créé sur cet appareil.
             </p>
@@ -217,13 +217,13 @@ export function DestinationsEditor({ tripId }: Props) {
             style={{ fontFamily: "var(--font-display)" }}
           >
             Composez votre{" "}
-            <span style={{ fontStyle: "italic" }} className="text-[var(--terracotta-ink)]">
+            <span style={{  }} className="text-[var(--terracotta-ink)]">
               itinéraire.
             </span>
           </h1>
           <p
             className="mt-5 max-w-xl text-[16px] leading-[1.55] text-ink-soft"
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             Choisissez les villes que vous voulez visiter. Au moins deux pour que
             SmartTraveler ait quelque chose à optimiser.
@@ -292,7 +292,7 @@ export function DestinationsEditor({ tripId }: Props) {
                 <div className="flex items-baseline justify-between gap-3 px-1">
                   <h2
                     className="text-[15px] text-ink-soft"
-                    style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+                    style={{ fontFamily: "var(--font-display)" }}
                   >
                     Votre itinéraire pour l&apos;instant
                   </h2>
@@ -353,7 +353,7 @@ export function DestinationsEditor({ tripId }: Props) {
                   <p
                     id="continue-helper"
                     className="text-[12px] text-[var(--terracotta-ink)]"
-                    style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+                    style={{ fontFamily: "var(--font-display)" }}
                   >
                     Minimum deux destinations pour optimiser.
                   </p>
@@ -376,7 +376,7 @@ export function DestinationsEditor({ tripId }: Props) {
               />
               <p
                 className="mt-4 px-2 text-[12px] text-ink-mute"
-                style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+                style={{ fontFamily: "var(--font-display)" }}
               >
                 L&apos;ordre des étapes sera optimisé à l&apos;étape suivante.
               </p>
@@ -387,7 +387,7 @@ export function DestinationsEditor({ tripId }: Props) {
         <footer className="mt-20 flex flex-wrap items-center justify-between gap-3 text-[12px] text-ink-mute">
           <div className="flex items-center gap-2">
             <span
-              style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+              style={{ fontFamily: "var(--font-display)" }}
               className="text-[15px] text-ink-soft"
             >
               SmartTraveler
@@ -459,7 +459,7 @@ function DestinationCard({
           </span>
           <span
             className="truncate text-[20px] leading-tight text-ink"
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             {destination.city.name}
           </span>
@@ -603,13 +603,13 @@ function EmptyState() {
       </div>
       <p
         className="text-[18px] leading-[1.3] text-ink"
-        style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+        style={{ fontFamily: "var(--font-display)" }}
       >
         Aucune destination pour l&apos;instant.
       </p>
       <p
         className="mt-2 text-[13px] text-ink-mute"
-        style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+        style={{ fontFamily: "var(--font-display)" }}
       >
         Commencez par taper une ville au-dessus.
       </p>

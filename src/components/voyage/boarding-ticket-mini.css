@@ -96,7 +96,7 @@
 .btm-title {
   margin: 0;
   font-family: var(--font-display), Georgia, serif;
-  font-style: italic;
+  
   font-size: clamp(20px, 2.4vw, 25px);
   line-height: 1.05;
   color: var(--btm-ink);

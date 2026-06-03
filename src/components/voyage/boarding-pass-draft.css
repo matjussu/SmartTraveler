@@ -88,7 +88,7 @@
 .bp-title {
   margin: 6px 0 0;
   font-family: var(--font-display), Georgia, serif;
-  font-style: italic;
+  
   font-size: clamp(24px, 4.4vw, 32px);
   line-height: 1.02;
   letter-spacing: -0.01em;
@@ -195,7 +195,7 @@
 .bp-hint {
   margin: 0;
   font-family: var(--font-display), Georgia, serif;
-  font-style: italic;
+  
   font-size: 12px;
   color: var(--bp-ink-mute);
 }

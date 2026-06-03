@@ -55,13 +55,13 @@ export function FormField({
       <label
         htmlFor={id}
         className={`mb-2 flex items-baseline gap-2 text-[15px] ${labelColor}`}
-        style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+        style={{ fontFamily: "var(--font-display)" }}
       >
         <span>{label}</span>
         {optional && (
           <span
             className={`text-[11px] tracking-[0.06em] ${optionalColor}`}
-            style={{ fontStyle: "italic" }}
+            style={{  }}
           >
             — facultatif
           </span>
@@ -74,7 +74,7 @@ export function FormField({
         <p
           id={`${id}-error`}
           className={`mt-2 flex items-center gap-1.5 text-[12px] ${errorColor}`}
-          style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+          style={{ fontFamily: "var(--font-display)" }}
           role="alert"
         >
           <span
@@ -87,7 +87,7 @@ export function FormField({
         <p
           id={`${id}-helper`}
           className={`mt-2 text-[12px] ${helperColor}`}
-          style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+          style={{ fontFamily: "var(--font-display)" }}
         >
           {helper}
         </p>

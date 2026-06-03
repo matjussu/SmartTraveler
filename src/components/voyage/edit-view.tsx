@@ -163,7 +163,7 @@ export function EditView({ tripId }: { tripId: string }) {
       <main data-route="voyage-dark" className="mx-auto w-full max-w-6xl px-6 pb-24 pt-16">
         <p
           className="text-[15px] text-ink-mute"
-          style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+          style={{ fontFamily: "var(--font-display)" }}
         >
           Préparation de votre voyage…
         </p>
@@ -181,11 +181,11 @@ export function EditView({ tripId }: { tripId: string }) {
           className="text-[clamp(32px,4.5vw,52px)] leading-[1] tracking-tight text-ink"
           style={{ fontFamily: "var(--font-display)" }}
         >
-          Ce voyage <span style={{ fontStyle: "italic" }}>n&apos;existe plus</span>.
+          Ce voyage <span style={{  }}>n&apos;existe plus</span>.
         </h1>
         <p
           className="mt-4 max-w-md text-[15px] text-ink-soft"
-          style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+          style={{ fontFamily: "var(--font-display)" }}
         >
           Soit l&apos;identifiant est erroné, soit le voyage a été supprimé.
         </p>
@@ -321,7 +321,6 @@ export function EditView({ tripId }: { tripId: string }) {
             ].join(" ")}
             style={{
               fontFamily: "var(--font-display)",
-              fontStyle: "italic",
             }}
           >
             {statusBadge}
@@ -332,13 +331,13 @@ export function EditView({ tripId }: { tripId: string }) {
           style={{ fontFamily: "var(--font-display)" }}
         >
           Affinez votre{" "}
-          <span style={{ fontStyle: "italic" }} className="text-[var(--terracotta-ink)]">
+          <span style={{  }} className="text-[var(--terracotta-ink)]">
             voyage.
           </span>
         </h1>
         <p
           className="mt-5 max-w-xl text-[16px] leading-[1.55] text-ink-soft"
-          style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+          style={{ fontFamily: "var(--font-display)" }}
         >
           Modifiez ce que vous voulez. Les changements relancent l&apos;optimisation.
         </p>
@@ -356,7 +355,7 @@ export function EditView({ tripId }: { tripId: string }) {
               <h2
                 id="section-infos"
                 className="text-[22px] tracking-tight text-ink"
-                style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+                style={{ fontFamily: "var(--font-display)" }}
               >
                 Infos générales
               </h2>
@@ -455,7 +454,7 @@ export function EditView({ tripId }: { tripId: string }) {
               <h2
                 id="section-destinations"
                 className="text-[22px] tracking-tight text-ink"
-                style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+                style={{ fontFamily: "var(--font-display)" }}
               >
                 Destinations
               </h2>
@@ -468,7 +467,7 @@ export function EditView({ tripId }: { tripId: string }) {
             {destinations.length === 0 ? (
               <p
                 className="rounded-[12px] border border-dashed border-line bg-background px-4 py-5 text-[14px] text-ink-mute"
-                style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+                style={{ fontFamily: "var(--font-display)" }}
               >
                 Aucune destination pour l&apos;instant — ajoutez-en une ci-dessous.
               </p>
@@ -501,7 +500,6 @@ export function EditView({ tripId }: { tripId: string }) {
                           className="text-[16px] text-ink"
                           style={{
                             fontFamily: "var(--font-display)",
-                            fontStyle: "italic",
                           }}
                         >
                           {dest.name}
@@ -517,7 +515,6 @@ export function EditView({ tripId }: { tripId: string }) {
                           className="text-[12px] text-ink-mute"
                           style={{
                             fontFamily: "var(--font-display)",
-                            fontStyle: "italic",
                           }}
                         >
                           Nuits sur place
@@ -567,7 +564,6 @@ export function EditView({ tripId }: { tripId: string }) {
                   className="mb-2 block text-[13px] text-ink-soft"
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontStyle: "italic",
                   }}
                 >
                   Ajouter une ville
@@ -604,7 +600,6 @@ export function EditView({ tripId }: { tripId: string }) {
                   className="text-ink-mute"
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontStyle: "italic",
                   }}
                 >
                   L&apos;ordre optimal sera recalculé après modifs.
@@ -630,7 +625,7 @@ export function EditView({ tripId }: { tripId: string }) {
               <h2
                 id="section-constraints"
                 className="text-[22px] tracking-tight text-ink"
-                style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+                style={{ fontFamily: "var(--font-display)" }}
               >
                 Contraintes
               </h2>
@@ -649,7 +644,6 @@ export function EditView({ tripId }: { tripId: string }) {
                   className="text-[15px] text-ink"
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontStyle: "italic",
                   }}
                 >
                   {followInputOrder
@@ -690,7 +684,6 @@ export function EditView({ tripId }: { tripId: string }) {
                 className="text-[13px] text-ink-mute"
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontStyle: "italic",
                 }}
               >
                 Ajoutez des destinations pour y attacher des contraintes.
@@ -715,7 +708,6 @@ export function EditView({ tripId }: { tripId: string }) {
                           className="text-ink"
                           style={{
                             fontFamily: "var(--font-display)",
-                            fontStyle: "italic",
                           }}
                         >
                           {dest.name}
@@ -724,7 +716,6 @@ export function EditView({ tripId }: { tripId: string }) {
                           className="text-[12px] text-ink-mute"
                           style={{
                             fontFamily: "var(--font-display)",
-                            fontStyle: "italic",
                           }}
                         >
                           — {constraintLabel}
@@ -758,7 +749,6 @@ export function EditView({ tripId }: { tripId: string }) {
                   className="text-[13.5px] text-[var(--terracotta-ink)]"
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontStyle: "italic",
                   }}
                 >
                   Vous avez des changements non enregistrés.
@@ -812,7 +802,6 @@ export function EditView({ tripId }: { tripId: string }) {
                 ].join(" ")}
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontStyle: "italic",
                 }}
               >
                 {confirmDelete
@@ -837,7 +826,7 @@ export function EditView({ tripId }: { tripId: string }) {
             />
             <p
               className="mt-4 px-2 text-[12px] text-ink-mute"
-              style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+              style={{ fontFamily: "var(--font-display)" }}
             >
               Chaque modif rafraîchit l&apos;aperçu — le calcul, lui, attend
               votre signal.
@@ -850,7 +839,7 @@ export function EditView({ tripId }: { tripId: string }) {
       <footer className="mt-20 flex flex-wrap items-center justify-between gap-3 text-[12px] text-ink-mute">
         <div className="flex items-center gap-2">
           <span
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
             className="text-[15px] text-ink-soft"
           >
             SmartTraveler
