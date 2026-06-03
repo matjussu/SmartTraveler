@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 
@@ -45,11 +46,16 @@ export default function TripRecapPage() {
   const id = String(params?.id ?? "");
   // Résout depuis le store (voyages créés en local) avec repli sur les mocks.
   // Client → fonctionne pour les voyages composés qui vivent dans localStorage.
+  // Gate `mounted` : 1er rendu (serveur + client) stable AVANT réhydratation
+  // Zustand persist → pas de hydration mismatch.
+  const [mounted, setMounted] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- flag de montage SSR-safe (idiome standard)
+  useEffect(() => setMounted(true), []);
   const hydrated = useTripStore((s) => s.hydrated);
   const storeTrip = useTripStore((s) => s.getTrip(id));
   const trip = storeTrip ?? getTripById(id);
 
-  if (!trip) {
+  if (!mounted || !trip) {
     return (
       <main
         data-route="voyage-dark"
@@ -57,7 +63,7 @@ export default function TripRecapPage() {
       >
         <TopNav variant="dark" />
         <div className="mx-auto flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
-          {!hydrated ? (
+          {!mounted || !hydrated ? (
             <p className="text-[13px] text-ink-mute">Chargement du voyage…</p>
           ) : (
             <>

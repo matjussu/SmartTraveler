@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Trip, Alternative, AlternativeKind } from "@/mocks/trips";
@@ -21,41 +21,83 @@ import { BoardingPassRich } from "./boarding-pass-rich";
  * les mocks. Permet d'afficher un voyage composé qui vit dans localStorage —
  * que le Server Component ne peut pas voir. Rend <ResultView> une fois résolu.
  */
+/** Coquille centrée dark pour les états loading / introuvable / non-calculé. */
+function Shell({ children }: { children: React.ReactNode }) {
+  return (
+    <main data-route="voyage-dark" className="relative flex min-h-screen flex-col">
+      <div className="mx-auto flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
+        {children}
+      </div>
+    </main>
+  );
+}
+
 export function ResultGate({ tripId }: { tripId: string }) {
-  const hydrated = useTripStore((s) => s.hydrated);
+  // Gate `mounted` : le 1er rendu (serveur + client) est un loading stable,
+  // AVANT que Zustand persist ne réhydrate localStorage → pas de hydration
+  // mismatch (le store rehydrate de façon asynchrone côté client).
+  const [mounted, setMounted] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- flag de montage SSR-safe (idiome standard)
+  useEffect(() => setMounted(true), []);
   const storeTrip = useTripStore((s) => s.getTrip(tripId));
   const trip = storeTrip ?? getTripById(tripId);
 
+  if (!mounted) {
+    return (
+      <Shell>
+        <p className="text-[13px] text-ink-mute">Chargement du voyage…</p>
+      </Shell>
+    );
+  }
+
   if (!trip) {
     return (
-      <main
-        data-route="voyage-dark"
-        className="relative flex min-h-screen flex-col"
-      >
-        <div className="mx-auto flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
-          {!hydrated ? (
-            <p className="text-[13px] text-ink-mute">Chargement du voyage…</p>
-          ) : (
-            <>
-              <h1
-                className="text-[28px] text-ink"
-                style={{ fontFamily: "var(--font-display)" }}
-              >
-                Voyage introuvable
-              </h1>
-              <p className="max-w-sm text-[14px] text-ink-soft">
-                Ce voyage n’existe pas ou n’est plus disponible.
-              </p>
-              <Link
-                href="/itineraires"
-                className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#ff7a1a] px-5 py-2.5 text-[13px] font-semibold text-white"
-              >
-                Voir vos itinéraires
-              </Link>
-            </>
-          )}
+      <Shell>
+        <h1 className="text-[28px] text-ink" style={{ fontFamily: "var(--font-display)" }}>
+          Voyage introuvable
+        </h1>
+        <p className="max-w-sm text-[14px] text-ink-soft">
+          Ce voyage n’existe pas ou n’est plus disponible.
+        </p>
+        <Link
+          href="/itineraires"
+          className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#ff7a1a] px-5 py-2.5 text-[13px] font-semibold text-white"
+        >
+          Voir vos itinéraires
+        </Link>
+      </Shell>
+    );
+  }
+
+  // Voyage créé = brouillon sans itinéraire calculé (la maquette n'a pas de
+  // solveur réel : seuls les voyages d'exemple ont des alternatives).
+  if (trip.alternatives.length === 0) {
+    return (
+      <Shell>
+        <span aria-hidden className="text-[28px]">🧭</span>
+        <h1 className="text-[26px] text-ink" style={{ fontFamily: "var(--font-display)" }}>
+          Itinéraire pas encore calculé
+        </h1>
+        <p className="max-w-md text-[14px] leading-[1.55] text-ink-soft">
+          Dans cette maquette, seuls les voyages d’exemple disposent d’un
+          itinéraire optimisé (le solveur n’est pas branché). Votre voyage est
+          bien enregistré — explorez un exemple pour voir le résultat final.
+        </p>
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href="/itineraires"
+            className="inline-flex items-center gap-2 rounded-full bg-[#ff7a1a] px-5 py-2.5 text-[13px] font-semibold text-white"
+          >
+            Voir un exemple
+          </Link>
+          <Link
+            href={`/trip/${tripId}/recap`}
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-[13px] text-white/80 transition-colors hover:text-white"
+          >
+            Revenir au récapitulatif
+          </Link>
         </div>
-      </main>
+      </Shell>
     );
   }
 
