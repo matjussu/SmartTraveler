@@ -7,6 +7,7 @@ import {
   formatDateLong,
   tripDurationDays,
 } from "@/lib/format";
+import { BoardingPassRich } from "@/components/voyage/boarding-pass-rich";
 
 /**
  * /trip/[id]/recap — récapitulatif pré-calcul.
@@ -111,6 +112,14 @@ export default async function TripRecapPage(
             meilleurs itinéraires.
           </p>
         </section>
+
+        {/* Billet riche — visible uniquement si le voyage est calculé
+            (sinon le composant renvoie null : pré-calcul intact). */}
+        {alreadyComputed && (
+          <section className="mb-12" aria-label="Billet du voyage">
+            <BoardingPassRich trip={trip} />
+          </section>
+        )}
 
         {/* Layout 12-col : récap sections (8) / aside CTA (4) */}
         <div className="grid grid-cols-12 gap-8">

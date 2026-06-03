@@ -12,6 +12,7 @@ import {
   transportLabel,
   tripDurationDays,
 } from "@/lib/format";
+import { BoardingPassRich } from "./boarding-pass-rich";
 
 const TripMap = dynamic(
   () => import("@/components/voyage/trip-map").then((m) => m.TripMap),
@@ -141,6 +142,11 @@ export function ResultView({ trip }: { trip: Trip }) {
         </div>
       </section>
 
+      {/* Pièce maîtresse : Boarding Pass riche (itinéraire + 3 tarifs + CO₂) */}
+      <section className="mb-9" aria-label="Billet du voyage">
+        <BoardingPassRich trip={trip} activeKind={activeKind} />
+      </section>
+
       {/* Switcher des 3 alternatives — pills */}
       <section className="mb-7" aria-label="Choisir une alternative">
         <div className="text-[10px] uppercase tracking-[0.14em] text-ink-mute mb-3">
@@ -240,8 +246,11 @@ export function ResultView({ trip }: { trip: Trip }) {
       {/* Carte + Étapes du voyage */}
       <section className="mb-10 grid grid-cols-12 gap-6">
         <div className="col-span-12 lg:col-span-7">
-          <div className="h-[460px]">
-            <TripMap trip={trip} activeAlternative={active} />
+          {/* Carte = plan papier encadré posé sur le noir */}
+          <div className="rounded-[20px] bg-[#fbfaf6] p-2 shadow-[0_30px_60px_-30px_rgba(5,6,8,0.7)] ring-1 ring-[#e2dfd6]">
+            <div className="h-[440px] overflow-hidden rounded-[13px]">
+              <TripMap trip={trip} activeAlternative={active} />
+            </div>
           </div>
           <p className="mt-2.5 text-[11.5px] text-ink-mute">
             Carte de fond © OpenStreetMap / CARTO. Itinéraire tracé selon{" "}
