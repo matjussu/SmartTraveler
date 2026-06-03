@@ -95,7 +95,7 @@ export function BoardingTicket({ trip }: { trip: Trip }) {
           </div>
           <h3
             className="mt-2 text-[28px] leading-[1.05] text-ink"
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             {trip.name}
           </h3>
@@ -183,7 +183,7 @@ function AltRow({ alt, highlight = false }: { alt: Alternative; highlight?: bool
         {highlight && (
           <span
             className="ml-2 text-[10px] uppercase tracking-[0.1em] text-[oklch(0.62_0.13_75)]"
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             choix du moment
           </span>

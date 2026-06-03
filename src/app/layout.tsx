@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import {
   IBM_Plex_Mono,
-  Instrument_Serif,
   Plus_Jakarta_Sans,
   JetBrains_Mono,
 } from "next/font/google";
@@ -14,12 +13,12 @@ const jakarta = Plus_Jakarta_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
-const instrumentSerif = Instrument_Serif({
+// Titres : unifiés sur Plus Jakarta Sans (gras), fini l'italique manuscrit.
+const display = Plus_Jakarta_Sans({
   variable: "--font-display",
   subsets: ["latin"],
   display: "swap",
-  weight: ["400"],
-  style: ["normal", "italic"],
+  weight: ["500", "600", "700", "800"],
 });
 
 const jetbrains = JetBrains_Mono({
@@ -50,7 +49,7 @@ export default function RootLayout({
   return (
     <html
       lang="fr"
-      className={`${jakarta.variable} ${instrumentSerif.variable} ${jetbrains.variable} ${ibmPlexMono.variable} h-full antialiased`}
+      className={`${jakarta.variable} ${display.variable} ${jetbrains.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

@@ -37,8 +37,8 @@
 
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono), ui-monospace, monospace;
-  --font-display: var(--font-display), Georgia, serif;
-  --font-heading: var(--font-display), Georgia, serif;
+  --font-display: var(--font-display), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-display), ui-sans-serif, system-ui, sans-serif;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -226,7 +226,7 @@
 /* Stamp/marque "voyage" en filigrane */
 .travel-stamp {
   font-family: var(--font-display);
-  font-style: italic;
+  
   letter-spacing: -0.01em;
 }
 
@@ -289,7 +289,7 @@
   flex-direction: column;
   align-items: center;
   font-family: var(--font-display);
-  font-style: italic;
+  
   font-size: 13px;
   font-weight: 500;
   color: var(--ink);
@@ -361,5 +361,70 @@ main[data-route="home-redesign"] {
 @supports selector(:has(*)) {
   body:has(main[data-route="home-redesign"]) {
     background: #050506;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Redesign noir — `/trip/new` (propagation du style home).
+   Même fond matte black que la home, mais sans splash scroll → min-height: 100vh.
+   Scope strict : les 4 autres formulaires cascade restent cream voyage-pivot.
+--------------------------------------------------------------------------- */
+
+main[data-route="trip-new"] {
+  color: #f6f6f4;
+  min-height: 100vh;
+}
+
+@supports selector(:has(*)) {
+  body:has(main[data-route="trip-new"]) {
+    background: #070708;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Cascade dark — routes voyage converties au style home noire.
+   Plutôt que de réécrire des centaines de classes, on REDÉFINIT les variables
+   de palette dans le scope : toutes les utilities variable-backed (text-ink,
+   bg-card, border-line, text-terracotta…) basculent d'un coup. Les littéraux
+   oklch codés en dur sont remplacés par var(--…) dans les composants concernés
+   pour qu'ils thement aussi.
+   Appliqué via data-route="voyage-dark" sur le <main> de chaque route convertie.
+--------------------------------------------------------------------------- */
+
+main[data-route="voyage-dark"] {
+  /* Pas de fond sur le <main> : il est centré en max-width, donc y mettre le
+     fond créait une colonne + marges noires = "séparation". Le fond plein
+     largeur est posé sur le body (voir body:has ci-dessous). */
+  color: #f6f6f4;
+  min-height: 100vh;
+
+  /* Override palette → dark */
+  --background: #0a0a0b;
+  --surface: rgba(255, 255, 255, 0.03);
+  --surface-elevated: rgba(255, 255, 255, 0.05);
+  --foreground: #f6f6f4;
+  --ink: #f6f6f4;
+  --ink-soft: rgba(255, 255, 255, 0.62);
+  --ink-mute: rgba(255, 255, 255, 0.45);
+  --line: rgba(255, 255, 255, 0.08);
+  --line-strong: rgba(255, 255, 255, 0.16);
+
+  /* Accent ambre (remplace terracotta cream) */
+  --terracotta: #ff7a1a;
+  --terracotta-soft: rgba(255, 122, 26, 0.14);
+  --terracotta-ink: #ff8a3d;
+  --gold: #ff8a3d;
+
+  /* shadcn aliases pertinents */
+  --card: rgba(255, 255, 255, 0.04);
+  --card-foreground: #f6f6f4;
+  --border: rgba(255, 255, 255, 0.08);
+  --input: rgba(255, 255, 255, 0.08);
+  --ring: rgba(255, 122, 26, 0.45);
+}
+
+@supports selector(:has(*)) {
+  body:has(main[data-route="voyage-dark"]) {
+    background: #070708;
   }
 }

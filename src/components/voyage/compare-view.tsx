@@ -17,7 +17,7 @@ const TripMap = dynamic(
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-full items-center justify-center rounded-[16px] border border-line bg-[oklch(0.95_0.012_80)] text-[11px] text-ink-mute">
+      <div className="flex h-full items-center justify-center rounded-[16px] border border-line bg-[var(--surface)] text-[11px] text-ink-mute">
         Préparation de la carte…
       </div>
     ),
@@ -39,24 +39,24 @@ const ALT_META: Record<AlternativeKind, AltMeta> = {
     baseline: "Pour voyager léger sans alléger son envie.",
     recommended: "Budget serré",
     accent: "oklch(0.62 0.155 38)",
-    accentSoft: "oklch(0.93 0.045 50)",
-    accentInk: "oklch(0.42 0.13 35)",
+    accentSoft: "oklch(0.62 0.155 38 / 0.18)",
+    accentInk: "oklch(0.76 0.15 55)",
   },
   fastest: {
     label: "Le plus rapide",
     baseline: "Pour gagner une journée sur place.",
     recommended: "Peu de temps",
     accent: "oklch(0.55 0.115 235)",
-    accentSoft: "oklch(0.94 0.025 230)",
-    accentInk: "oklch(0.38 0.11 240)",
+    accentSoft: "oklch(0.6 0.12 235 / 0.2)",
+    accentInk: "oklch(0.72 0.13 235)",
   },
   eco: {
     label: "Empreinte carbone réduite",
     baseline: "Pour que le voyage commence en gare.",
     recommended: "Conscience écologique",
     accent: "oklch(0.55 0.078 145)",
-    accentSoft: "oklch(0.93 0.025 140)",
-    accentInk: "oklch(0.38 0.07 150)",
+    accentSoft: "oklch(0.6 0.1 150 / 0.2)",
+    accentInk: "oklch(0.72 0.11 150)",
   },
 };
 
@@ -95,7 +95,7 @@ export function CompareView({ trip }: { trip: Trip }) {
   ).filter((a): a is Alternative => Boolean(a));
 
   return (
-    <main className="mx-auto w-full max-w-7xl px-6 pb-24 pt-10">
+    <main data-route="voyage-dark" className="mx-auto w-full max-w-7xl px-6 pb-24 pt-10">
       {/* Breadcrumb */}
       <div className="mb-6 flex flex-wrap items-center gap-2 text-[12px] text-ink-mute">
         <Link
@@ -144,11 +144,11 @@ export function CompareView({ trip }: { trip: Trip }) {
             style={{ fontFamily: "var(--font-display)" }}
           >
             Trois façons d&apos;
-            <span style={{ fontStyle: "italic" }}>arriver là-bas</span>.
+            <span style={{  }}>arriver là-bas</span>.
           </h1>
           <p
             className="mt-4 max-w-xl text-[15px] leading-[1.55] text-ink-soft"
-            style={{ fontStyle: "italic" }}
+            style={{  }}
           >
             La même séquence de villes, trois philosophies de voyage. Choisissez
             celle qui vous ressemble.
@@ -200,7 +200,7 @@ export function CompareView({ trip }: { trip: Trip }) {
             className="mt-1 text-[28px] leading-[1.1] tracking-tight text-ink"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Différences <span style={{ fontStyle: "italic" }}>clés</span>
+            Différences <span style={{  }}>clés</span>
           </h2>
         </div>
 
@@ -227,7 +227,6 @@ export function CompareView({ trip }: { trip: Trip }) {
                       className="text-[13px] tracking-tight"
                       style={{
                         fontFamily: "var(--font-display)",
-                        fontStyle: "italic",
                         color: meta.accentInk,
                       }}
                     >
@@ -290,7 +289,7 @@ export function CompareView({ trip }: { trip: Trip }) {
       <section className="mt-16">
         <p
           className="max-w-2xl text-[18px] leading-[1.4] text-ink-soft"
-          style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+          style={{ fontFamily: "var(--font-display)" }}
         >
           SmartTraveler optimise pour vous — vous, vous choisissez.
         </p>
@@ -316,7 +315,7 @@ export function CompareView({ trip }: { trip: Trip }) {
       <footer className="mt-20 border-t border-line pt-6 text-[11.5px] text-ink-mute">
         <div className="flex flex-wrap items-baseline justify-between gap-3">
           <span
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
             className="text-ink-soft"
           >
             SmartTraveler — voyages composés
@@ -362,7 +361,6 @@ function AlternativeCard({ trip, alt }: { trip: Trip; alt: Alternative }) {
           className="mt-2 text-[22px] leading-tight tracking-tight"
           style={{
             fontFamily: "var(--font-display)",
-            fontStyle: "italic",
             color: meta.accentInk,
           }}
         >
@@ -370,7 +368,7 @@ function AlternativeCard({ trip, alt }: { trip: Trip; alt: Alternative }) {
         </h2>
         <p
           className="mt-1.5 text-[13px] leading-[1.45] text-ink-soft"
-          style={{ fontStyle: "italic" }}
+          style={{  }}
         >
           {meta.baseline}
         </p>
@@ -431,7 +429,7 @@ function AlternativeCard({ trip, alt }: { trip: Trip; alt: Alternative }) {
             <div className="min-w-0">
               <div
                 className="truncate text-[13.5px] leading-tight text-ink"
-                style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+                style={{ fontFamily: "var(--font-display)" }}
               >
                 {leg.from.name}
                 <span className="mx-1.5 text-ink-mute" aria-hidden>
@@ -537,11 +535,11 @@ function ComparisonRow({
   return (
     <>
       <div
-        className={`flex items-center px-5 py-4 text-[12px] uppercase tracking-[0.12em] text-ink-mute ${borderClass} md:bg-[oklch(0.97_0.014_78)]`}
+        className={`flex items-center px-5 py-4 text-[12px] uppercase tracking-[0.12em] text-ink-mute ${borderClass} md:bg-[var(--surface)]`}
       >
         <span
           className="md:not-italic"
-          style={{ fontFamily: "var(--font-display)", fontStyle: "italic", letterSpacing: "0" }}
+          style={{ fontFamily: "var(--font-display)", letterSpacing: "0" }}
         >
           {label}
         </span>

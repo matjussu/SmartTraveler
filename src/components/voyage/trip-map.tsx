@@ -83,7 +83,7 @@ export function TripMap({
   return (
     <div
       ref={containerRef}
-      className="relative overflow-hidden rounded-[18px] border border-line bg-[oklch(0.95_0.012_80)]"
+      className="relative isolate overflow-hidden rounded-[18px] border border-line bg-[oklch(0.95_0.012_80)]"
       style={{ height: "100%", minHeight: 360 }}
     >
       <MapContainer

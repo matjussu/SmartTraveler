@@ -32,7 +32,7 @@ export default async function SharedTripPage(
           <span>Voyage partagé · lecture seule</span>
         </div>
       </div>
-      <TopNav />
+      <TopNav variant="dark" />
       <SharedView trip={trip} />
     </>
   );

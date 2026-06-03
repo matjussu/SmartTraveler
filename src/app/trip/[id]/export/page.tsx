@@ -12,7 +12,7 @@ export default async function TripExportPage(
 
   return (
     <>
-      <TopNav />
+      <TopNav variant="dark" />
       <ExportView trip={trip} />
     </>
   );

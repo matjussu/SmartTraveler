@@ -1,12 +1,17 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { useParams } from "next/navigation";
 
 import { TopNav } from "@/components/voyage/top-nav";
 import { getTripById } from "@/mocks/trips";
+import { useTripStore } from "@/store/trip-store";
 import {
   formatDateLong,
   tripDurationDays,
 } from "@/lib/format";
+import { BoardingPassRich } from "@/components/voyage/boarding-pass-rich";
 
 /**
  * /trip/[id]/recap — récapitulatif pré-calcul.
@@ -36,12 +41,53 @@ import {
  *    pilote (boarding-ticket cream) : ici on n'esquisse plus, on engage.
  */
 
-export default async function TripRecapPage(
-  props: PageProps<"/trip/[id]/recap">
-) {
-  const { id } = await props.params;
-  const trip = getTripById(id);
-  if (!trip) notFound();
+export default function TripRecapPage() {
+  const params = useParams<{ id: string }>();
+  const id = String(params?.id ?? "");
+  // Résout depuis le store (voyages créés en local) avec repli sur les mocks.
+  // Client → fonctionne pour les voyages composés qui vivent dans localStorage.
+  // Gate `mounted` : 1er rendu (serveur + client) stable AVANT réhydratation
+  // Zustand persist → pas de hydration mismatch.
+  const [mounted, setMounted] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- flag de montage SSR-safe (idiome standard)
+  useEffect(() => setMounted(true), []);
+  const hydrated = useTripStore((s) => s.hydrated);
+  const storeTrip = useTripStore((s) => s.getTrip(id));
+  const trip = storeTrip ?? getTripById(id);
+
+  if (!mounted || !trip) {
+    return (
+      <main
+        data-route="voyage-dark"
+        className="relative flex min-h-screen flex-col"
+      >
+        <TopNav variant="dark" />
+        <div className="mx-auto flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
+          {!mounted || !hydrated ? (
+            <p className="text-[13px] text-ink-mute">Chargement du voyage…</p>
+          ) : (
+            <>
+              <h1
+                className="text-[28px] text-ink"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Voyage introuvable
+              </h1>
+              <p className="max-w-sm text-[14px] text-ink-soft">
+                Ce voyage n’existe pas ou n’est plus disponible.
+              </p>
+              <Link
+                href="/itineraires"
+                className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#ff7a1a] px-5 py-2.5 text-[13px] font-semibold text-white"
+              >
+                Voir vos itinéraires
+              </Link>
+            </>
+          )}
+        </div>
+      </main>
+    );
+  }
 
   const days = tripDurationDays(trip.startDate, trip.endDate);
   const destinations = trip.destinations;
@@ -60,8 +106,8 @@ export default async function TripRecapPage(
 
   return (
     <>
-      <TopNav />
-      <main className="mx-auto w-full max-w-6xl px-6 pt-10 pb-24 lg:px-8 lg:pt-12">
+      <TopNav variant="dark" />
+      <main data-route="voyage-dark" className="mx-auto w-full max-w-6xl px-6 pt-10 pb-24 lg:px-8 lg:pt-12">
         {/* Breadcrumb */}
         <nav
           aria-label="Fil d'ariane"
@@ -84,7 +130,7 @@ export default async function TripRecapPage(
               className={`inline-block h-1.5 w-1.5 rounded-full ${
                 alreadyComputed
                   ? "bg-[oklch(0.55_0.078_145)]"
-                  : "bg-[oklch(0.78_0.13_75)]"
+                  : "bg-[var(--gold)]"
               }`}
             />
             <span>
@@ -97,20 +143,28 @@ export default async function TripRecapPage(
           >
             Un dernier{" "}
             <span
-              style={{ fontStyle: "italic" }}
-              className="text-[oklch(0.42_0.13_35)]"
+              style={{  }}
+              className="text-[var(--terracotta-ink)]"
             >
               coup d&apos;œil.
             </span>
           </h1>
           <p
             className="mt-5 max-w-xl text-[16px] leading-[1.55] text-ink-soft"
-            style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+            style={{ fontFamily: "var(--font-display)" }}
           >
             Vérifiez les éléments. SmartTraveler peut maintenant composer les
             meilleurs itinéraires.
           </p>
         </section>
+
+        {/* Billet riche — visible uniquement si le voyage est calculé
+            (sinon le composant renvoie null : pré-calcul intact). */}
+        {alreadyComputed && (
+          <section className="mb-12" aria-label="Billet du voyage">
+            <BoardingPassRich trip={trip} />
+          </section>
+        )}
 
         {/* Layout 12-col : récap sections (8) / aside CTA (4) */}
         <div className="grid grid-cols-12 gap-8">
@@ -128,7 +182,6 @@ export default async function TripRecapPage(
                 className="text-[22px] leading-tight text-ink"
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontStyle: "italic",
                 }}
               >
                 Le voyage
@@ -172,7 +225,6 @@ export default async function TripRecapPage(
                   className="text-[22px] leading-tight text-ink"
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontStyle: "italic",
                   }}
                 >
                   Les villes
@@ -187,7 +239,6 @@ export default async function TripRecapPage(
                   className="mt-5 text-[14px] text-ink-mute"
                   style={{
                     fontFamily: "var(--font-display)",
-                    fontStyle: "italic",
                   }}
                 >
                   Aucune destination ajoutée pour l&apos;instant.
@@ -209,7 +260,7 @@ export default async function TripRecapPage(
                           className="inline-flex h-7 w-9 shrink-0 items-center justify-center rounded text-[11px] tracking-[0.06em] text-ink-soft"
                           style={{
                             fontFamily: "var(--font-mono)",
-                            background: "oklch(0.94 0.018 75)",
+                            background: "rgba(255, 255, 255, 0.08)",
                           }}
                         >
                           {cityCode(dest.city.name)}
@@ -219,7 +270,6 @@ export default async function TripRecapPage(
                             className="text-[16px] leading-tight text-ink"
                             style={{
                               fontFamily: "var(--font-display)",
-                              fontStyle: "italic",
                             }}
                           >
                             {dest.city.name}
@@ -252,7 +302,6 @@ export default async function TripRecapPage(
                 className="text-[22px] leading-tight text-ink"
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontStyle: "italic",
                 }}
               >
                 La carte
@@ -261,14 +310,13 @@ export default async function TripRecapPage(
                 className="mt-2 text-[13px] text-ink-mute"
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontStyle: "italic",
                 }}
               >
                 La carte apparaîtra après le calcul.
               </p>
 
               <div
-                className="mt-5 relative overflow-hidden rounded-[14px] border border-dashed border-line-strong bg-[oklch(0.95_0.012_80)]"
+                className="mt-5 relative overflow-hidden rounded-[14px] border border-dashed border-line-strong bg-[var(--surface)]"
                 style={{ minHeight: 220 }}
                 role="img"
                 aria-label="Aperçu schématique de l'itinéraire à venir"
@@ -298,7 +346,6 @@ export default async function TripRecapPage(
                       className="text-[14px] text-ink-mute"
                       style={{
                         fontFamily: "var(--font-display)",
-                        fontStyle: "italic",
                       }}
                     >
                       Ajoutez quelques villes pour voir l&apos;esquisse.
@@ -317,14 +364,14 @@ export default async function TripRecapPage(
             {/* Section "Ce que SmartTraveler va optimiser" ----------- */}
             <section
               aria-labelledby="recap-optim"
-              className="rounded-[18px] border border-[oklch(0.85_0.07_45)] bg-[oklch(0.96_0.025_55)] px-7 py-6"
+              className="rounded-[18px] border border-[var(--terracotta-soft)] bg-[var(--surface)] px-7 py-6"
             >
               <div className="flex items-center gap-2">
                 <span
                   aria-hidden
-                  className="inline-block h-1 w-6 bg-[oklch(0.62_0.155_38)]"
+                  className="inline-block h-1 w-6 bg-[var(--terracotta)]"
                 />
-                <span className="text-[11px] uppercase tracking-[0.14em] text-[oklch(0.42_0.13_35)]">
+                <span className="text-[11px] uppercase tracking-[0.14em] text-[var(--terracotta-ink)]">
                   À calculer
                 </span>
               </div>
@@ -333,7 +380,6 @@ export default async function TripRecapPage(
                 className="mt-3 text-[24px] leading-[1.15] text-ink"
                 style={{
                   fontFamily: "var(--font-display)",
-                  fontStyle: "italic",
                 }}
               >
                 Ce que SmartTraveler va optimiser
@@ -347,7 +393,7 @@ export default async function TripRecapPage(
                   >
                     <span
                       aria-hidden
-                      className="mt-[8px] inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[oklch(0.62_0.155_38)]"
+                      className="mt-[8px] inline-block h-1.5 w-1.5 shrink-0 rounded-full bg-[var(--terracotta)]"
                     />
                     <span>{promise}</span>
                   </li>
@@ -363,7 +409,7 @@ export default async function TripRecapPage(
             <div className="lg:sticky lg:top-24">
               <aside
                 aria-label="Lancer le calcul du voyage"
-                className="overflow-hidden rounded-[20px] border border-[oklch(0.85_0.07_45)] bg-[oklch(0.94_0.04_52)]"
+                className="overflow-hidden rounded-[20px] border border-[var(--terracotta-soft)] bg-[var(--surface)]"
                 style={{
                   boxShadow:
                     "0 1px 0 0 oklch(1 0 0 / 0.6), 0 12px 28px -18px oklch(0.42 0.13 35 / 0.25)",
@@ -371,7 +417,7 @@ export default async function TripRecapPage(
               >
                 {/* Mini-stat hero */}
                 <div className="px-6 pt-6 pb-4">
-                  <div className="text-[10px] uppercase tracking-[0.14em] text-[oklch(0.42_0.13_35)]">
+                  <div className="text-[10px] uppercase tracking-[0.14em] text-[var(--terracotta-ink)]">
                     Votre voyage
                   </div>
                   <div className="mt-2 flex items-baseline gap-3">
@@ -388,7 +434,6 @@ export default async function TripRecapPage(
                       className="text-[15px] text-ink-soft"
                       style={{
                         fontFamily: "var(--font-display)",
-                        fontStyle: "italic",
                       }}
                     >
                       ville{stops > 1 ? "s" : ""}
@@ -409,7 +454,6 @@ export default async function TripRecapPage(
                       className="text-[15px] text-ink-soft"
                       style={{
                         fontFamily: "var(--font-display)",
-                        fontStyle: "italic",
                       }}
                     >
                       jours
@@ -433,12 +477,11 @@ export default async function TripRecapPage(
                 {/* CTA principal */}
                 <div className="px-6 pt-5 pb-6">
                   {!isComplete && (
-                    <div className="mb-4 rounded-[12px] border border-[oklch(0.82_0.08_55)] bg-[oklch(0.97_0.02_60)] px-4 py-3">
+                    <div className="mb-4 rounded-[12px] border border-[var(--line-strong)] bg-[var(--surface)] px-4 py-3">
                       <div
                         className="text-[13.5px] text-ink"
                         style={{
                           fontFamily: "var(--font-display)",
-                          fontStyle: "italic",
                         }}
                       >
                         Quelques détails manquent encore.
@@ -451,7 +494,7 @@ export default async function TripRecapPage(
                           >
                             <span
                               aria-hidden
-                              className="mt-[7px] inline-block h-1 w-1 shrink-0 rounded-full bg-[oklch(0.62_0.155_38)]"
+                              className="mt-[7px] inline-block h-1 w-1 shrink-0 rounded-full bg-[var(--terracotta)]"
                             />
                             <span>{m}</span>
                           </li>
@@ -466,17 +509,16 @@ export default async function TripRecapPage(
                       className={[
                         "group inline-flex w-full items-center justify-center gap-2 rounded-full",
                         "h-14 px-6 text-[16px]",
-                        "bg-[oklch(0.62_0.155_38)] text-[oklch(0.99_0.005_80)]",
-                        "shadow-[0_14px_28px_-14px_oklch(0.42_0.13_35_/_0.55)]",
+                        "bg-[var(--terracotta)] text-[oklch(0.99_0.005_80)]",
+                        "shadow-[0_14px_28px_-14px_var(--terracotta-ink)]",
                         "transition-[transform,box-shadow] duration-200 ease-out",
-                        "hover:scale-[1.015] hover:shadow-[0_18px_36px_-14px_oklch(0.42_0.13_35_/_0.6)]",
+                        "hover:scale-[1.015] hover:shadow-[0_18px_36px_-14px_var(--terracotta-ink)]",
                         "active:scale-[0.985]",
                       ].join(" ")}
                     >
                       <span
                         style={{
                           fontFamily: "var(--font-display)",
-                          fontStyle: "italic",
                         }}
                       >
                         Calculer mon voyage
@@ -497,14 +539,13 @@ export default async function TripRecapPage(
                       className={[
                         "inline-flex w-full items-center justify-center gap-2 rounded-full",
                         "h-14 px-6 text-[16px]",
-                        "bg-[oklch(0.62_0.155_38)] text-[oklch(0.99_0.005_80)]",
+                        "bg-[var(--terracotta)] text-[oklch(0.99_0.005_80)]",
                         "cursor-not-allowed opacity-50 shadow-none",
                       ].join(" ")}
                     >
                       <span
                         style={{
                           fontFamily: "var(--font-display)",
-                          fontStyle: "italic",
                         }}
                       >
                         Calculer mon voyage
@@ -523,16 +564,15 @@ export default async function TripRecapPage(
                     className="mt-3 text-center text-[12px] text-ink-mute"
                     style={{
                       fontFamily: "var(--font-display)",
-                      fontStyle: "italic",
                     }}
                   >
                     Cela prend quelques secondes. Vous pourrez ajuster après.
                   </p>
 
-                  <div className="mt-5 flex flex-col items-center gap-2 border-t border-[oklch(0.85_0.07_45)] pt-4">
+                  <div className="mt-5 flex flex-col items-center gap-2 border-t border-[var(--terracotta-soft)] pt-4">
                     <Link
                       href={`/trip/${trip.id}/edit`}
-                      className="text-[13px] text-ink-soft underline decoration-[oklch(0.78_0.13_75)] decoration-2 underline-offset-4 transition-colors hover:text-ink"
+                      className="text-[13px] text-ink-soft underline decoration-[var(--gold)] decoration-2 underline-offset-4 transition-colors hover:text-ink"
                     >
                       Modifier d&apos;abord
                     </Link>
@@ -557,7 +597,6 @@ export default async function TripRecapPage(
             <span
               style={{
                 fontFamily: "var(--font-display)",
-                fontStyle: "italic",
               }}
               className="text-[15px] text-ink-soft"
             >
@@ -624,19 +663,19 @@ function DestinationBadge({ kind }: { kind: BadgeKind }) {
     { bg: string; ink: string; border: string }
   > = {
     souple: {
-      bg: "oklch(0.94 0.018 75)",
-      ink: "oklch(0.48 0.025 48)",
-      border: "oklch(0.85 0.024 70)",
+      bg: "rgba(255, 255, 255, 0.06)",
+      ink: "rgba(255, 255, 255, 0.55)",
+      border: "rgba(255, 255, 255, 0.12)",
     },
     première: {
-      bg: "oklch(0.93 0.045 50)",
-      ink: "oklch(0.42 0.13 35)",
-      border: "oklch(0.85 0.07 45)",
+      bg: "var(--terracotta-soft)",
+      ink: "var(--terracotta-ink)",
+      border: "var(--terracotta)",
     },
     dernière: {
-      bg: "oklch(0.94 0.025 230)",
-      ink: "oklch(0.38 0.11 240)",
-      border: "oklch(0.86 0.045 232)",
+      bg: "oklch(0.6 0.12 235 / 0.2)",
+      ink: "oklch(0.72 0.13 235)",
+      border: "oklch(0.6 0.12 235 / 0.45)",
     },
   };
   const s = styles[kind];

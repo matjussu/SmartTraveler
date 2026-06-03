@@ -1,9 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Trip, Alternative, AlternativeKind } from "@/mocks/trips";
+import { getTripById } from "@/mocks/trips";
+import { useTripStore } from "@/store/trip-store";
 import {
   formatCost,
   formatLongDuration,
@@ -12,13 +14,102 @@ import {
   transportLabel,
   tripDurationDays,
 } from "@/lib/format";
+import { BoardingPassRich } from "./boarding-pass-rich";
+
+/**
+ * Résout le voyage côté client : store (voyages créés en local) avec repli sur
+ * les mocks. Permet d'afficher un voyage composé qui vit dans localStorage —
+ * que le Server Component ne peut pas voir. Rend <ResultView> une fois résolu.
+ */
+/** Coquille centrée dark pour les états loading / introuvable / non-calculé. */
+function Shell({ children }: { children: React.ReactNode }) {
+  return (
+    <main data-route="voyage-dark" className="relative flex min-h-screen flex-col">
+      <div className="mx-auto flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
+        {children}
+      </div>
+    </main>
+  );
+}
+
+export function ResultGate({ tripId }: { tripId: string }) {
+  // Gate `mounted` : le 1er rendu (serveur + client) est un loading stable,
+  // AVANT que Zustand persist ne réhydrate localStorage → pas de hydration
+  // mismatch (le store rehydrate de façon asynchrone côté client).
+  const [mounted, setMounted] = useState(false);
+  // eslint-disable-next-line react-hooks/set-state-in-effect -- flag de montage SSR-safe (idiome standard)
+  useEffect(() => setMounted(true), []);
+  const storeTrip = useTripStore((s) => s.getTrip(tripId));
+  const trip = storeTrip ?? getTripById(tripId);
+
+  if (!mounted) {
+    return (
+      <Shell>
+        <p className="text-[13px] text-ink-mute">Chargement du voyage…</p>
+      </Shell>
+    );
+  }
+
+  if (!trip) {
+    return (
+      <Shell>
+        <h1 className="text-[28px] text-ink" style={{ fontFamily: "var(--font-display)" }}>
+          Voyage introuvable
+        </h1>
+        <p className="max-w-sm text-[14px] text-ink-soft">
+          Ce voyage n’existe pas ou n’est plus disponible.
+        </p>
+        <Link
+          href="/itineraires"
+          className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#ff7a1a] px-5 py-2.5 text-[13px] font-semibold text-white"
+        >
+          Voir vos itinéraires
+        </Link>
+      </Shell>
+    );
+  }
+
+  // Voyage créé = brouillon sans itinéraire calculé (la maquette n'a pas de
+  // solveur réel : seuls les voyages d'exemple ont des alternatives).
+  if (trip.alternatives.length === 0) {
+    return (
+      <Shell>
+        <span aria-hidden className="text-[28px]">🧭</span>
+        <h1 className="text-[26px] text-ink" style={{ fontFamily: "var(--font-display)" }}>
+          Itinéraire pas encore calculé
+        </h1>
+        <p className="max-w-md text-[14px] leading-[1.55] text-ink-soft">
+          Dans cette maquette, seuls les voyages d’exemple disposent d’un
+          itinéraire optimisé (le solveur n’est pas branché). Votre voyage est
+          bien enregistré — explorez un exemple pour voir le résultat final.
+        </p>
+        <div className="mt-2 flex flex-wrap items-center justify-center gap-3">
+          <Link
+            href="/itineraires"
+            className="inline-flex items-center gap-2 rounded-full bg-[#ff7a1a] px-5 py-2.5 text-[13px] font-semibold text-white"
+          >
+            Voir un exemple
+          </Link>
+          <Link
+            href={`/trip/${tripId}/recap`}
+            className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-5 py-2.5 text-[13px] text-white/80 transition-colors hover:text-white"
+          >
+            Revenir au récapitulatif
+          </Link>
+        </div>
+      </Shell>
+    );
+  }
+
+  return <ResultView trip={trip} />;
+}
 
 const TripMap = dynamic(
   () => import("@/components/voyage/trip-map").then((m) => m.TripMap),
   {
     ssr: false,
     loading: () => (
-      <div className="flex h-full min-h-[360px] items-center justify-center rounded-[18px] border border-line bg-[oklch(0.95_0.012_80)] text-[12px] text-ink-mute">
+      <div className="flex h-full min-h-[360px] items-center justify-center rounded-[18px] border border-line bg-[var(--surface)] text-[12px] text-ink-mute">
         Préparation de la carte…
       </div>
     ),
@@ -40,24 +131,24 @@ const ALT_META: Record<AlternativeKind, AltMeta> = {
     short: "À petit prix",
     baseline: "Pour voyager léger sans alléger son envie.",
     accent: "oklch(0.62 0.155 38)",
-    accentSoft: "oklch(0.93 0.045 50)",
-    accentInk: "oklch(0.42 0.13 35)",
+    accentSoft: "oklch(0.62 0.155 38 / 0.18)",
+    accentInk: "oklch(0.76 0.15 55)",
   },
   fastest: {
     label: "Le plus rapide",
     short: "Express",
     baseline: "Pour gagner une journée sur place.",
     accent: "oklch(0.55 0.115 235)",
-    accentSoft: "oklch(0.94 0.025 230)",
-    accentInk: "oklch(0.38 0.11 240)",
+    accentSoft: "oklch(0.6 0.12 235 / 0.2)",
+    accentInk: "oklch(0.72 0.13 235)",
   },
   eco: {
     label: "Empreinte carbone réduite",
     short: "Plus vert",
     baseline: "Pour que le voyage commence en gare.",
     accent: "oklch(0.55 0.078 145)",
-    accentSoft: "oklch(0.93 0.025 140)",
-    accentInk: "oklch(0.38 0.07 150)",
+    accentSoft: "oklch(0.6 0.1 150 / 0.2)",
+    accentInk: "oklch(0.72 0.11 150)",
   },
 };
 
@@ -80,7 +171,7 @@ export function ResultView({ trip }: { trip: Trip }) {
   ];
 
   return (
-    <main className="mx-auto w-full max-w-6xl px-6 pb-24 pt-8">
+    <main data-route="voyage-dark" className="mx-auto w-full max-w-6xl px-6 pb-24 pt-8">
       {/* Breadcrumb + retour */}
       <div className="mb-6 flex items-center gap-3 text-[12px] text-ink-mute">
         <Link
@@ -118,7 +209,7 @@ export function ResultView({ trip }: { trip: Trip }) {
               style={{ fontFamily: "var(--font-display)" }}
             >
               {trip.name}
-              <span style={{ fontStyle: "italic", color: activeMeta.accentInk }}>.</span>
+              <span style={{ color: activeMeta.accentInk }}>.</span>
             </h1>
             <p className="mt-4 max-w-xl text-[15px] leading-[1.55] text-ink-soft">
               Du {formatDateLong(trip.startDate)} au {formatDateLong(trip.endDate)}, au
@@ -132,13 +223,18 @@ export function ResultView({ trip }: { trip: Trip }) {
             </div>
             <div
               className="mt-1 text-[20px] tracking-tight text-ink"
-              style={{ fontFamily: "var(--font-display)", fontStyle: "italic" }}
+              style={{ fontFamily: "var(--font-display)" }}
             >
               {activeMeta.label}
             </div>
             <p className="mt-1 text-[12.5px] text-ink-mute">{activeMeta.baseline}</p>
           </div>
         </div>
+      </section>
+
+      {/* Pièce maîtresse : Boarding Pass riche (itinéraire + 3 tarifs + CO₂) */}
+      <section className="mb-9" aria-label="Billet du voyage">
+        <BoardingPassRich trip={trip} activeKind={activeKind} />
       </section>
 
       {/* Switcher des 3 alternatives — pills */}
@@ -176,7 +272,6 @@ export function ResultView({ trip }: { trip: Trip }) {
                       className="text-[14px] tracking-tight"
                       style={{
                         fontFamily: "var(--font-display)",
-                        fontStyle: "italic",
                         color: isActive ? meta.accentInk : "var(--ink)",
                       }}
                     >
@@ -240,8 +335,11 @@ export function ResultView({ trip }: { trip: Trip }) {
       {/* Carte + Étapes du voyage */}
       <section className="mb-10 grid grid-cols-12 gap-6">
         <div className="col-span-12 lg:col-span-7">
-          <div className="h-[460px]">
-            <TripMap trip={trip} activeAlternative={active} />
+          {/* Carte = plan papier encadré posé sur le noir */}
+          <div className="rounded-[20px] bg-[#fbfaf6] p-2 shadow-[0_30px_60px_-30px_rgba(5,6,8,0.7)] ring-1 ring-[#e2dfd6]">
+            <div className="h-[440px] overflow-hidden rounded-[13px]">
+              <TripMap trip={trip} activeAlternative={active} />
+            </div>
           </div>
           <p className="mt-2.5 text-[11.5px] text-ink-mute">
             Carte de fond © OpenStreetMap / CARTO. Itinéraire tracé selon{" "}
@@ -260,7 +358,7 @@ export function ResultView({ trip }: { trip: Trip }) {
             >
               De {trip.startCity.name} à {trip.startCity.name},
               <br />
-              <span style={{ fontStyle: "italic" }}>en passant par</span>
+              <span style={{  }}>en passant par</span>
             </h2>
 
             <ol className="mt-5 space-y-4">
@@ -446,7 +544,7 @@ export function ResultView({ trip }: { trip: Trip }) {
                 color: activeMeta.accentInk,
               }}
             >
-              {trip.name} — <span style={{ fontStyle: "italic" }}>{activeMeta.label.toLowerCase()}</span>
+              {trip.name} — <span style={{  }}>{activeMeta.label.toLowerCase()}</span>
             </h2>
             <p className="mt-3 max-w-md text-[14px] text-ink-soft">
               {trip.destinations.length} étape
@@ -473,7 +571,7 @@ export function ResultView({ trip }: { trip: Trip }) {
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[13.5px] font-medium text-[oklch(0.99_0.005_80)] transition-transform duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
+            className="inline-flex items-center gap-2 rounded-full bg-[#ff7a1a] px-5 py-3 text-[13.5px] font-medium text-[oklch(0.99_0.005_80)] transition-transform duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
           >
             <span>Réserver cette version</span>
             <span aria-hidden>→</span>

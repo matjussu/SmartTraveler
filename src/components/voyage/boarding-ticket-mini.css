@@ -1,0 +1,161 @@
+/**
+ * Mini billet d'embarquement — carte de voyage pour la liste /itineraires.
+ * Billet papier compact posé sur la page noire (même langage que BoardingPass*).
+ * Classes `.btm-*`.
+ */
+
+.btm {
+  --btm-paper: #ffffff;
+  --btm-paper-edge: #f1ede4;
+  --btm-ink: #0d0d10;
+  --btm-ink-soft: #4a4a52;
+  --btm-ink-mute: #8d8d92;
+  --btm-rule: #e2dfd6;
+  --btm-accent: #ff8a3d;
+  --btm-leaf: #2b7a4b;
+  --btm-page: #050506;
+
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 22px;
+  border-radius: 14px;
+  background: var(--btm-paper);
+  color: var(--btm-ink);
+  font-family: var(--font-jakarta), system-ui, sans-serif;
+  text-decoration: none;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 26px 50px -28px rgba(5, 6, 8, 0.7),
+    0 5px 14px rgba(5, 6, 8, 0.3);
+  transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 220ms ease;
+}
+.btm:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.9) inset,
+    0 34px 60px -28px rgba(5, 6, 8, 0.78),
+    0 7px 18px rgba(5, 6, 8, 0.36);
+}
+.btm:focus-visible {
+  outline: 2px solid var(--btm-accent);
+  outline-offset: 3px;
+}
+
+.btm-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.btm-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-flap), ui-monospace, monospace;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--btm-ink-mute);
+}
+.btm-eyebrow::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--btm-accent);
+  box-shadow: 0 0 8px var(--btm-accent);
+}
+.btm-price {
+  font-family: var(--font-flap), ui-monospace, monospace;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--btm-ink);
+  white-space: nowrap;
+}
+.btm-price .btm-from {
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--btm-ink-mute);
+  margin-right: 5px;
+}
+.btm-price.draft {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--btm-accent);
+}
+
+.btm-title {
+  margin: 0;
+  font-family: var(--font-display), Georgia, serif;
+  
+  font-size: clamp(20px, 2.4vw, 25px);
+  line-height: 1.05;
+  color: var(--btm-ink);
+}
+
+.btm-route {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  font-family: var(--font-flap), ui-monospace, monospace;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: var(--btm-ink);
+}
+.btm-route .btm-arrow {
+  color: var(--btm-ink-mute);
+  font-size: 11px;
+}
+
+.btm-rule {
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    var(--btm-rule) 0,
+    var(--btm-rule) 5px,
+    transparent 5px,
+    transparent 10px
+  );
+  background-size: 10px 1px;
+  background-repeat: repeat-x;
+}
+
+.btm-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-family: var(--font-flap), ui-monospace, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--btm-ink-mute);
+}
+.btm-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--btm-ink-soft);
+  transition: gap 160ms ease, color 160ms ease;
+}
+.btm:hover .btm-go {
+  gap: 9px;
+  color: var(--btm-accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btm,
+  .btm-go { transition: none; }
+}
