@@ -1,8 +1,11 @@
+"use client";
+
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { useParams } from "next/navigation";
 
 import { TopNav } from "@/components/voyage/top-nav";
 import { getTripById } from "@/mocks/trips";
+import { useTripStore } from "@/store/trip-store";
 import {
   formatDateLong,
   tripDurationDays,
@@ -37,12 +40,48 @@ import { BoardingPassRich } from "@/components/voyage/boarding-pass-rich";
  *    pilote (boarding-ticket cream) : ici on n'esquisse plus, on engage.
  */
 
-export default async function TripRecapPage(
-  props: PageProps<"/trip/[id]/recap">
-) {
-  const { id } = await props.params;
-  const trip = getTripById(id);
-  if (!trip) notFound();
+export default function TripRecapPage() {
+  const params = useParams<{ id: string }>();
+  const id = String(params?.id ?? "");
+  // Résout depuis le store (voyages créés en local) avec repli sur les mocks.
+  // Client → fonctionne pour les voyages composés qui vivent dans localStorage.
+  const hydrated = useTripStore((s) => s.hydrated);
+  const storeTrip = useTripStore((s) => s.getTrip(id));
+  const trip = storeTrip ?? getTripById(id);
+
+  if (!trip) {
+    return (
+      <main
+        data-route="voyage-dark"
+        className="relative flex min-h-screen flex-col"
+      >
+        <TopNav variant="dark" />
+        <div className="mx-auto flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
+          {!hydrated ? (
+            <p className="text-[13px] text-ink-mute">Chargement du voyage…</p>
+          ) : (
+            <>
+              <h1
+                className="text-[28px] text-ink"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Voyage introuvable
+              </h1>
+              <p className="max-w-sm text-[14px] text-ink-soft">
+                Ce voyage n’existe pas ou n’est plus disponible.
+              </p>
+              <Link
+                href="/itineraires"
+                className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#ff7a1a] px-5 py-2.5 text-[13px] font-semibold text-white"
+              >
+                Voir vos itinéraires
+              </Link>
+            </>
+          )}
+        </div>
+      </main>
+    );
+  }
 
   const days = tripDurationDays(trip.startDate, trip.endDate);
   const destinations = trip.destinations;
