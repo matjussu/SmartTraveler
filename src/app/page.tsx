@@ -75,9 +75,9 @@ export default function Home() {
           de ~24-35vh après shrink), et le globe commence TOUJOURS juste en dessous,
           quelle que soit la hauteur d'écran. Le texte est poussé en bas (mt-auto).
 
-          `h-[50vh]` est l'unique levier vertical : ↑ = globe plus bas, ↓ = plus haut.
+          `h-[60vh]` est l'unique levier vertical : ↑ = globe plus bas, ↓ = plus haut.
         */}
-        <div aria-hidden className="h-[50vh] shrink-0" />
+        <div aria-hidden className="h-[60vh] shrink-0" />
 
         <div aria-hidden>
           <GlobeMount />
