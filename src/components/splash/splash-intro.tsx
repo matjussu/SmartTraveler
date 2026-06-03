@@ -27,6 +27,8 @@ type Props = {
   text?: string;
   scrollThreshold?: number;
   columnLabels?: string[];
+  /** Largeur des flaps (transmis à SplitFlap). Plus petit = titre 1 ligne sur + d'écrans. */
+  flapWidth?: string;
 };
 
 const FADE_START = 0.6;
@@ -35,12 +37,13 @@ export function SplashIntro({
   text = "SMART TRAVELER",
   scrollThreshold = 280,
   columnLabels = ["Flight Number", "Destination"],
+  flapWidth,
 }: Props) {
   const progress = useScrollProgress(scrollThreshold);
 
   // Transform curve : scale 1 → 0.5, translateY 0 → -26vh
   const scale = 1 - progress * 0.5;
-  const translateY = `${-26 * progress}vh`;
+  const translateY = `${-30 * progress}vh`;
 
   // Background interpolation : opaque jusqu'à FADE_START, puis fade-out linéaire
   const bgAlpha =
@@ -61,7 +64,7 @@ export function SplashIntro({
           transform: `translate3d(0, ${translateY}, 0) scale(${scale})`,
         }}
       >
-        <SplitFlap text={text} size="xl" columnLabels={columnLabels} />
+        <SplitFlap text={text} size="xl" columnLabels={columnLabels} flapWidth={flapWidth} />
       </div>
     </div>
   );
