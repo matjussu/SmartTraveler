@@ -36,6 +36,7 @@ export default function Home() {
       <SplashIntro
         text="SMART TRAVELER"
         columnLabels={["Flight Number", "Destination"]}
+        flapWidth="clamp(34px, 4.6vw, 74px)"
         scrollThreshold={280}
       />
       <TopNav variant="dark" />
@@ -61,49 +62,36 @@ export default function Home() {
       */}
       <div aria-hidden className="h-[78vh] shrink-0" />
 
-      <section className="flex min-h-screen flex-col items-center px-6">
-        {/*
-          Placement du globe ROBUSTE à la hauteur d'écran.
-
-          Problème résolu : le titre est `position: fixed` (ancré au viewport) et
-          le contenu est en flux (ancré au scroll) → centrer le globe le rendait
-          dépendant de la hauteur de viewport ET de la hauteur du groupe texte, si
-          bien qu'à une taille d'écran différente (prod ≠ local) il remontait sous
-          le titre.
-
-          Solution : un spacer réserve la zone du titre mini (qui se fige autour
-          de ~24-35vh après shrink), et le globe commence TOUJOURS juste en dessous,
-          quelle que soit la hauteur d'écran. Le texte est poussé en bas (mt-auto).
-
-          `h-[60vh]` est l'unique levier vertical : ↑ = globe plus bas, ↓ = plus haut.
-        */}
-        <div aria-hidden className="h-[60vh] shrink-0" />
-
+      {/*
+        Au scroll max, la vue est ancrée au BAS (footer). Le globe se positionne
+        donc relativement au bas, pas au spacer du haut. On groupe globe + texte
+        avec `justify-end` + `pb-[Xvh]` : c'est `pb-[16vh]` qui descend/monte le
+        globe dans la vue au repos (↑ pb = globe plus haut, ↓ pb = globe plus bas).
+      */}
+      <section className="flex min-h-screen flex-col items-center justify-end gap-9 px-6 pb-[4vh] text-center">
         <div aria-hidden>
           <GlobeMount />
         </div>
 
-        <div className="mt-auto flex w-full max-w-3xl flex-col items-center gap-7 pb-[9vh] text-center">
-          <p
-            className="max-w-xl text-[17px] font-medium leading-[1.55] text-white/85"
-            style={{ fontFamily: "var(--font-jakarta)" }}
-          >
-            Organisez vos prochaines vacances en quelques minutes. Composez un
-            voyage, comparez trois façons d&apos;arriver là-bas, puis choisissez
-            la vôtre.
-          </p>
+        <p
+          className="max-w-xl text-[17px] font-medium leading-[1.55] text-white/85"
+          style={{ fontFamily: "var(--font-jakarta)" }}
+        >
+          Organisez vos prochaines vacances en quelques minutes. Composez un
+          voyage, comparez trois façons d&apos;arriver là-bas, puis choisissez la
+          vôtre.
+        </p>
 
-          <Link
-            href="/trip/new"
-            className="inline-flex items-center gap-2.5 rounded-full bg-[#ff7a1a] px-6 py-3.5 text-[14px] font-semibold text-white shadow-[0_0_38px_-4px_rgba(255,122,26,0.55),0_14px_30px_-14px_rgba(255,122,26,0.7)] transition-[transform,background-color,box-shadow] duration-200 ease-out hover:scale-[1.02] hover:bg-[#ff8a30] hover:shadow-[0_0_52px_-2px_rgba(255,138,48,0.7),0_16px_34px_-14px_rgba(255,138,48,0.8)] active:scale-[0.98]"
-            style={{ fontFamily: "var(--font-jakarta)" }}
-          >
-            <span>Nouveau voyage</span>
-            <span aria-hidden className="text-base leading-none">
-              →
-            </span>
-          </Link>
-        </div>
+        <Link
+          href="/trip/new"
+          className="inline-flex items-center gap-2.5 rounded-full bg-[#ff7a1a] px-6 py-3.5 text-[14px] font-semibold text-white shadow-[0_0_38px_-4px_rgba(255,122,26,0.55),0_14px_30px_-14px_rgba(255,122,26,0.7)] transition-[transform,background-color,box-shadow] duration-200 ease-out hover:scale-[1.02] hover:bg-[#ff8a30] hover:shadow-[0_0_52px_-2px_rgba(255,138,48,0.7),0_16px_34px_-14px_rgba(255,138,48,0.8)] active:scale-[0.98]"
+          style={{ fontFamily: "var(--font-jakarta)" }}
+        >
+          <span>Nouveau voyage</span>
+          <span aria-hidden className="text-base leading-none">
+            →
+          </span>
+        </Link>
       </section>
 
       <footer className="mx-auto flex w-full max-w-3xl flex-wrap items-center justify-between gap-3 border-t border-white/[0.06] px-6 pb-10 pt-6 text-[12px] text-white/40">
