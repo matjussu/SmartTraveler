@@ -76,7 +76,7 @@ export function TopNav({ variant = "light" }: Props = {}) {
         </Link>
 
         <nav aria-label="Navigation principale" className="hidden items-center gap-7 text-sm md:flex">
-          <Link href="/" className={linkColor}>
+          <Link href="/itineraires" className={linkColor}>
             Vos itinéraires
           </Link>
           <Link href="/trip/new" className={linkColor}>
