@@ -18,7 +18,7 @@ const DottedGlobe = dynamic(
       <div
         aria-hidden
         className="aspect-square rounded-full border border-[#ff7a1a]/15"
-        style={{ width: "clamp(260px, 42vh, 460px)" }}
+        style={{ width: "clamp(220px, 34vh, 380px)" }}
       />
     ),
   }
