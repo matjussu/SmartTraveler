@@ -68,7 +68,7 @@ export default function Home() {
         avec `justify-end` + `pb-[Xvh]` : c'est `pb-[16vh]` qui descend/monte le
         globe dans la vue au repos (↑ pb = globe plus haut, ↓ pb = globe plus bas).
       */}
-      <section className="flex min-h-screen flex-col items-center justify-end gap-9 px-6 pb-[4vh] text-center">
+      <section className="flex min-h-screen flex-col items-center justify-end gap-8 px-6 pb-[3vh] text-center">
         <div aria-hidden>
           <GlobeMount />
         </div>

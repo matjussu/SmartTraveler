@@ -105,7 +105,7 @@ export function DottedGlobe() {
   return (
     <div
       className="relative aspect-square w-full"
-      style={{ width: "clamp(240px, 36vh, 440px)" }}
+      style={{ width: "clamp(190px, 27vh, 320px)" }}
     >
       <canvas
         ref={canvasRef}
