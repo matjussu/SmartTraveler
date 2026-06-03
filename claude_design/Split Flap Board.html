@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Split-Flap — SMART TRAVELER</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* Flap dimensions are driven by one variable; everything else scales off it */
+    --flap-w: clamp(34px, 6.4vw, 84px);
+    --flap-h: calc(var(--flap-w) * 1.42);
+    --flap-radius: calc(var(--flap-w) * 0.07);
+    --flap-gap:    calc(var(--flap-w) * 0.10);
+    --word-gap:    calc(var(--flap-w) * 0.55);
+
+    /* Palette */
+    --board-bg:   #050505;
+    --bezel:      #0a0a0a;
+    --flap-top:   #121212;   /* upper half — slightly lighter, catches "ambient" light */
+    --flap-bot:   #0b0b0b;   /* lower half — slightly darker */
+    --flap-edge:  #1d1d1d;   /* highlight along the bevel */
+    --flap-line:  #000000;   /* the hairline split */
+    --ink:        #f6f6f4;   /* warm-white characters */
+    --ink-shade:  rgba(0,0,0,.55);
+  }
+
+  html, body {
+    margin: 0;
+    padding: 0;
+    min-height: 100%;
+    background:
+      radial-gradient(120% 80% at 50% 0%, #1a1a1c 0%, #0a0a0b 55%, #050506 100%);
+    color: #c8c8c8;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6vh 4vw;
+    box-sizing: border-box;
+    gap: clamp(20px, 4vh, 48px);
+  }
+
+  /* ---------- Layout ----------
+     The board is now bare — no bezel, no bolts, no chrome. Just the flap
+     columns sitting on the page background. */
+  .board {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    column-gap: var(--word-gap);
+    row-gap: clamp(18px, 3vw, 36px);
+  }
+
+  /* A column = a label stacked above its row of flaps. Both columns wrap
+     together on narrow viewports, each carrying its own label with it. */
+  .column {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: calc(var(--flap-w) * 0.22);
+  }
+
+  .word {
+    display: flex;
+    gap: var(--flap-gap);
+  }
+
+  /* ---------- Column labels ----------
+     Same typographic treatment Matteo liked on the old caption:
+     uppercase IBM Plex Mono, wide letterspacing, muted grey. */
+  .label {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    letter-spacing: 0.22em;
+    font-size: clamp(10px, 0.9vw, 12px);
+    color: #6a6a6a;
+    text-transform: uppercase;
+    padding-left: calc(var(--flap-w) * 0.08);
+  }
+  .label::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #ff8a3d;
+    box-shadow: 0 0 8px #ff8a3d, 0 0 14px rgba(255,138,61,.5);
+    margin-right: 10px;
+    vertical-align: 1px;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.35; }
+  }
+
+  /* ====================================================================== */
+  /*                          THE FLAP COMPONENT                            */
+  /* ====================================================================== */
+
+  .flap {
+    position: relative;
+    width: var(--flap-w);
+    height: var(--flap-h);
+    perspective: calc(var(--flap-h) * 3);
+    border-radius: var(--flap-radius);
+    /* outer bezel + soft bottom shadow */
+    background: #000;
+    box-shadow:
+      0 1px 0 rgba(255,255,255,.04) inset,
+      0 -1px 0 rgba(0,0,0,.9)       inset,
+      0 2px 6px rgba(0,0,0,.6);
+  }
+
+  /* A "half" is one of the four character-rendering surfaces.
+     Static top/bottom + flipper front/back all share the same geometry. */
+  .half {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50%;
+    overflow: hidden;
+    background:
+      linear-gradient(180deg,
+        rgba(255,255,255,0.06) 0%,
+        rgba(255,255,255,0.02) 22%,
+        rgba(0,0,0,0)          60%,
+        rgba(0,0,0,0.20)       100%);
+    background-color: var(--flap-top);
+  }
+  .half.top {
+    top: 0;
+    border-top-left-radius:  var(--flap-radius);
+    border-top-right-radius: var(--flap-radius);
+  }
+  .half.bottom {
+    bottom: 0;
+    border-bottom-left-radius:  var(--flap-radius);
+    border-bottom-right-radius: var(--flap-radius);
+    background:
+      linear-gradient(180deg,
+        rgba(0,0,0,0.18)       0%,
+        rgba(0,0,0,0.06)       28%,
+        rgba(255,255,255,0.02) 75%,
+        rgba(255,255,255,0.05) 100%);
+    background-color: var(--flap-bot);
+  }
+
+  /* The character glyph. It is rendered at full flap height inside a half-height
+     box, then shifted so each half clips the correct portion. */
+  .glyph {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: var(--flap-h);
+    line-height: var(--flap-h);
+    text-align: center;
+    font-family: 'IBM Plex Mono', ui-monospace, 'Roboto Mono', monospace;
+    font-weight: 700;
+    font-size: calc(var(--flap-h) * 0.85);
+    color: var(--ink);
+    /* sharper rendering for the white-on-black plastic look */
+    text-shadow:
+      0 1px 0 rgba(0,0,0,0.4),
+      0 0 1px rgba(255,255,255,0.05);
+    letter-spacing: 0;
+    user-select: none;
+  }
+  .half.top    .glyph { top: 0; }
+  .half.bottom .glyph { bottom: 0; }
+
+  /* The hairline split, painted along the inner edge of each half */
+  .half.top::after,
+  .half.bottom::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--flap-line);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.03);
+  }
+  .half.top::after    { bottom: 0; }
+  .half.bottom::after { top: 0; box-shadow: 0 -1px 0 rgba(0,0,0,0.9); }
+
+  /* ----------- The flipper (the moving half) ----------- */
+  .flipper {
+    position: absolute;
+    left: 0; top: 0;
+    width: 100%;
+    height: 50%;
+    transform-style: preserve-3d;
+    transform-origin: 50% 100%;       /* hinge at the middle line */
+    transform: rotateX(0deg);
+    pointer-events: none;
+    /* z-index above the static halves */
+    z-index: 2;
+  }
+  .flipper .face {
+    position: absolute;
+    inset: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: hidden;
+    border-top-left-radius:  var(--flap-radius);
+    border-top-right-radius: var(--flap-radius);
+  }
+  /* Front face = visible BEFORE the flip; shows top half of CURRENT character */
+  .flipper .face.front {
+    /* matches .half.top styling */
+    background:
+      linear-gradient(180deg,
+        rgba(255,255,255,0.06) 0%,
+        rgba(255,255,255,0.02) 22%,
+        rgba(0,0,0,0)          60%,
+        rgba(0,0,0,0.20)       100%);
+    background-color: var(--flap-top);
+  }
+  /* Back face = visible AFTER the flip; shows bottom half of NEXT character.
+     It is rotated 180° around X so that when the flipper itself is at -180°,
+     the back face's content reads right-side-up. */
+  .flipper .face.back {
+    transform: rotateX(180deg);
+    background:
+      linear-gradient(180deg,
+        rgba(0,0,0,0.18)       0%,
+        rgba(0,0,0,0.06)       28%,
+        rgba(255,255,255,0.02) 75%,
+        rgba(255,255,255,0.05) 100%);
+    background-color: var(--flap-bot);
+    /* the back face occupies the same physical box as the front, but its
+       content must be the BOTTOM half of the next glyph — so anchor glyph
+       at the bottom of the box and let overflow:hidden clip the top. */
+    border-radius: 0;
+    border-bottom-left-radius:  var(--flap-radius);
+    border-bottom-right-radius: var(--flap-radius);
+  }
+  .flipper .face .glyph { top: 0; }
+  .flipper .face.back .glyph { top: auto; bottom: 0; }
+
+  /* Hairline along the moving edge of each face */
+  .flipper .face.front::after,
+  .flipper .face.back::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--flap-line);
+  }
+  .flipper .face.front::after { bottom: 0; }
+  .flipper .face.back::after  { top: 0; }
+
+  /* ----------- The flip animation ----------- */
+  /* When .flipping is added, the flipper rotates 0 → -180 around its bottom edge.
+     The cubic-bezier gives a crisp, snap-like mechanical feel.
+     When the class is removed, the rotation reverts INSTANTLY (no animation),
+     and the parent component has by then swapped current ← next, so the
+     static halves seamlessly show the new state. */
+  .flipper.flipping {
+    animation: flap-flip 230ms cubic-bezier(0.55, 0.05, 0.20, 1) forwards;
+  }
+  @keyframes flap-flip {
+    0%   { transform: rotateX(0deg); }
+    100% { transform: rotateX(-180deg); }
+  }
+
+  /* Lighting: simulate the flap blocking light as it rotates past vertical.
+     Front face dims as it tilts away (0 → 90°), back face brightens as it
+     tilts into view (90° → 180°). Combined with the static halves remaining
+     at full brightness, this sells the 3D mechanical motion. */
+  .flipper.flipping .face.front {
+    animation: shade-out 230ms cubic-bezier(0.55, 0.05, 0.20, 1) forwards;
+  }
+  .flipper.flipping .face.back {
+    animation: shade-in 230ms cubic-bezier(0.55, 0.05, 0.20, 1) forwards;
+  }
+  @keyframes shade-out {
+    0%   { filter: brightness(1)    contrast(1); }
+    100% { filter: brightness(0.18) contrast(0.9); }
+  }
+  @keyframes shade-in {
+    0%   { filter: brightness(0.18) contrast(0.9); }
+    100% { filter: brightness(1)    contrast(1); }
+  }
+
+  /* Subtle, persistent inner shadow at the split line — adds depth even
+     when the board is at rest. */
+  .flap::after {
+    content: "";
+    position: absolute;
+    left: 0; right: 0;
+    top: 50%;
+    height: 2px;
+    transform: translateY(-1px);
+    background: linear-gradient(180deg,
+      rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.9) 50%, rgba(0,0,0,0.45) 100%);
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  /* ---------- Controls ---------- */
+  .controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .controls button {
+    appearance: none;
+    background: rgba(255,255,255,0.04);
+    color: #d8d8d8;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 999px;
+    padding: 9px 18px;
+    font: 500 12px/1 'IBM Plex Mono', monospace;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 120ms ease, border-color 120ms ease, transform 120ms ease;
+  }
+  .controls button:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.18);
+  }
+  .controls button:active { transform: translateY(1px); }
+
+  /* ---------- Mobile tightening ---------- */
+  @media (max-width: 560px) {
+    :root {
+      --flap-w: clamp(28px, 11vw, 56px);
+      --word-gap: calc(var(--flap-w) * 0.45);
+    }
+  }
+</style>
+</head>
+
+<body data-screen-label="Split-Flap board — SMART TRAVELER">
+
+  <div class="board" id="root"></div>
+
+  <div class="controls">
+    <button id="replay">Replay</button>
+    <button id="shuffle">Shuffle</button>
+  </div>
+
+<!-- React -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" data-presets="react">
+/* ============================================================================
+ *  Split-Flap Board — SMART TRAVELER
+ *  ----------------------------------------------------------------------------
+ *  Anatomy of a single Flap (mirrored 1:1 with the CSS):
+ *
+ *     ┌──────────────┐   ← static .half.top      shows  TOP half of `next`
+ *     │   ███████    │      (revealed when the flipper rotates away)
+ *     ├──────────────┤   ← hairline split (.flap::after)
+ *     │   ███████    │   ← static .half.bottom   shows  BOTTOM half of `current`
+ *     └──────────────┘
+ *
+ *     Overlaid in the top slot, hinged at the middle line:
+ *     ┌──────────────┐   ← flipper .face.front   shows  TOP half of `current`
+ *     │   ███████    │      (visible at 0°, hidden after 90°)
+ *     └──────────────┘
+ *
+ *     The flipper's .face.back (rotated 180° around X) shows the BOTTOM half
+ *     of `next`. When the flipper rotates to -180°, the back face lands in
+ *     the BOTTOM-half region, oriented right-side-up — and at the exact moment
+ *     the animation ends we set current ← next and remove .flipping, so the
+ *     static halves take over seamlessly.
+ *
+ *     Lighting (separate keyframe animations on each face) dims toward the
+ *     90° mark so the flap appears to "block light" as it rotates.
+ * ========================================================================== */
+
+const { useState, useEffect, useRef, useCallback } = React;
+
+const CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const FLIP_MS = 230;   // must match @keyframes flap-flip duration
+const HOLD_MS = 14;    // tiny gap between consecutive flips so the snap is visible
+
+/* ---------------------------------------------------------------------------
+ *  <Flap /> — one mechanical character.
+ *
+ *  Props:
+ *    target      final character it must rest on
+ *    delay       ms to wait before the first flip (drives the L→R ripple)
+ *    cycleCount  how many random characters to flick through before landing
+ *    runKey      changing this re-triggers the whole sequence
+ * ------------------------------------------------------------------------- */
+function Flap({ target, delay = 0, cycleCount = 7, runKey = 0 }) {
+  const [current, setCurrent] = useState(" ");
+  const [next, setNext]       = useState(" ");
+  const [flipping, setFlip]   = useState(false);
+
+  // Track the animating state across timeouts without re-renders
+  const timers = useRef([]);
+
+  useEffect(() => {
+    // clear any in-flight schedule from a previous runKey
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+
+    // Build the sequence: cycleCount random chars, then the target.
+    // Skip the random churn for blanks so spaces stay quiet.
+    const sequence = [];
+    if (target !== " ") {
+      for (let i = 0; i < cycleCount; i++) {
+        sequence.push(CHARSET[Math.floor(Math.random() * CHARSET.length)]);
+      }
+    }
+    sequence.push(target);
+
+    let i = 0;
+    const flipOnce = () => {
+      const upcoming = sequence[i];
+      setNext(upcoming);
+      // ensure the DOM has rendered with the new `next` BEFORE we toggle
+      // .flipping; otherwise the back face would animate in stale content.
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        setFlip(true);
+        const t = setTimeout(() => {
+          setCurrent(upcoming);   // commit
+          setFlip(false);         // reset transform instantly (no animation)
+          i += 1;
+          if (i < sequence.length) {
+            const t2 = setTimeout(flipOnce, HOLD_MS);
+            timers.current.push(t2);
+          }
+        }, FLIP_MS);
+        timers.current.push(t);
+      }));
+    };
+
+    const start = setTimeout(flipOnce, delay);
+    timers.current.push(start);
+
+    return () => {
+      timers.current.forEach(clearTimeout);
+      timers.current = [];
+    };
+  }, [target, delay, cycleCount, runKey]);
+
+  return (
+    <div className="flap" aria-hidden="true">
+      {/* Static halves — the always-visible background. */}
+      <div className="half top">
+        <span className="glyph">{next}</span>
+      </div>
+      <div className="half bottom">
+        <span className="glyph">{current}</span>
+      </div>
+
+      {/* Flipper — the moving plate. */}
+      <div className={"flipper" + (flipping ? " flipping" : "")}>
+        <div className="face front">
+          <span className="glyph">{current}</span>
+        </div>
+        <div className="face back">
+          <span className="glyph">{next}</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+ *  <Column /> — a labeled stack: the column title sits above a row of flaps.
+ *  The label/row pair wraps as a unit on narrow viewports.
+ * ------------------------------------------------------------------------- */
+function Column({ label, text, startIndex, runKey }) {
+  return (
+    <div className="column">
+      <div className="label">{label}</div>
+      <div className="word">
+        {[...text].map((ch, i) => (
+          <Flap
+            key={i}
+            target={ch}
+            /* 70ms ripple stride, biased so the random churn finishes near the end */
+            delay={(startIndex + i) * 70}
+            cycleCount={5 + ((startIndex + i) % 4)}
+            runKey={runKey}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ---------------------------------------------------------------------------
+ *  <Board /> — two labeled columns, "Flight Number" and "Destination".
+ *  Columns wrap to stacked rows on narrow viewports.
+ * ------------------------------------------------------------------------- */
+const COLUMNS = [
+  { label: "Flight Number" },
+  { label: "Destination"   },
+];
+
+function Board() {
+  const [runKey, setRunKey] = useState(0);
+  const [words, setWords]   = useState(["SMART", "TRAVELER"]);
+
+  const replay = useCallback(() => setRunKey(k => k + 1), []);
+  const shuffle = useCallback(() => {
+    // Flight-themed pairs that fit the new "Flight Number / Destination" columns
+    const options = [
+      ["SMART",  "TRAVELER"],
+      ["AC 121", "TOKYO HND"],
+      ["BA 214", "LONDON LHR"],
+      ["AF 066", "PARIS CDG"],
+      ["UA 851", "NEW YORK JFK"],
+      ["LH 441", "BERLIN BER"],
+    ];
+    const cur = words.join("|");
+    let pick = cur;
+    while (pick === cur) {
+      const choice = options[Math.floor(Math.random() * options.length)];
+      pick = choice.join("|");
+      if (pick !== cur) setWords(choice);
+    }
+    setRunKey(k => k + 1);
+  }, [words]);
+
+  // wire up buttons (outside React tree)
+  useEffect(() => {
+    const r = document.getElementById("replay");
+    const s = document.getElementById("shuffle");
+    r.addEventListener("click", replay);
+    s.addEventListener("click", shuffle);
+    return () => {
+      r.removeEventListener("click", replay);
+      s.removeEventListener("click", shuffle);
+    };
+  }, [replay, shuffle]);
+
+  // Compute starting offsets so the L→R ripple is continuous across both columns
+  let offset = 0;
+  const columnEls = words.map((w, idx) => {
+    const el = (
+      <Column
+        key={idx + ":" + w}
+        label={COLUMNS[idx].label}
+        text={w}
+        startIndex={offset}
+        runKey={runKey}
+      />
+    );
+    offset += w.length + 1; // +1 for the visual word gap
+    return el;
+  });
+
+  return <>{columnEls}</>;
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<Board />);
+</script>
+</body>
+</html>

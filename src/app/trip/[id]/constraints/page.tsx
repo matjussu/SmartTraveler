@@ -1,13 +1,16 @@
+import { ConstraintsEditor } from "@/components/voyage/constraints-editor";
+
+/**
+ * /trip/[id]/constraints — étape 3 sur 3 de la cascade.
+ *
+ * Server component minimal : extrait l'id et délègue à un client wrapper
+ * qui gère l'hydratation Zustand + l'état local des contraintes.
+ *
+ * Pattern Next 16 : PageProps<"/trip/[id]/constraints"> + await props.params.
+ */
 export default async function TripConstraintsPage(
   props: PageProps<"/trip/[id]/constraints">
 ) {
   const { id } = await props.params;
-  return (
-    <main className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="text-3xl font-semibold tracking-tight">Contraintes</h1>
-      <p className="mt-3 text-sm text-muted-foreground">
-        Route <code className="font-mono">/trip/{id}/constraints</code> — placeholder. Cascade frontend à venir.
-      </p>
-    </main>
-  );
+  return <ConstraintsEditor tripId={id} />;
 }

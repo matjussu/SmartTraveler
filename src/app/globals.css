@@ -4,12 +4,42 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* ---------------------------------------------------------------------------
+   SmartTraveler — direction "voyage-pivot" (lever de soleil)
+   Voyage chaleureux B2C : cream + terracotta + ocean + sage.
+   Pas de midnight, pas de glass aurora, pas de cyan acidulé.
+--------------------------------------------------------------------------- */
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-heading: var(--font-sans);
+  --color-surface: var(--surface);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-ink-mute: var(--ink-mute);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-soft: var(--terracotta-soft);
+  --color-terracotta-ink: var(--terracotta-ink);
+
+  --color-ocean: var(--ocean);
+  --color-ocean-soft: var(--ocean-soft);
+  --color-ocean-ink: var(--ocean-ink);
+
+  --color-sage: var(--sage);
+  --color-sage-soft: var(--sage-soft);
+  --color-sage-ink: var(--sage-ink);
+
+  --color-gold: var(--gold);
+
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+  --font-display: var(--font-display), Georgia, serif;
+  --font-heading: var(--font-display), Georgia, serif;
+
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -49,82 +79,287 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-}
+  /* Fond chaleureux crème — lever de soleil */
+  --background: oklch(0.972 0.014 78);
+  --surface: oklch(0.992 0.006 85);
+  --surface-elevated: oklch(1 0 0);
 
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  /* Encre profonde chaleureuse (terre brûlée presque noir) */
+  --foreground: oklch(0.215 0.028 38);
+  --ink: oklch(0.215 0.028 38);
+  --ink-soft: oklch(0.42 0.025 42);
+  --ink-mute: oklch(0.55 0.022 50);
+
+  /* Lignes & séparateurs (warm sand) */
+  --line: oklch(0.89 0.018 75);
+  --line-strong: oklch(0.82 0.024 70);
+
+  /* Accents voyage chaleureux */
+  --terracotta: oklch(0.62 0.155 38);
+  --terracotta-soft: oklch(0.93 0.045 50);
+  --terracotta-ink: oklch(0.42 0.13 35);
+
+  --ocean: oklch(0.55 0.115 235);
+  --ocean-soft: oklch(0.94 0.025 230);
+  --ocean-ink: oklch(0.38 0.11 240);
+
+  --sage: oklch(0.55 0.078 145);
+  --sage-soft: oklch(0.93 0.025 140);
+  --sage-ink: oklch(0.38 0.07 150);
+
+  --gold: oklch(0.78 0.13 75);
+
+  /* shadcn aliases (mappés sur la palette voyage) */
+  --card: oklch(0.992 0.006 85);
+  --card-foreground: oklch(0.215 0.028 38);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.215 0.028 38);
+  --primary: oklch(0.215 0.028 38);
+  --primary-foreground: oklch(0.992 0.006 85);
+  --secondary: oklch(0.93 0.022 70);
+  --secondary-foreground: oklch(0.215 0.028 38);
+  --muted: oklch(0.94 0.018 75);
+  --muted-foreground: oklch(0.48 0.025 48);
+  --accent: oklch(0.62 0.155 38);
+  --accent-foreground: oklch(0.992 0.006 85);
+  --destructive: oklch(0.55 0.18 28);
+  --border: oklch(0.89 0.018 75);
+  --input: oklch(0.89 0.018 75);
+  --ring: oklch(0.62 0.155 38 / 0.45);
+  --chart-1: oklch(0.62 0.155 38);
+  --chart-2: oklch(0.55 0.115 235);
+  --chart-3: oklch(0.55 0.078 145);
+  --chart-4: oklch(0.78 0.13 75);
+  --chart-5: oklch(0.42 0.025 42);
+  --radius: 0.875rem;
+  --sidebar: oklch(0.972 0.014 78);
+  --sidebar-foreground: oklch(0.215 0.028 38);
+  --sidebar-primary: oklch(0.62 0.155 38);
+  --sidebar-primary-foreground: oklch(0.992 0.006 85);
+  --sidebar-accent: oklch(0.93 0.045 50);
+  --sidebar-accent-foreground: oklch(0.42 0.13 35);
+  --sidebar-border: oklch(0.89 0.018 75);
+  --sidebar-ring: oklch(0.62 0.155 38 / 0.4);
 }
 
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
-  body {
-    @apply bg-background text-foreground;
-  }
   html {
-    @apply font-sans;
+    font-family: var(--font-sans);
+    color: var(--ink);
+    background: var(--background);
+  }
+  body {
+    background: var(--background);
+    color: var(--ink);
+    font-feature-settings: "ss01" on, "cv11" on;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  ::selection {
+    background: oklch(0.62 0.155 38 / 0.22);
+    color: var(--ink);
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Composants utilitaires voyage-pivot
+--------------------------------------------------------------------------- */
+
+/* Carte "billet" — bord dentelé subtil sur les côtés (effet boarding pass doux) */
+.boarding-ticket {
+  position: relative;
+  background: var(--surface-elevated);
+  border: 1px solid var(--line-strong);
+  border-radius: 18px;
+  transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 240ms ease-out;
+  box-shadow:
+    0 1px 0 0 oklch(1 0 0),
+    0 8px 22px -14px oklch(0.215 0.028 38 / 0.14),
+    0 2px 6px -2px oklch(0.215 0.028 38 / 0.05);
+}
+.boarding-ticket:hover {
+  transform: translateY(-2px);
+  border-color: oklch(0.72 0.04 60);
+  box-shadow:
+    0 1px 0 0 oklch(1 0 0),
+    0 18px 36px -18px oklch(0.215 0.028 38 / 0.22),
+    0 3px 8px -2px oklch(0.215 0.028 38 / 0.08);
+}
+
+/* Perforation horizontale entre header et corps */
+.ticket-perforation {
+  position: relative;
+  height: 1px;
+  background-image: linear-gradient(
+    to right,
+    oklch(0.78 0.025 65) 0,
+    oklch(0.78 0.025 65) 5px,
+    transparent 5px,
+    transparent 10px
+  );
+  background-size: 10px 1px;
+  background-repeat: repeat-x;
+}
+.ticket-perforation::before,
+.ticket-perforation::after {
+  content: "";
+  position: absolute;
+  top: -9px;
+  width: 18px;
+  height: 18px;
+  background: var(--background);
+  border-radius: 50%;
+  border: 1px solid var(--line-strong);
+}
+.ticket-perforation::before {
+  left: -25px;
+}
+.ticket-perforation::after {
+  right: -25px;
+}
+
+/* Stamp/marque "voyage" en filigrane */
+.travel-stamp {
+  font-family: var(--font-display);
+  font-style: italic;
+  letter-spacing: -0.01em;
+}
+
+/* Trait fin route inter-villes (style avion stylisé) */
+.route-line {
+  background-image: linear-gradient(
+    to right,
+    transparent 0,
+    transparent 30%,
+    currentColor 30%,
+    currentColor 32%,
+    transparent 32%,
+    transparent 35%,
+    currentColor 35%,
+    currentColor 37%,
+    transparent 37%,
+    transparent 40%,
+    currentColor 40%,
+    currentColor 42%,
+    transparent 42%
+  );
+  background-size: 12px 1px;
+  background-repeat: repeat-x;
+  background-position: center;
+}
+
+/* Leaflet customisation light & chaleureux */
+.leaflet-container {
+  background: oklch(0.95 0.012 80) !important;
+  font-family: var(--font-sans) !important;
+}
+.leaflet-control-attribution {
+  background: oklch(1 0 0 / 0.7) !important;
+  font-size: 9px !important;
+  color: var(--ink-mute) !important;
+}
+.leaflet-control-zoom a {
+  background: var(--surface-elevated) !important;
+  color: var(--ink) !important;
+  border-color: var(--line) !important;
+}
+
+/* Marker custom */
+.st-marker {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+}
+.st-marker-dot {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2.5px solid var(--surface-elevated);
+  box-shadow: 0 2px 8px -2px oklch(0.215 0.028 38 / 0.3);
+}
+.st-marker-pin {
+  position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.st-marker-pin .pin-bubble {
+  background: var(--surface-elevated);
+  border: 1px solid var(--line-strong);
+  padding: 4px 9px;
+  border-radius: 999px;
+  box-shadow: 0 6px 14px -8px oklch(0.215 0.028 38 / 0.22);
+  white-space: nowrap;
+}
+
+/* Tag d'alternative — pill */
+.alt-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 999px;
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  font-weight: 500;
+  border: 1px solid transparent;
+  transition:
+    background-color 180ms ease-out,
+    border-color 180ms ease-out,
+    color 180ms ease-out;
+}
+
+/* États focus accessibles */
+:focus-visible {
+  outline: 2px solid var(--terracotta);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Grand redesign Phase 1 — Home `/` matte black avec Split-Flap.
+   Scope strict via [data-route="home-redesign"] : ne touche QUE la home.
+   Les autres routes (/trip/*, /shared/*) conservent leur fond cream voyage-pivot.
+--------------------------------------------------------------------------- */
+
+main[data-route="home-redesign"] {
+  background: radial-gradient(120% 80% at 50% 0%, #1a1a1c 0%, #0a0a0b 55%, #050506 100%);
+  color: #f6f6f4;
+  /* min-height > viewport est REQUIS pour rendre la page scrollable et déclencher
+     la transition shrink du splash (cf scrollThreshold=280px dans SplashIntro).
+     calc(100vh + 400px) garantit ~400px de scroll utile sur tout viewport — bien
+     au-dessus du threshold, avec marge confort. Avant : min-height: 100vh écrasait
+     `min-h-[120vh]` Tailwind du JSX (specificity attribute+type > class) et
+     verrouillait la page à 100vh exact → scroll impossible (bug #1602 racine). */
+  min-height: calc(100vh + 400px);
+}
+
+/* Body bg matched via :has() pour éviter le flash cream pendant le scroll-bounce
+   (overscroll iOS / Chrome). Si :has() pas supporté, fallback gracieux : le main
+   couvre tout, le body reste cream — acceptable car invisible. */
+@supports selector(:has(*)) {
+  body:has(main[data-route="home-redesign"]) {
+    background: #050506;
   }
 }

@@ -1,0 +1,837 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Tour Méditerranée — Boarding Pass</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    /* Palette — warm paper, dark ink, amber accent that echoes the split-flap board */
+    --page-bg:     #ece6dc;
+    --paper:       #ffffff;
+    --paper-soft:  #fbfaf6;
+    --paper-edge:  #ede9e0;
+    --ink:         #0d0d10;
+    --ink-soft:    #4a4a52;
+    --ink-mute:    #8d8d92;
+    --rule:        #e2dfd6;
+    --rule-soft:   #ececec;
+    --accent:      #ff8a3d;
+    --accent-bg:   #fff4ec;
+    --leaf:        #2b7a4b;
+    --leaf-bg:     #ebf3ee;
+
+    /* Geometry */
+    --stub-w: 200px;
+    --radius: 16px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(80% 60% at 50% 0%, #f3eee4 0%, #ece6dc 60%, #e2dccf 100%);
+    color: var(--ink);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: "ss01", "cv11";
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6vh 4vw;
+  }
+
+  /* Monospaced numerics for "official ticket" feel */
+  .mono, .num {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-feature-settings: "tnum" 1;
+  }
+
+  /* ============================================================
+     TICKET
+     ============================================================ */
+  .ticket {
+    position: relative;
+    width: min(960px, 100%);
+    background: var(--paper);
+    border-radius: var(--radius);
+    display: grid;
+    grid-template-columns: 1fr var(--stub-w);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.9) inset,
+      0 30px 60px -25px rgba(20, 22, 35, 0.32),
+      0 4px 14px rgba(20, 22, 35, 0.08);
+    isolation: isolate;
+    cursor: pointer;
+    transition: transform 200ms ease, box-shadow 200ms ease;
+  }
+  .ticket:hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.9) inset,
+      0 36px 70px -25px rgba(20, 22, 35, 0.38),
+      0 6px 18px rgba(20, 22, 35, 0.10);
+  }
+  .ticket:active { transform: translateY(0); }
+  .ticket:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+
+  /* Subtle paper texture overlay */
+  .ticket::before {
+    content: "";
+    position: absolute; inset: 0;
+    border-radius: inherit;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 0.5 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.55'/></svg>");
+    opacity: 0.06;
+    mix-blend-mode: multiply;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ---------- Perforated edge between main and stub ---------- */
+  .perf {
+    position: absolute;
+    top: 22px;
+    bottom: 22px;
+    left: calc(100% - var(--stub-w));
+    width: 2px;
+    transform: translateX(-1px);
+    background-image: radial-gradient(circle, var(--ink-mute) 0.9px, transparent 1.2px);
+    background-size: 2px 9px;
+    background-repeat: repeat-y;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .notch {
+    position: absolute;
+    width: 24px;
+    height: 24px;
+    background: var(--page-bg);
+    border-radius: 50%;
+    left: calc(100% - var(--stub-w));
+    transform: translateX(-50%);
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.06);
+    z-index: 3;
+  }
+  .notch.top { top: -12px; }
+  .notch.bot { bottom: -12px; }
+
+  /* ============================================================
+     MAIN SECTION
+     ============================================================ */
+  .main {
+    position: relative;
+    z-index: 1;
+    padding: 32px 40px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    border-radius: var(--radius) 0 0 var(--radius);
+  }
+
+  /* ---------- Header ---------- */
+  .header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .eyebrow {
+    margin: 0 0 6px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+  }
+  .title {
+    margin: 0;
+    font-size: clamp(28px, 3vw, 36px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    color: var(--ink);
+  }
+  .dates {
+    margin: 10px 0 0;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+  .dates .sep {
+    display: inline-block;
+    margin: 0 10px;
+    color: var(--ink-mute);
+  }
+
+  .price {
+    text-align: right;
+    flex-shrink: 0;
+  }
+  .price-label {
+    display: block;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin-bottom: 4px;
+  }
+  .price-value {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-weight: 700;
+    font-size: clamp(28px, 3vw, 38px);
+    letter-spacing: -0.02em;
+    color: var(--ink);
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+  .price-value .cur { font-size: 0.7em; color: var(--ink-soft); }
+
+  /* ---------- Rule ---------- */
+  .rule {
+    height: 1px;
+    background: var(--rule);
+    border: 0;
+    margin: 0;
+  }
+
+  /* ---------- Itinerary timeline ---------- */
+  .itinerary {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+  }
+  .stop {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 64px;
+  }
+  .stop .dot {
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--paper);
+    border: 2px solid var(--ink);
+    box-shadow: 0 0 0 4px var(--paper);
+    margin-bottom: 4px;
+  }
+  .stop.first .dot, .stop.last .dot {
+    background: var(--ink);
+  }
+  .stop .code {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-weight: 700;
+    font-size: 18px;
+    letter-spacing: 0.06em;
+    color: var(--ink);
+  }
+  .stop .role {
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+
+  .leg {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 8px;
+    padding-top: 4px;
+    min-width: 60px;
+  }
+  .leg .line {
+    width: 100%;
+    height: 1px;
+    background-image: linear-gradient(to right, var(--ink-mute) 60%, transparent 0%);
+    background-size: 6px 1px;
+    background-repeat: repeat-x;
+    margin-top: 5px;
+  }
+  .leg .leg-meta {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+  }
+  .leg .leg-mode {
+    color: var(--ink-soft);
+    font-weight: 600;
+  }
+
+  /* ---------- Tier rows (presentational only) ----------
+     Per Matteo: these are NOT actionable controls — they read as an
+     itemized list of available fares. The whole ticket card is the
+     click target. So: no radio mark, no hover, no selected state. */
+  .tiers-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    margin: 0 0 -6px;
+  }
+  .tiers {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .tier {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+    padding: 12px 14px;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    background: var(--paper);
+  }
+
+  .tier-body { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .tier-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .tier-name .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    padding: 2px 7px;
+    border-radius: 999px;
+    background: var(--accent-bg);
+    color: var(--accent);
+    text-transform: uppercase;
+  }
+  .tier-name .tag.leaf { background: var(--leaf-bg); color: var(--leaf); }
+  .tier-hint {
+    font-size: 12px;
+    color: var(--ink-mute);
+    letter-spacing: 0.01em;
+  }
+
+  .tier-meta {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .tier-price {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-weight: 700;
+    font-size: 17px;
+    color: var(--ink);
+  }
+  .tier-dur {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    color: var(--ink-mute);
+    text-transform: uppercase;
+  }
+
+  /* ---------- Footer ---------- */
+  .footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding-top: 4px;
+  }
+  .co2 {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 12px 6px 8px;
+    background: var(--leaf-bg);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--leaf);
+    letter-spacing: 0.02em;
+  }
+  .co2 svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .co2 .num {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  .co2 .sub { color: var(--ink-mute); font-weight: 500; margin-left: 2px; }
+
+  .cta {
+    appearance: none;
+    border: 0;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.02em;
+    padding: 11px 18px;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background 140ms ease, transform 140ms ease;
+  }
+  .cta:hover { background: #1d1d22; }
+  .cta:hover .arrow { transform: translateX(3px); }
+  .cta:active { transform: translateY(1px); }
+  .cta .arrow { transition: transform 160ms ease; display: inline-block; }
+
+  /* ============================================================
+     STUB
+     ============================================================ */
+  .stub {
+    position: relative;
+    z-index: 1;
+    background:
+      linear-gradient(180deg, var(--paper-soft) 0%, var(--paper-edge) 100%);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    padding: 28px 22px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+    overflow: hidden;
+  }
+  .stub-head {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+    text-align: center;
+  }
+  .stub-tag {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .stub-title {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.18em;
+    color: var(--ink);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  /* ---------- Barcode (vertical, fills the stub) ----------
+     Per Matteo: rotate the barcode so the bars stack vertically and
+     the whole element grows to fill the space between the stub head
+     and the field grid. The code label rides alongside with
+     vertical writing-mode for a real boarding-pass-stub look. */
+  .barcode {
+    margin: 0;
+    padding: 14px 10px;
+    width: 100%;
+    flex: 1 1 auto;
+    min-height: 220px;
+    background: var(--paper);
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px var(--rule);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: stretch;
+    gap: 10px;
+    overflow: hidden;
+  }
+  .bars {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  .bars i {
+    display: block;
+    width: 100%;
+    background: var(--ink);
+    flex: 0 0 auto;
+  }
+  .bars i.sp { background: transparent; }
+  .barcode-code {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.32em;
+    color: var(--ink);
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    align-self: center;
+    padding: 6px 2px;
+    white-space: nowrap;
+  }
+
+  .stub-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 12px;
+    margin-top: auto;
+  }
+  .stub-field { display: flex; flex-direction: column; gap: 2px; }
+  .stub-field.full { grid-column: 1 / -1; }
+  .stub-field .k {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+  }
+  .stub-field .v {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-weight: 600;
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    color: var(--ink);
+  }
+
+  /* ============================================================
+     RESPONSIVE — stack the stub below on narrow viewports
+     ============================================================ */
+  @media (max-width: 720px) {
+    .ticket {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+    }
+    .main {
+      padding: 26px 22px;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    .stub {
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 22px;
+    }
+    .perf {
+      top: auto; bottom: auto; left: 22px; right: 22px;
+      width: auto; height: 2px;
+      /* compute Y: main has variable height, use grid line trick */
+      top: var(--perf-y, 50%);
+      background-image: radial-gradient(circle, var(--ink-mute) 0.9px, transparent 1.2px);
+      background-size: 9px 2px;
+      background-repeat: repeat-x;
+      transform: none;
+    }
+    .notch { width: 24px; height: 24px; left: auto; top: var(--perf-y, 50%); transform: translateY(-50%); }
+    .notch.top { left: -12px; }
+    .notch.bot { right: -12px; left: auto; }
+    .header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    .price { text-align: left; }
+    .stub-grid { grid-template-columns: 1fr 1fr 1fr; }
+    .barcode { min-height: 200px; max-width: 320px; margin: 0 auto; }
+    .itinerary { flex-wrap: wrap; row-gap: 14px; }
+  }
+
+  /* Header alignment between dot and stop circle */
+  .stop.last .dot { background: var(--ink); }
+
+  /* Small screen: stub perforation Y is computed in JS so notches sit exactly on the line */
+</style>
+</head>
+
+<body data-screen-label="Boarding Pass — Tour Méditerranée">
+
+  <article class="ticket" role="group" aria-label="Tour Méditerranée — boarding pass">
+
+    <!-- ============================================================
+         MAIN
+         ============================================================ -->
+    <section class="main">
+      <header class="header">
+        <div>
+          <p class="eyebrow">Itinéraire · Méditerranée</p>
+          <h1 class="title">Tour Méditerranée</h1>
+          <p class="dates">
+            <span>10 Juin — 22 Juin</span>
+            <span class="sep">·</span>
+            <span>12 Jours</span>
+            <span class="sep">·</span>
+            <span>2 Étapes</span>
+          </p>
+        </div>
+        <div class="price">
+          <span class="price-label">À partir de</span>
+          <span class="price-value"><span class="amount">218</span><span class="cur">€</span></span>
+        </div>
+      </header>
+
+      <hr class="rule" />
+
+      <!-- Itinerary timeline -->
+      <section class="itinerary" aria-label="Itinéraire">
+        <div class="stop first">
+          <span class="dot"></span>
+          <span class="code">PAR</span>
+          <span class="role">Départ</span>
+        </div>
+
+        <div class="leg">
+          <div class="leg-meta">
+            <span class="leg-mode">10 JUIN</span>
+            <span>4 J · TRAIN</span>
+          </div>
+          <span class="line"></span>
+        </div>
+
+        <div class="stop">
+          <span class="dot"></span>
+          <span class="code">ROM</span>
+          <span class="role">Étape 1</span>
+        </div>
+
+        <div class="leg">
+          <div class="leg-meta">
+            <span class="leg-mode">15 JUIN</span>
+            <span>4 J · TRAIN</span>
+          </div>
+          <span class="line"></span>
+        </div>
+
+        <div class="stop">
+          <span class="dot"></span>
+          <span class="code">BCN</span>
+          <span class="role">Étape 2</span>
+        </div>
+
+        <div class="leg">
+          <div class="leg-meta">
+            <span class="leg-mode">19 JUIN</span>
+            <span>3 J · TRAIN</span>
+          </div>
+          <span class="line"></span>
+        </div>
+
+        <div class="stop last">
+          <span class="dot"></span>
+          <span class="code">PAR</span>
+          <span class="role">Retour</span>
+        </div>
+      </section>
+
+      <hr class="rule" />
+
+      <!-- Tier selection -->
+      <p class="tiers-label">Choix du voyage</p>
+      <div class="tiers" aria-label="Options de voyage">
+
+        <div class="tier">
+          <span class="tier-body">
+            <span class="tier-name">Économique <span class="tag">Meilleur prix</span></span>
+            <span class="tier-hint">3 correspondances · train + nuit</span>
+          </span>
+          <span class="tier-meta">
+            <span class="tier-price">218 €</span>
+            <span class="tier-dur">14 H 30</span>
+          </span>
+        </div>
+
+        <div class="tier">
+          <span class="tier-body">
+            <span class="tier-name">Le plus rapide</span>
+            <span class="tier-hint">1 correspondance · TGV + Frecciarossa</span>
+          </span>
+          <span class="tier-meta">
+            <span class="tier-price">312 €</span>
+            <span class="tier-dur">06 H 45</span>
+          </span>
+        </div>
+
+        <div class="tier">
+          <span class="tier-body">
+            <span class="tier-name">Bas carbone <span class="tag leaf">−62 % CO₂</span></span>
+            <span class="tier-hint">Train uniquement · sans vol</span>
+          </span>
+          <span class="tier-meta">
+            <span class="tier-price">245 €</span>
+            <span class="tier-dur">22 H 10</span>
+          </span>
+        </div>
+
+      </div>
+
+      <!-- Footer -->
+      <footer class="footer">
+        <span class="co2" title="Empreinte carbone par passager">
+          <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M13.5 2.5C8 2 3.5 4.5 3 9.5c-0.2 1.8 0.5 3.2 1.8 4 0.6-2.6 2.4-5 5.2-6.5-2.2 1.8-3.6 4-4.3 6.7 0.6 0.2 1.3 0.3 2 0.2 4.5-0.5 6.4-4.6 5.8-11.4z" fill="currentColor"/>
+          </svg>
+          <span class="num">78 KG CO₂</span>
+          <span class="sub">/ passager</span>
+        </span>
+        <button class="cta" type="button">Voir le détail <span class="arrow">→</span></button>
+      </footer>
+    </section>
+
+    <!-- ============================================================
+         STUB (right side)
+         ============================================================ -->
+    <aside class="stub" aria-label="Référence du billet">
+      <div class="stub-head">
+        <div class="stub-tag">Boarding Pass</div>
+        <div class="stub-title">TM · 2026 · 218</div>
+      </div>
+
+      <!-- Decorative barcode — generated by JS below -->
+      <div class="barcode" aria-hidden="true">
+        <div class="bars" id="bars"></div>
+        <div class="barcode-code">TM 2026 218 042 7K9</div>
+      </div>
+
+      <div class="stub-grid">
+        <div class="stub-field"><span class="k">Voyageur</span><span class="v">A. MARTIN</span></div>
+        <div class="stub-field"><span class="k">Classe</span><span class="v">PREMIUM</span></div>
+        <div class="stub-field"><span class="k">Embarq.</span><span class="v">10 JUIN</span></div>
+        <div class="stub-field"><span class="k">Heure</span><span class="v">08:42</span></div>
+        <div class="stub-field full"><span class="k">Réservation</span><span class="v">7K9 · MED · 22</span></div>
+      </div>
+    </aside>
+
+    <!-- Perforated edge + notches -->
+    <span class="perf" aria-hidden="true"></span>
+    <span class="notch top" aria-hidden="true"></span>
+    <span class="notch bot" aria-hidden="true"></span>
+
+  </article>
+
+<script>
+/* ---------------------------------------------------------------
+   The whole ticket is the click target (not individual tiers).
+   --------------------------------------------------------------- */
+(function () {
+  const ticket = document.querySelector(".ticket");
+  if (!ticket) return;
+  ticket.setAttribute("role", "button");
+  ticket.setAttribute("tabindex", "0");
+  ticket.setAttribute("aria-label", "Tour M\u00e9diterran\u00e9e \u2014 voir le d\u00e9tail");
+  const open = (e) => {
+    // Don't trigger when the user clicks the explicit CTA — it handles its own action.
+    if (e.target.closest(".cta")) return;
+    // Stub action (open detail) would go here — placeholder for now.
+    console.log("Open Tour M\u00e9diterran\u00e9e detail");
+  };
+  ticket.addEventListener("click", open);
+  ticket.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      open(e);
+    }
+  });
+})();
+
+/* ---------------------------------------------------------------
+   Decorative barcode
+   Generates a sequence of alternating black/transparent bars with
+   varying widths. Deterministic (mulberry32) so it looks the same
+   on every load. Not a real symbology — a visual placeholder.
+   --------------------------------------------------------------- */
+(function () {
+  const bars = document.getElementById("bars");
+  if (!bars) return;
+
+  // mulberry32
+  let s = 0xC0FFEE42;
+  const rand = () => {
+    s = (s + 0x6d2b79f5) | 0;
+    let t = s;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+
+  // Bar widths follow the classic 1/2/3 module pattern, alternating ink/space.
+  // Quiet zones (wide blanks) bookend the pattern.
+  const widths = [
+    3, 2,                                                    // quiet zone + guard
+    1, 2, 2, 1, 3, 1, 2, 3, 1, 1, 2, 2, 1, 3, 1, 2,         // data block A
+    2, 3,                                                    // separator
+    3, 1, 2, 1, 2, 3, 1, 2, 1, 3, 2, 1, 1, 2, 3, 1, 2, 2,   // data block B
+    1, 3,                                                    // separator
+    2, 1, 3, 2, 1, 2, 3, 1, 1, 2, 3, 2, 1, 2, 3, 1, 2, 1,   // data block C
+    3, 1, 2, 1, 3, 2,                                        // tail
+    1, 3                                                     // end guard + quiet
+  ];
+
+  // Each bar's size is a percentage of the total so the pattern fills the
+  // available vertical space exactly, regardless of how tall the stub is.
+  const total = widths.reduce((a, b) => a + b, 0);
+
+  const frag = document.createDocumentFragment();
+  for (let i = 0; i < widths.length; i++) {
+    const bar = document.createElement("i");
+    const w = widths[i] + (rand() < 0.08 ? 1 : 0);
+    bar.style.flex = "0 0 " + ((w / total) * 100).toFixed(4) + "%";
+    if (i % 2 === 1) bar.classList.add("sp"); // odd index = space (transparent)
+    frag.appendChild(bar);
+  }
+  bars.appendChild(frag);
+})();
+
+/* ---------------------------------------------------------------
+   Mobile perforation Y position
+   When the layout stacks, place the dotted line and the two notch
+   "holes" exactly on the boundary between .main and .stub so the
+   tear-off effect still reads correctly.
+   --------------------------------------------------------------- */
+(function () {
+  const ticket = document.querySelector(".ticket");
+  const main   = document.querySelector(".main");
+  if (!ticket || !main) return;
+
+  const update = () => {
+    if (window.matchMedia("(max-width: 720px)").matches) {
+      const y = main.offsetHeight;
+      ticket.style.setProperty("--perf-y", y + "px");
+    } else {
+      ticket.style.removeProperty("--perf-y");
+    }
+  };
+  update();
+  window.addEventListener("resize", update);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(update);
+  }
+})();
+</script>
+</body>
+</html>

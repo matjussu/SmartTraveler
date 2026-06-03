@@ -1,13 +1,19 @@
+import { notFound } from "next/navigation";
+import { getTripById } from "@/mocks/trips";
+import { TopNav } from "@/components/voyage/top-nav";
+import { ResultView } from "@/components/voyage/result-view";
+
 export default async function TripResultPage(
   props: PageProps<"/trip/[id]/result">
 ) {
   const { id } = await props.params;
+  const trip = getTripById(id) ?? getTripById("trip-mediterranee");
+  if (!trip) notFound();
+
   return (
-    <main className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="text-3xl font-semibold tracking-tight">Résultat de l&apos;itinéraire</h1>
-      <p className="mt-3 text-sm text-muted-foreground">
-        Route <code className="font-mono">/trip/{id}/result</code> — placeholder. Cascade frontend à venir.
-      </p>
-    </main>
+    <>
+      <TopNav />
+      <ResultView trip={trip} />
+    </>
   );
 }
