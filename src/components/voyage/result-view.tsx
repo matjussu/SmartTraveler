@@ -4,6 +4,8 @@ import { useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
 import type { Trip, Alternative, AlternativeKind } from "@/mocks/trips";
+import { getTripById } from "@/mocks/trips";
+import { useTripStore } from "@/store/trip-store";
 import {
   formatCost,
   formatLongDuration,
@@ -13,6 +15,52 @@ import {
   tripDurationDays,
 } from "@/lib/format";
 import { BoardingPassRich } from "./boarding-pass-rich";
+
+/**
+ * Résout le voyage côté client : store (voyages créés en local) avec repli sur
+ * les mocks. Permet d'afficher un voyage composé qui vit dans localStorage —
+ * que le Server Component ne peut pas voir. Rend <ResultView> une fois résolu.
+ */
+export function ResultGate({ tripId }: { tripId: string }) {
+  const hydrated = useTripStore((s) => s.hydrated);
+  const storeTrip = useTripStore((s) => s.getTrip(tripId));
+  const trip = storeTrip ?? getTripById(tripId);
+
+  if (!trip) {
+    return (
+      <main
+        data-route="voyage-dark"
+        className="relative flex min-h-screen flex-col"
+      >
+        <div className="mx-auto flex flex-1 flex-col items-center justify-center gap-4 px-6 text-center">
+          {!hydrated ? (
+            <p className="text-[13px] text-ink-mute">Chargement du voyage…</p>
+          ) : (
+            <>
+              <h1
+                className="text-[28px] text-ink"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Voyage introuvable
+              </h1>
+              <p className="max-w-sm text-[14px] text-ink-soft">
+                Ce voyage n’existe pas ou n’est plus disponible.
+              </p>
+              <Link
+                href="/itineraires"
+                className="mt-2 inline-flex items-center gap-2 rounded-full bg-[#ff7a1a] px-5 py-2.5 text-[13px] font-semibold text-white"
+              >
+                Voir vos itinéraires
+              </Link>
+            </>
+          )}
+        </div>
+      </main>
+    );
+  }
+
+  return <ResultView trip={trip} />;
+}
 
 const TripMap = dynamic(
   () => import("@/components/voyage/trip-map").then((m) => m.TripMap),
@@ -481,7 +529,7 @@ export function ResultView({ trip }: { trip: Trip }) {
         <div className="mt-5 flex flex-wrap items-center gap-3">
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[13.5px] font-medium text-[oklch(0.99_0.005_80)] transition-transform duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
+            className="inline-flex items-center gap-2 rounded-full bg-[#ff7a1a] px-5 py-3 text-[13.5px] font-medium text-[oklch(0.99_0.005_80)] transition-transform duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
           >
             <span>Réserver cette version</span>
             <span aria-hidden>→</span>

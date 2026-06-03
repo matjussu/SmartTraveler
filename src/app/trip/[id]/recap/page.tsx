@@ -254,7 +254,7 @@ export default function TripRecapPage() {
                           className="inline-flex h-7 w-9 shrink-0 items-center justify-center rounded text-[11px] tracking-[0.06em] text-ink-soft"
                           style={{
                             fontFamily: "var(--font-mono)",
-                            background: "oklch(0.94 0.018 75)",
+                            background: "rgba(255, 255, 255, 0.08)",
                           }}
                         >
                           {cityCode(dest.city.name)}
@@ -657,19 +657,19 @@ function DestinationBadge({ kind }: { kind: BadgeKind }) {
     { bg: string; ink: string; border: string }
   > = {
     souple: {
-      bg: "oklch(0.94 0.018 75)",
-      ink: "oklch(0.48 0.025 48)",
-      border: "oklch(0.85 0.024 70)",
+      bg: "rgba(255, 255, 255, 0.06)",
+      ink: "rgba(255, 255, 255, 0.55)",
+      border: "rgba(255, 255, 255, 0.12)",
     },
     première: {
-      bg: "oklch(0.93 0.045 50)",
-      ink: "oklch(0.42 0.13 35)",
-      border: "oklch(0.85 0.07 45)",
+      bg: "var(--terracotta-soft)",
+      ink: "var(--terracotta-ink)",
+      border: "var(--terracotta)",
     },
     dernière: {
-      bg: "oklch(0.94 0.025 230)",
-      ink: "oklch(0.38 0.11 240)",
-      border: "oklch(0.86 0.045 232)",
+      bg: "oklch(0.6 0.12 235 / 0.2)",
+      ink: "oklch(0.72 0.13 235)",
+      border: "oklch(0.6 0.12 235 / 0.45)",
     },
   };
   const s = styles[kind];

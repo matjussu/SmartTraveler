@@ -191,7 +191,7 @@ export function EditView({ tripId }: { tripId: string }) {
         </p>
         <Link
           href="/"
-          className="mt-8 inline-flex items-center gap-2 rounded-full bg-ink px-5 py-3 text-[13.5px] font-medium text-[oklch(0.99_0.005_80)] transition-transform duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
+          className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#ff7a1a] px-5 py-3 text-[13.5px] font-medium text-[oklch(0.99_0.005_80)] transition-transform duration-200 ease-out hover:scale-[1.02] active:scale-[0.98]"
         >
           <span>Revenir aux itinéraires</span>
           <span aria-hidden>→</span>

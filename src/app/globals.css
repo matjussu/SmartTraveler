@@ -371,14 +371,13 @@ main[data-route="home-redesign"] {
 --------------------------------------------------------------------------- */
 
 main[data-route="trip-new"] {
-  background: radial-gradient(120% 80% at 50% 0%, #1a1a1c 0%, #0a0a0b 55%, #050506 100%);
   color: #f6f6f4;
   min-height: 100vh;
 }
 
 @supports selector(:has(*)) {
   body:has(main[data-route="trip-new"]) {
-    background: #050506;
+    background: #070708;
   }
 }
 
@@ -393,8 +392,9 @@ main[data-route="trip-new"] {
 --------------------------------------------------------------------------- */
 
 main[data-route="voyage-dark"] {
-  /* Fond + texte */
-  background: radial-gradient(120% 80% at 50% 0%, #1a1a1c 0%, #0a0a0b 55%, #050506 100%);
+  /* Pas de fond sur le <main> : il est centré en max-width, donc y mettre le
+     fond créait une colonne + marges noires = "séparation". Le fond plein
+     largeur est posé sur le body (voir body:has ci-dessous). */
   color: #f6f6f4;
   min-height: 100vh;
 
@@ -425,6 +425,6 @@ main[data-route="voyage-dark"] {
 
 @supports selector(:has(*)) {
   body:has(main[data-route="voyage-dark"]) {
-    background: #050506;
+    background: #070708;
   }
 }
